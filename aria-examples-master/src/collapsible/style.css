@@ -1,0 +1,47 @@
+button, .button, summary {
+  cursor: pointer; 
+  width: fit-content; 
+  border: solid 1px #C49167;
+  border-radius: 0.5em;
+  color: #C49167;
+  margin: 1em;
+  padding: 0.75em;
+  background-color: #fff ;
+  font-size: 12pt;
+  box-shadow: 0 1px 2px hsl(0deg 0% 80%);
+  text-decoration: none;
+}
+
+.collapsible {
+	cursor: pointer; 
+}
+
+.collapsible::before {
+	content: "▶";
+}
+
+.collapsible.expanded::before {
+	content: "▼";
+}
+
+.collapsible + .group {
+  display: none;
+}
+
+.expanded {
+  
+}
+
+.expanded + .group {
+  display: block;
+}
+
+.link {
+	color: blue; 
+	text-decoration: underline; 
+	cursor: pointer; 
+}
+
+.block {
+	display: block; 
+}

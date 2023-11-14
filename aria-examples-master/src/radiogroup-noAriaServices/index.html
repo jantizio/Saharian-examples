@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Radiogroup examples</title>
+	<link rel="stylesheet" href="../common/example.css">
+	<link rel="stylesheet" href="style.css">
+	<link rel='icon' href='../common/desert-256.png' />
+</head>
+
+<body>
+	<h1 class="saharian-debug-h1">Radio Group examples <i>(no ariaservices.js)</i></h1>
+	<p>Here you can find different radio group examples with various accessibility degrees, implemented both by using
+		native HTML Elements and attributes from the WAI-ARIA specification. Since we are not using ariaservices.js here, we must provide some additional services on our own (mainly, keyboard support)</p>
+
+	<section class="saharian-debug-correct">
+		<h2 class="saharian-debug-h2">Plain HTML</h2>
+		<p class="help saharian-debug-explanation">This is an accessible radio group implementation that uses native HTML
+			elements.</p>
+		<div class="example saharian-debug-flex">
+			<div class="container">
+				<fieldset>
+					<legend>Steak doneness:</legend>
+					<label><input type="radio" name="choice" checked>rare</label>
+					<label><input type="radio" name="choice">medium rare</label>
+					<label><input type="radio" name="choice">medium</label>
+					<label><input type="radio" name="choice">medium-well</label>
+					<label><input type="radio" name="choice">well-done</label>
+				</fieldset>
+			</div>
+		</div>
+	</section>
+
+	<section class="saharian-debug-correct">
+		<h2 class="saharian-debug-h2">Correct ARIA</h2>
+		<p class="help saharian-debug-explanation">This is a correct radiogroup example that leverages the WAI-ARIA
+			specification. Keyboard
+			support is implemented leveraging the "roving tabindex" technique.</p>
+		<div class="example saharian-debug-flex">
+			<div class="container">
+				<div id="rg1" class="radiogroup" role="radiogroup" aria-labelledby="radiogroup1-title">
+					<h3 id="radiogroup1-title">Steak doneness:</h3>
+					<span class="radio checked" role="radio" aria-checked="true" tabindex="0">rare</span>
+					<span class="radio" role="radio" aria-checked="false" tabindex="-1">medium-rare</span>
+					<span class="radio" role="radio" aria-checked="false" tabindex="-1">medium</span>
+					<span class="radio" role="radio" aria-checked="false" tabindex="-1">medium-well</span>
+					<span class="radio" role="radio" aria-checked="false" tabindex="-1">well-done</span>
+				</div>
+				<script>
+					var group = document.getElementById('rg1')
+					var radios = group.querySelectorAll('[role="radio"]')
+					for (var r of radios) {
+						r.addEventListener('click', doClick1)
+						r.addEventListener('keydown', doKeyDown1)
+					}
+					
+					function doClick1(e) {
+						var group = e.target.closest('[role="radiogroup"]')
+						var radios = group.querySelectorAll('[role="radio"]')
+						for (var r of radios) {
+							r.ariaChecked = false
+							r.tabIndex = -1  
+							r.classList.remove('checked')
+						}					
+						e.target.ariaChecked = true
+						e.target.tabIndex = 0  
+						e.target.classList.add('checked')
+						e.target.focus()
+					}
+					function doKeyDown1(e) {
+						var group = e.target.closest('[role="radiogroup"]')
+						var radios = Array.from(group.querySelectorAll('[role="radio"]'))
+						var myIndex = radios.length + radios.indexOf(e.target)
+						if (!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) ) {
+							switch (e.key) {
+								case 'ArrowDown':
+								case 'ArrowRight':
+									radios[(myIndex+1) % radios.length].click()
+									break
+								case 'ArrowUp':
+								case 'ArrowLeft':
+									radios[(myIndex-1) % radios.length].click()
+									break
+								default:
+									return // nothing to do
+							}
+						}
+						e.stopPropagation()
+						e.preventDefault()
+					}
+				</script>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="saharian-debug-wrong">
+		<h2 class="saharian-debug-h2">Inaccessible radiogroup</h2>
+		<p class="help saharian-debug-explanation">This is an inaccessible radiogroup implementation, as it doesn't expose
+			any semantics to assistive technologies
+			nor provides the expected keyboard support.</p>
+		<div class="example saharian-debug-flex">
+			<div class="container">
+				<div id="rg2" class="radiogroup">
+					<h3 id="radiogroup2-title">Steak doneness:</h3>
+					<span class="radio checked">rare</span>
+					<span class="radio">medium-rare</span>
+					<span class="radio">medium</span>
+					<span class="radio">medium-well</span>
+					<span class="radio">well-done</span>
+				</div>
+				<script>
+					var group = document.getElementById('rg2')
+					var radios = group.querySelectorAll('.radio')
+					for (var r of radios) {
+						r.addEventListener('click', doClick1)
+						r.addEventListener('keydown', doKeyDown1)
+					}
+					
+					function doClick1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = group.querySelectorAll('.radio')
+						for (var r of radios) {
+							r.ariaChecked = false
+							r.tabIndex = -1  
+							r.classList.remove('checked')
+						}					
+						e.target.ariaChecked = true
+						e.target.tabIndex = 0  
+						e.target.classList.add('checked')
+						e.target.focus()
+					}
+					function doKeyDown1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = Array.from(group.querySelectorAll('.radio'))
+						var myIndex = radios.length + radios.indexOf(e.target)
+						if (!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) ) {
+							switch (e.key) {
+								case 'ArrowDown':
+								case 'ArrowRight':
+									radios[(myIndex+1) % radios.length].click()
+									break
+								case 'ArrowUp':
+								case 'ArrowLeft':
+									radios[(myIndex-1) % radios.length].click()
+									break
+								default:
+									return // nothing to do
+							}
+						}
+						e.stopPropagation()
+						e.preventDefault()
+					}
+				</script>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="saharian-debug-wrong">
+		<h2 class="saharian-debug-h2">Messy ARIA radiogroup (2)</h2>
+		<div class="help saharian-debug-explanation">
+			<p>This is a messed up ARIA radiogroup implementation, since:</p>
+			<ul>
+				<li>the selection state of each radio button is not exposed appropriately to assistive technologies, as it uses
+					<code>aria-selected</code> instead of <code>aria-checked</code>;
+				</li /li>
+				<li>the grouping of radio buttons is not exposed properly to assistive technologies, as the container does not
+					use the <code>radiogroup</code> role).</li>
+			</ul>
+		</div>
+		<div class="example saharian-debug-flex">
+			<div class="container">
+				<div id="rg3" class="radiogroup" aria-labelledby="radiogroup3-title">
+					<h3 id="radiogroup3-title">Steak doneness:</h3>
+					<span class="radio checked" role="radio" aria-selected="true" tabindex="0">rare</span>
+					<span class="radio" role="radio" aria-selected="false" tabindex="-1">medium-rare</span>
+					<span class="radio" role="radio" aria-selected="false" tabindex="-1">medium</span>
+					<span class="radio" role="radio" aria-selected="false" tabindex="-1">medium-well</span>
+					<span class="radio" role="radio" aria-selected="false" tabindex="-1">well-done</span>
+				</div>
+				<script>
+					var group = document.getElementById('rg3')
+					var radios = group.querySelectorAll('.radio')
+					for (var r of radios) {
+						r.addEventListener('click', doClick1)
+						r.addEventListener('keydown', doKeyDown1)
+					}
+					
+					function doClick1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = group.querySelectorAll('.radio')
+						for (var r of radios) {
+							r.ariaSelected = false
+							r.tabIndex = -1  
+							r.classList.remove('checked')
+						}					
+						e.target.ariaSelected = true
+						e.target.tabIndex = 0  
+						e.target.classList.add('checked')
+						e.target.focus()
+					}
+					function doKeyDown1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = Array.from(group.querySelectorAll('.radio'))
+						var myIndex = radios.length + radios.indexOf(e.target)
+						if (!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) ) {
+							switch (e.key) {
+								case 'ArrowDown':
+								case 'ArrowRight':
+									radios[(myIndex+1) % radios.length].click()
+									break
+								case 'ArrowUp':
+								case 'ArrowLeft':
+									radios[(myIndex-1) % radios.length].click()
+									break
+								default:
+									return // nothing to do
+							}
+						}
+						e.stopPropagation()
+						e.preventDefault()
+					}
+				</script>
+			</div>
+		</div>
+	</section>
+
+	<section class="saharian-debug-wrong">
+		<h2 class="saharian-debug-h2">Messy ARIA radiogroup (2)</h2>
+		<div class="help saharian-debug-explanation">
+			<p>
+				This is a messed up ARIA radiogroup implementation, as:
+			</p>
+			<ul>
+				<li>the association between the radiogroup and its label is not exposed to assistive technologies;</li>
+				<li>options are not exposed as radio buttons to assistive technologies.</li>
+			</ul>
+		</div>
+		<div class="example saharian-debug-flex">
+			<div class="container">
+				<div id="rg4" class="radiogroup" role="radiogroup">
+					<h3 id="radiogroup4-title">Steak doneness:</h3>
+					<span class="radio checked" aria-checked="true">rare</span>
+					<span class="radio" aria-checked="false">medium-rare</span>
+					<span class="radio" aria-checked="false">medium</span>
+					<span class="radio" aria-checked="false">medium-well</span>
+					<span class="radio" aria-checked="false">well-done</span>
+				</div>
+				<script>
+					var group = document.getElementById('rg4')
+					var radios = group.querySelectorAll('.radio')
+					for (var r of radios) {
+						r.addEventListener('click', doClick1)
+						r.addEventListener('keydown', doKeyDown1)
+					}
+					
+					function doClick1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = group.querySelectorAll('.radio')
+						for (var r of radios) {
+							r.ariaChecked = false
+							r.tabIndex = -1  
+							r.classList.remove('checked')
+						}					
+						e.target.ariaChecked = true
+						e.target.tabIndex = 0  
+						e.target.classList.add('checked')
+						e.target.focus()
+					}
+					function doKeyDown1(e) {
+						var group = e.target.closest('.radiogroup')
+						var radios = Array.from(group.querySelectorAll('.radio'))
+						var myIndex = radios.length + radios.indexOf(e.target)
+						if (!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) ) {
+							switch (e.key) {
+								case 'ArrowDown':
+								case 'ArrowRight':
+									radios[(myIndex+1) % radios.length].click()
+									break
+								case 'ArrowUp':
+								case 'ArrowLeft':
+									radios[(myIndex-1) % radios.length].click()
+									break
+								default:
+									return // nothing to do
+							}
+						}
+						e.stopPropagation()
+						e.preventDefault()
+					}				</script>
+			</div>
+		</div>
+	</section>
+
+
+	<script src="../common/example.js"></script>
+</body>
+
+</html>

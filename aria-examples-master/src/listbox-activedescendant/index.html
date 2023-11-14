@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>listbox examples (with aria-activedescendant)</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">listbox examples</h1>
+  <p>Here you can find different listbox examples with various accessibility degrees, implemented both by using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This listbox implementation uses native HTML elements.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <label for="listbox0">Operating system:</label>
+        <select id="listbox0">
+          <option>-- Please select an option --</option>
+          <option>Android</option>
+          <option>iOS</option>
+          <option>Mac OS</option>
+          <option>Watch OS</option>
+          <option>Linux</option>
+          <option>MS-Dos</option>
+          <option>Windows 7</option>
+          <option>Windows 8</option>
+          <option>Windows 8.1</option>
+          <option>Windows 10</option>
+          <option>Windows 11</option>
+        </select>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA listbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct listbox implemented by using attributes from the WAI-ARIA specification. Keyboard support is
+      provided by leveraging the aria-activedescendant technique.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <div class="custom-select">
+          <p id="label1" class="label">Operating system:</p>
+          <input type="text" class="select-input" readonly aria-labelledby="label1" aria-haspopup="listbox"
+            aria-expanded="false" aria-controls="listbox1" tabindex="0">
+
+          <ul id="listbox1" class="listbox" role="listbox" aria-activedescendant="ls1i1" tabindex="-1"
+            style="display: none;">
+            <li role="option" aria-selected="true" id="ls1i1" class="option">-- Please select an option --</li>
+            <li role="option" aria-selected="false" id="ls1i2" class="option">Android</li>
+            <li role="option" aria-selected="false" id="ls1i3" class="option">iOS</li>
+            <li role="option" aria-selected="false" id="ls1i4" class="option">Mac OS</li>
+            <li role="option" aria-selected="false" id="ls1i5" class="option">Watch OS</li>
+            <li role="option" aria-selected="false" id="ls1i6" class="option">Linux</li>
+            <li role="option" aria-selected="false" id="ls1i7" class="option">MS-Dos</li>
+            <li role="option" aria-selected="false" id="ls1i8" class="option">Windows 7</li>
+            <li role="option" aria-selected="false" id="ls1i9" class="option">Windows 8</li>
+            <li role="option" aria-selected="false" id="ls1i10" class="option">Windows 8.1</li>
+            <li role="option" aria-selected="false" id="ls1i11" class="option">Windows 10</li>
+            <li role="option" aria-selected="false" id="ls1i12" class="option">Windows 11</li>
+          </ul>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const selectInput = document.querySelector('.select-input');
+            const selectOptions = document.querySelector('.listbox');
+
+            selectInput.addEventListener('click', toggleListbox);
+            selectInput.addEventListener('keydown', handleInputKeydown);
+
+            function toggleListbox() {
+              const isExpanded = selectInput.getAttribute('aria-expanded') === 'true';
+              selectOptions.style.display = isExpanded ? 'none' : 'block';
+              selectInput.setAttribute('aria-expanded', !isExpanded);
+              if (!isExpanded) {
+                customSelect.selectOption(0); // Focus the first option when opening the listbox
+              }
+            }
+
+            function handleInputKeydown(event) {
+              if (event.key === 'ArrowDown' || event.key === ' ') {
+                toggleListbox();
+                event.preventDefault();
+              }
+            }
+
+            class CustomSelect {
+              constructor(elementId, inputElement) {
+                this.currentIndex = 0;
+                this.element = document.getElementById(elementId);
+                this.inputElement = inputElement;
+                this.element.addEventListener('click', this.onClick.bind(this));
+                this.element.addEventListener('keydown', this.onKeyDown.bind(this));
+                this.element.addEventListener('keypress', this.onInput.bind(this));
+                this.lookupPrefix = '';
+                this.lookupPrefixTimeout = null;
+                this.options = Array.from(this.element.children);
+                this.updateInput();
+              }
+
+              onClick(event) {
+                if (!this.hasModifiers(event)) {
+                  const index = this.options.indexOf(event.target);
+                  if (index !== -1) {
+                    this.selectOption(index);
+                  }
+                }
+              }
+
+              onKeyDown(event) {
+                if (this.hasModifiers(event)) {
+                  return;
+                }
+                switch (event.key) {
+                  case 'ArrowDown':
+                  case 'ArrowRight':
+                    this.selectNextOption();
+                    break;
+                  case 'ArrowUp':
+                  case 'ArrowLeft':
+                    this.selectPreviousOption();
+                    break;
+                  case 'Home':
+                    this.selectOption(0);
+                    break;
+                  case 'End':
+                    this.selectOption(this.options.length - 1);
+                    break;
+                  default:
+                    return;
+                }
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              onInput(event) {
+                const str = event.key.toLowerCase();
+                if (str.length === 1) {
+                  if (this.lookupPrefixTimeout !== null) {
+                    clearTimeout(this.lookupPrefixTimeout);
+                  }
+                  this.lookupPrefix += str;
+                  this.lookupPrefixTimeout = setTimeout(() => {
+                    this.selectOptionByPrefix();
+                  }, 300);
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+              }
+
+              selectNextOption() {
+                if (this.currentIndex < this.options.length - 1) {
+                  this.selectOption(this.currentIndex + 1);
+                }
+              }
+
+              selectOptionByPrefix() {
+                const index = this.options.findIndex(
+                  (opt) => opt.innerText.toLowerCase().startsWith(this.lookupPrefix)
+                );
+                if (index !== -1) {
+                  this.selectOption(index);
+                }
+                this.lookupPrefix = '';
+              }
+
+              selectPreviousOption() {
+                if (this.currentIndex > 0) {
+                  this.selectOption(this.currentIndex - 1);
+                }
+              }
+
+              selectOption(index) {
+                const oldopt = this.element.children[this.currentIndex];
+                oldopt.classList.remove('selected');
+                oldopt.setAttribute('aria-selected', 'false');
+                oldopt.tabIndex = -1;
+                const opt = this.element.children[index];
+                opt.classList.add('selected');
+                opt.setAttribute('aria-selected', 'true');
+                opt.tabIndex = 0;
+                this.currentIndex = index;
+                this.updateInput();
+                this.element.setAttribute('aria-activedescendant', opt.id);
+                opt.focus(); // Focus the selected option
+              }
+
+              updateInput() {
+                this.inputElement.value = this.options[this.currentIndex].innerText;
+              }
+
+              hasModifiers(event) {
+                return (
+                  event.altKey ||
+                  event.ctrlKey ||
+                  event.metaKey ||
+                  event.shiftKey
+                );
+              }
+            }
+
+            const customSelect = new CustomSelect('listbox1', selectInput);
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-wrong">
+    <h2 class="non-aria-debug-h2">Wrong Non-ARIA Listbox</h2>
+    <p class="help non-aria-debug-explanation">
+      This is a listbox implemented without using attributes from the WAI-ARIA specification. Keyboard support is
+      provided through JavaScript.
+    </p>
+    <div class="example non-aria-debug-flex">
+      <div class="container">
+        <div class="custom-select">
+          <p id="nonAriaLabel" class="label">Operating system:</p>
+          <input type="text" class="select-input-non-aria" readonly tabindex="0">
+
+          <ul id="nonAriaListbox" class="listbox-non-aria" style="display: none;">
+            <li class="option-non-aria">-- Please select an option --</li>
+            <li class="option-non-aria">Android</li>
+            <li class="option-non-aria">iOS</li>
+            <li class="option-non-aria">Mac OS</li>
+            <li class="option-non-aria">Watch OS</li>
+            <li class="option-non-aria">Linux</li>
+            <li class="option-non-aria">MS-Dos</li>
+            <li class="option-non-aria">Windows 7</li>
+            <li class="option-non-aria">Windows 8</li>
+            <li class="option-non-aria">Windows 8.1</li>
+            <li class="option-non-aria">Windows 10</li>
+            <li class="option-non-aria">Windows 11</li>
+          </ul>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const selectInput = document.querySelector('.select-input-non-aria');
+            const selectOptions = document.querySelector('.listbox-non-aria');
+            let currentIndex = 0;
+
+            selectInput.addEventListener('click', toggleListbox);
+            selectInput.addEventListener('keydown', handleInputKeydown);
+            selectOptions.addEventListener('click', handleOptionClick);
+
+            function toggleListbox() {
+              const isDisplayed = selectOptions.style.display === 'block';
+              selectOptions.style.display = isDisplayed ? 'none' : 'block';
+            }
+
+            function handleInputKeydown(event) {
+              if (event.key === 'ArrowDown' || event.key === ' ') {
+                toggleListbox();
+                event.preventDefault();
+              }
+            }
+
+            function handleOptionClick(event) {
+              const clickedOption = event.target;
+              if (clickedOption.classList.contains('option-non-aria')) {
+                selectOption(clickedOption);
+              }
+            }
+
+            function selectOption(option) {
+              const options = Array.from(selectOptions.children);
+              currentIndex = options.indexOf(option);
+              selectInput.value = option.textContent;
+              toggleListbox();
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

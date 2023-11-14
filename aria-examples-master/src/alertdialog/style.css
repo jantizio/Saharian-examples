@@ -1,0 +1,34 @@
+.alertdialog {
+	display: none; 
+  position: fixed; 
+	width: 30vw; 
+	left: 35vw;
+	top: 2vh; 
+	padding: 1vw;
+	border: 2px double blue;
+	background-color: #ddddff; 
+}
+
+.alertdialog-title {
+	text-align: center; 
+	font-weight: bold; 
+	font-size: 130%
+}
+
+.alertdialog-help {
+	display: none; 
+}
+
+.alertdialog .buttonContainer {
+	display: flex; 
+	justify-content: space-around;
+}
+
+.show {
+  display: block;
+}
+
+.trigger {
+  
+}
+

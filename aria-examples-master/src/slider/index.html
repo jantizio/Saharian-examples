@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>slider examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">slider examples</h1>
+  <p>Here you can find different slider examples with various accessibility degrees, implemented both by using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This slider implementation uses native HTML elements.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <form>
+          <label for="vol0">Volume:</label>
+          <input type="range" id="vol0" min="0" max="100" step="5" oninput="updateVolumeValue()">
+          <output for="vol0" id="volumeValue">50</output> <!-- Default value -->
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function updateVolumeValue() {
+      var slider = document.getElementById('vol0');
+      var output = document.getElementById('volumeValue');
+      output.value = slider.value;
+    }
+  </script>
+
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA slider</h2>
+    <p class="help saharian-debug-explanation">
+      This is a vertical slider implemented using JavaScript wit ARIA attributes
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <span id="vol1lbl" class="label">Volume:</span>
+        <!-- Modificato per aggiungere lo slider-->
+        <div class="slider-track" aria-hidden="true">
+          <div class="slider-thumb" id="vol1thumb"></div>
+        </div>
+        <span role="slider" aria-labelledby="vol1lbl" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+          tabindex="0" id="vol1">50</span>
+        <script>
+          new class {
+            constructor(id) {
+              this.element = document.getElementById(id);
+              this.thumb = document.getElementById('vol1thumb');
+              this.track = this.thumb.parentElement;
+              this.element.addEventListener('keydown', this.onKeyDown);
+              this.track.addEventListener('mousedown', this.onMouseDown);
+              this.track.addEventListener('touchstart', this.onTouchStart);
+              this.value = 50;
+              this.minvalue = 0;
+              this.maxvalue = 100;
+              this.step = 5;
+              this.dragging = false;
+            }
+
+            onKeyDown = event => {
+              if (this.hasModifiers(event)) {
+                return // nothing to do
+              }
+              switch (event.key) {
+                case 'ArrowDown':
+                case 'ArrowLeft':
+                  this.decreaseValue(this.step)
+                  break
+                case 'ArrowUp':
+                case 'ArrowRight':
+                  this.increaseValue(this.step)
+                  break
+                case 'Home':
+                  this.setValue(0)
+                  break
+                case 'End':
+                  this.setValue(this.maxvalue)
+                  break
+                // according to the specification, page up and Page down should increase and decrease a slider by multiple steps, respectively
+                // however, how many steps is not specified, and WAI-ARIA lacks a mechanism to declare the step size
+                // In native slider implementations ATs assume 10 is a reasonable value, we do it too
+                case 'PageUp':
+                  this.increaseValue(10)
+                  break
+                case 'PageDown':
+                  this.decreaseValue(10)
+                  break
+                default:
+                  return // nothing to do
+              }
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            //AGGIUNTI CONTROLLI DEL MOUSE PER RENDERE LO SLIDER CLICCABILE
+
+            onMouseDown = (event) => {
+              this.dragging = true;
+              document.addEventListener('mousemove', this.onMouseMove);
+              document.addEventListener('mouseup', this.onMouseUp);
+              this.updateValueFromEvent(event);
+            }
+
+            onMouseMove = (event) => {
+              if (this.dragging) {
+                this.updateValueFromEvent(event);
+              }
+            }
+
+            onMouseUp = () => {
+              this.dragging = false;
+              document.removeEventListener('mousemove', this.onMouseMove);
+              document.removeEventListener('mouseup', this.onMouseUp);
+            }
+
+            onTouchStart = (event) => {
+              this.dragging = true;
+              document.addEventListener('touchmove', this.onTouchMove);
+              document.addEventListener('touchend', this.onTouchEnd);
+              this.updateValueFromEvent(event.touches[0]);
+            }
+
+            onTouchMove = (event) => {
+              if (this.dragging) {
+                this.updateValueFromEvent(event.touches[0]);
+              }
+            }
+
+            onTouchEnd = () => {
+              this.dragging = false;
+              document.removeEventListener('touchmove', this.onTouchMove);
+              document.removeEventListener('touchend', this.onTouchEnd);
+            }
+
+            updateValueFromEvent(event) {
+              const rect = this.track.getBoundingClientRect();
+              const percentage = (event.clientX - rect.left) / rect.width;
+              const newValue = this.minvalue + percentage * (this.maxvalue - this.minvalue);
+              this.setValue(Math.round(newValue / this.step) * this.step);
+            }
+
+            increaseValue(amount) {
+              const v = this.value + amount
+              const newValue = (v <= this.maxvalue) ? v : this.maxvalue
+              this.setValue(newValue)
+            }
+
+            decreaseValue(amount) {
+              const v = this.value - amount
+              const newValue = (v >= this.minvalue) ? v : this.minvalue
+              this.setValue(newValue)
+            }
+
+            setValue(v) {
+              this.element.setAttribute('aria-valuenow', v.toString());
+              this.element.innerText = v.toString();
+              this.element.focus();
+              this.value = v;
+
+              // Update thumb position
+              const thumb = document.getElementById('vol1thumb');
+              const percentage = (v - this.minvalue) / (this.maxvalue - this.minvalue) * 100;
+              thumb.style.left = percentage + '%';
+            }
+
+
+
+
+            hasModifiers(event) {
+              return event.altKey
+                || event.ctrlKey
+                || event.metaKey
+                || event.shiftKey
+            }
+
+          }('vol1')
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGGIUNTO SLIDER SBAGLIATO, SENZA ALCUN ARIA-->
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Slider without ARIA</h2>
+    <p class="help saharian-debug-explanation">
+      This is a slider implemented using JavaScript without ARIA attributes or other accessibility features.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <span class="label">Volume:</span>
+        <div class="slider-track">
+          <div class="slider-thumb" id="vol1thumb"></div>
+        </div>
+        <span id="vol1">50</span>
+        <script>
+          new class {
+            constructor(id) {
+              this.element = document.getElementById(id);
+              this.thumb = document.getElementById('vol1thumb');
+              this.track = this.thumb.parentElement;
+              this.element.addEventListener('keydown', this.onKeyDown);
+              this.track.addEventListener('mousedown', this.onMouseDown);
+              this.track.addEventListener('touchstart', this.onTouchStart);
+              this.value = 50;
+              this.minvalue = 0;
+              this.maxvalue = 100;
+              this.step = 5;
+              this.dragging = false;
+            }
+
+            onKeyDown = event => {
+              if (this.hasModifiers(event)) {
+                return // nothing to do
+              }
+              switch (event.key) {
+                case 'ArrowDown':
+                case 'ArrowLeft':
+                  this.decreaseValue(this.step)
+                  break
+                case 'ArrowUp':
+                case 'ArrowRight':
+                  this.increaseValue(this.step)
+                  break
+                case 'Home':
+                  this.setValue(0)
+                  break
+                case 'End':
+                  this.setValue(this.maxvalue)
+                  break
+                // according to the specification, page up and Page down should increase and decrease a slider by multiple steps, respectively
+                // however, how many steps is not specified, and WAI-ARIA lacks a mechanism to declare the step size
+                // In native slider implementations ATs assume 10 is a reasonable value, we do it too
+                case 'PageUp':
+                  this.increaseValue(10)
+                  break
+                case 'PageDown':
+                  this.decreaseValue(10)
+                  break
+                default:
+                  return // nothing to do
+              }
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            //AGGIUNTI CONTROLLI DEL MOUSE PER RENDERE LO SLIDER CLICCABILE
+
+            onMouseDown = (event) => {
+              this.dragging = true;
+              document.addEventListener('mousemove', this.onMouseMove);
+              document.addEventListener('mouseup', this.onMouseUp);
+              this.updateValueFromEvent(event);
+            }
+
+            onMouseMove = (event) => {
+              if (this.dragging) {
+                this.updateValueFromEvent(event);
+              }
+            }
+
+            onMouseUp = () => {
+              this.dragging = false;
+              document.removeEventListener('mousemove', this.onMouseMove);
+              document.removeEventListener('mouseup', this.onMouseUp);
+            }
+
+            onTouchStart = (event) => {
+              this.dragging = true;
+              document.addEventListener('touchmove', this.onTouchMove);
+              document.addEventListener('touchend', this.onTouchEnd);
+              this.updateValueFromEvent(event.touches[0]);
+            }
+
+            onTouchMove = (event) => {
+              if (this.dragging) {
+                this.updateValueFromEvent(event.touches[0]);
+              }
+            }
+
+            onTouchEnd = () => {
+              this.dragging = false;
+              document.removeEventListener('touchmove', this.onTouchMove);
+              document.removeEventListener('touchend', this.onTouchEnd);
+            }
+
+            updateValueFromEvent(event) {
+              const rect = this.track.getBoundingClientRect();
+              const percentage = (event.clientX - rect.left) / rect.width;
+              const newValue = this.minvalue + percentage * (this.maxvalue - this.minvalue);
+              this.setValue(Math.round(newValue / this.step) * this.step);
+            }
+
+            increaseValue(amount) {
+              const v = this.value + amount
+              const newValue = (v <= this.maxvalue) ? v : this.maxvalue
+              this.setValue(newValue)
+            }
+
+            decreaseValue(amount) {
+              const v = this.value - amount
+              const newValue = (v >= this.minvalue) ? v : this.minvalue
+              this.setValue(newValue)
+            }
+
+            setValue(v) {
+              this.element.setAttribute('aria-valuenow', v.toString());
+              this.element.innerText = v.toString();
+              this.element.focus();
+              this.value = v;
+
+              // Update thumb position
+              const thumb = document.getElementById('vol1thumb');
+              const percentage = (v - this.minvalue) / (this.maxvalue - this.minvalue) * 100;
+              thumb.style.left = percentage + '%';
+            }
+
+
+
+
+            hasModifiers(event) {
+              return event.altKey
+                || event.ctrlKey
+                || event.metaKey
+                || event.shiftKey
+            }
+
+          }('vol1')
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

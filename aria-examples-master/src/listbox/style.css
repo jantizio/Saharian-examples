@@ -1,0 +1,48 @@
+label,
+.label {}
+
+select,
+.listbox {}
+
+option,
+.option {}
+
+.selected {}
+
+.custom-select {
+    position: relative;
+    width: 200px;
+}
+
+.select-input,
+.select-input2 {
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+}
+
+.select-options,
+.select-options2 {
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: none;
+}
+
+.select-options li,
+.select-options2 li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.select-options li:hover,
+.select-options2 li:hover {
+    background-color: #f0f0f0;
+}

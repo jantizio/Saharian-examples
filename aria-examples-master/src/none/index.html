@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>none examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">none examples</h1>
+  <p>Here you can find different examples in which assistive technologies gets informed that they should completely
+    ignore the semantics of an element.
+  </p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      O well... HTMl does not provide any native mechanism to remove semantics from its elements.
+    </p>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA none</h2>
+    <p class="help saharian-debug-explanation">
+      In this example the "none" role from the WAI-ARIA specification is used to remove any semantics from a
+      button.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button role="none">Press me</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Abusing of the none role</h2>
+    <p class="help saharian-debug-explanation">
+      In this example the "none" role from the WAI-ARIA specification is used to remove any semantics from a
+      clickable link. The result is that assistive technology users are not informed that they can interact with this
+      link.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <a href="https://www.youtube.com" rel="nofollow noopener" target="_blank" role="none">Would you like to
+          watch some videos? This website could be interesting</a>
+      </div>
+    </div>
+  </section>
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

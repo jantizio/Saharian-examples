@@ -1,0 +1,32 @@
+.progressbar-aria {
+    width: 100%;
+    /* Ensure it takes the full width of its parent */
+    max-width: 100%;
+    /* Ensure it doesn't exceed its parent's width */
+    height: 30px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    /* To ensure the border-radius applies to child elements */
+}
+
+.filled {
+    background-color: #4caf50;
+    transition: width 0.3s ease-in-out;
+    height: 100%;
+    /* Ensure it takes the full height of its parent */
+}
+
+.unfilled {
+    background-color: #e0e0e0;
+    height: 100%;
+    /* Ensure it takes the full height of its parent */
+}
+
+.container {
+    width: 100%;
+    /* Ensure it takes the full width of its parent */
+    max-width: 100%;
+    /* Ensure it doesn't exceed its parent's width */
+}

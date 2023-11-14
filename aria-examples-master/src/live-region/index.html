@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Live region examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">Live region examples</h1>
+  <p>Here you can find different Live region examples with various accessibility degrees, implemented both by using
+    native HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      O well... HTML does not offer any native element to implement live regions.
+    </p>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Assertive, atomic Live region</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct assertive Live region with atomic updates implemented by using attributes from the WAI-ARIA
+      specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button
+          onclick="document.getElementById('msg1').innerText = 'Voilà! An assertive, atomic update just for you, my friend.'">Trigger
+          assertive atomic update</button>
+        <div aria-live="assertive" aria-atomic="true" aria-label="assertive atomic message"
+          class="liveregion assertive atomic">
+          <p>Here's your <strong>message</strong>:</p>
+          <p id="msg1">No message yet</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Assertive, non atomic Live region</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct assertive Live region with non-atomic updates implemented by using attributes from the WAI-ARIA
+      specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button
+          onclick="document.getElementById('msg2').innerText = 'Voilà! An assertive, nonatomic update just for you, my friend.'">Trigger
+          assertive non atomic update</button>
+        <div aria-live="assertive" aria-atomic="false" aria-label="assertive non atomic message"
+          class="liveregion assertive nonatomic">
+          <p>Here's your <strong>message</strong>:</p>p>
+          <p id="msg2">No message yet</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Polite, atomic Live region</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct polite Live region with atomic updates implemented by using attributes from the WAI-ARIA
+      specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button
+          onclick="document.getElementById('msg3').innerText = 'Voilà! A polite, atomic update just for you, my friend.'">Trigger
+          polite atomic update</button>
+        <div aria-live="polite" aria-atomic="true" aria-label="polite atomic message" class="liveregion polite atomic">
+          <p>Here's your <strong>message</strong>:</p>
+          <p id="msg3">No message yet</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Polite, non-atomic Live region</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct polite Live region with non-atomic updates implementation that uses attributes from the WAI-ARIA
+      specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button
+          onclick="document.getElementById('msg4').innerText = 'Voilà! A polite, non atomic update just for you, my friend.'">Trigger
+          polite non atomic update</button>
+        <div aria-live="polite" aria-atomic="false" aria-label="polite non atomic message"
+          class="liveregion polite nonatomic">
+          <p>Here's your <strong>message</strong>:</p>
+          <p id="msg4">No message yet</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>indeterminate progressbar examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">indeterminate progressbar examples</h1>
+  <p>Here you can find different indeterminate progressbar examples with various accessibility degrees, implemented both
+    by using
+    native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This indeterminate progressbar implementation uses native HTML elements to indicate that a task is in progress.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <progress title="Loading HTML" max="100">
+          &hellip;
+        </progress>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA progressbar</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct indeterminate progressbar implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <span role="progressbar" aria-label="Loading ARIA" aria-valuemin="0" aria-valuemax="99" class="progressbar">
+          &hellip;
+        </span>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA indeterminate progressbar without automatic value computation</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct indeterminate progressbar implemented by using attributes from the WAI-ARIA specification. It
+      leverages
+      <code>aria-valuetext</code> to bypass value computation performed by assistive technologies.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <span role="progressbar" aria-label="ARIA progress" aria-valuemin="0" aria-valuenow="41"
+          aria-valuetext="42 out of 100" aria-valuemax="99" class="progressbar">
+          ||||||||||||||||||||||||||||||||||||||||||
+        </span>
+      </div>
+    </div>
+  </section>
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

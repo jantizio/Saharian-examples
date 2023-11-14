@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>timer examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">timer examples</h1>
+  <p>Here you can find different timer examples with various accessibility degrees, implemented both by using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      O well... HTML does not provide any native element that matches exactly timer semantics.
+    </p>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA timer</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct timer implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button onclick="startTimer1(this)">Start countdown</button>
+        <span aria-label="tempobello" id="tm1" class="timer" role="timer">Timer stopped</span>
+        <script>
+          let tm1handle, tm1secs
+          function startTimer1(trigger) {
+            trigger.disabled = true
+            trigger.focus()
+            const timer = document.getElementById('tm1')
+            tm1secs = 5
+            tm1handle = setInterval(() => {
+              timer.innerText = `${--tm1secs} seconds left`
+              if (tm1secs == -1) {
+                clearInterval(tm1handle)
+                timer.innerText = "timer stopped"
+                trigger.disabled = false
+              }
+            }, 1000)
+          }
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGGIUNTO TIMER SBAGLIATO-->
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Wrong Timer</h2>
+    <p class="help saharian-debug-explanation">
+      This is a custom timer implemented using plain HTML and JavaScript without ARIA attributes or other accessibility
+      features.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <button onclick="startTimer2(this)">Start countdown</button>
+        <span id="tm2" class="timer">Timer stopped</span>
+        <script>
+          let tm2handle, tm2secs;
+          function startTimer2(trigger) {
+            trigger.disabled = true;
+            trigger.focus();
+            const timer = document.getElementById('tm2');
+            tm2secs = 5;
+            tm2handle = setInterval(() => {
+              timer.innerText = `${--tm2secs} seconds left`;
+              if (tm2secs == -1) {
+                clearInterval(tm2handle);
+                timer.innerText = "timer stopped";
+                trigger.disabled = false;
+              }
+            }, 1000);
+          }
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

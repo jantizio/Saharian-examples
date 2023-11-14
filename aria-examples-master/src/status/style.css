@@ -1,0 +1,16 @@
+.status{
+    border-style: solid;
+    border-width: 2px;
+    border-color: red;
+    display: block;
+    width: 100%; 
+    padding: 5px; 
+    background-color: #FFEEEE;
+}
+
+.status:empty {
+    border-style: none;
+    background-color: transparent;
+    height: 0px;
+    transition: height 1s, background-color 1s;
+}

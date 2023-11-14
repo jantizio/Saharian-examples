@@ -1,0 +1,143 @@
+label,
+.label {}
+
+select,
+.listbox {}
+
+option,
+.option {}
+
+.selected {}
+
+.custom-select {
+    position: relative;
+    width: 200px;
+}
+
+.select-input {
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+}
+
+.select-options {
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: none;
+}
+
+.select-options li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.select-options li:hover {
+    background-color: #f0f0f0;
+}
+
+/* CSS PER IL NUOVO LISTBOX */
+
+.custom-select {
+    position: relative;
+    width: 200px;
+}
+
+.select-input {
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    /* Added to include padding in the element's total width and height */
+}
+
+.listbox {
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: none;
+    box-sizing: border-box;
+    /* Added to include padding in the element's total width and height */
+}
+
+.listbox li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.listbox li:hover {
+    background-color: #f0f0f0;
+}
+
+.listbox li.selected {
+    background-color: #e0e0e0;
+}
+
+/* CSS PER LISTBOX SENZA ARIA */
+
+.non-aria-debug-correct {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.non-aria-debug-h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.non-aria-debug-explanation {
+    margin-bottom: 20px;
+}
+
+.non-aria-debug-flex .container {
+    max-width: 300px;
+}
+
+.custom-select {
+    position: relative;
+}
+
+.select-input-non-aria {
+    width: 100%;
+    padding: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.listbox-non-aria {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    z-index: 1000;
+}
+
+.option-non-aria {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.option-non-aria:hover {
+    background-color: #f0f0f0;
+}

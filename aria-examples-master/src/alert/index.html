@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>alert examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">alert examples</h1>
+  <p>Here you can find different alert examples. Alerts are triggered in
+      case of errors, warning conditions, or the arrival of information that is important in the context of the user's
+      task. In the following, try generating an alert to input a wrong value, e.g. a value out of bounds.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA alert</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct alert implemented by using attributes from the WAI-ARIA specification.  
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+		<label>Insert value: 
+			<input type="number" placeholder="Input a value between 5 and 10" style="width:200px;" onchange="checkData1(this)">
+		</label>
+		<div role="alert" id="alert1" class="alert"></div>
+		<script>
+			function checkData1(el) {
+				document.getElementById('alert1').innerHTML = ""
+				if (el.value<5 || el.value>10)
+					document.getElementById('alert1').innerHTML = "Value "+el.value +" out of bounds." ;
+			}
+		</script>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Wrong ARIA alert</h2>
+    <p class="help saharian-debug-explanation">
+		No role attribute. 
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+		<label>Insert value: 
+			<input type="number" placeholder="Input a value between 5 and 10" style="width:200px;" onchange="checkData2(this)">
+		</label>
+		<div id="alert2" class="alert"></div>
+		<script>
+			function checkData2(el) {
+				document.getElementById('alert2').innerHTML = ""
+				if (el.value<5 || el.value>10)
+					document.getElementById('alert2').innerHTML = "Value "+el.value +" out of bounds." ;
+			}
+		</script>
+      </div>
+    </div>
+  </section>
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

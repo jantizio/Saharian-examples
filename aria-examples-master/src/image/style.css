@@ -1,0 +1,8 @@
+
+section {
+	margin: 3em 0;
+}
+
+img:focus, .img:focus {
+	outline: 1px solid black;
+}

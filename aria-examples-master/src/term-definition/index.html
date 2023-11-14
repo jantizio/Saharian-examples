@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>term definition examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">term definition examples</h1>
+  <p>Here you can find different term definition examples with various accessibility degrees, implemented both by using
+    native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This term definition implementation uses native HTML elements.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <dl>
+          <dt>Grappa</dt>
+          <dd>A fragrant, grape-based pomace brandy of Italian origin that contains 35 to 60 percent Alcohol by volume
+            (70 to 120 US proof). Its flavor depends on the type and quality of the grapes used, as well as the
+            specifics of the distillation process. It is made by distilling the skins, pulp, seeds, and stems (i.e. the
+            pomace leftover from winemaking after
+            pressing the grapes.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA term definition</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct term definition implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <!-- WAI-ARIA does not provide a role that is the equivalent of <dl> !-->
+        <p>
+          <span id="e1t1" role="term" class="term">Grappa</span>
+          <span role="definition" aria-labelledby="e1t1" class="definition">A fragrant, grape-based pomace brandy of
+            Italian origin that contains 35 to 60 percent Alcohol by volume (70 to 120 US
+            proof). Its flavor depends on the type and quality of the grapes used, as well as the specifics of the
+            distillation
+            process. It is made by distilling the skins, pulp, seeds, and stems (i.e. the pomace leftover from
+            winemaking after
+            pressing the grapes.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Wrong Term Definition</h2>
+    <p class="help saharian-debug-explanation">
+      This is a custom term definition implemented using plain HTML without ARIA attributes or other accessibility
+      features.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <dl>
+          <dt>Grappa</dt>
+          <dd>A fragrant, grape-based pomace brandy of Italian origin that contains 35 to 60 percent Alcohol by volume
+            (70 to 120 US proof). Its flavor depends on the type and quality of the grapes used, as well as the
+            specifics of the distillation process. It is made by distilling the skins, pulp, seeds, and stems (i.e. the
+            pomace leftover from winemaking after
+            pressing the grapes.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

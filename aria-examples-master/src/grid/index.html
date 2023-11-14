@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>grid examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">grid examples</h1>
+  <p>Here you can find different grid examples with various accessibility degrees, implemented both by using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      O well... HTMl does not provide an element capable of representing all keyboard interactions required by the grid
+      design pattern.
+    </p>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA grid</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct grid implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <table id="g1" class="grid"></table>
+        <script>
+          new class {
+            currentColindex = 0
+            currentRowindex = 0
+            constructor(elementId) {
+              this.element = document.getElementById(elementId)
+              this.alpha = 'abcdefghijkl'
+              this.colcount = this.alpha.length
+              this.rowcount = this.alpha.length - 1
+              this.build()
+              this.selectCell(0, 0, false)
+              this.element.addEventListener('keydown', this.onKeyDown)
+            }
+
+            build() {
+              this.cell = []
+              for (let i = 0; i < this.rowcount; i++) {
+                this.cell[i] = []
+                const row = document.createElement('tr')
+                row.appendChild(this.buildCell(i, 0, 'rowheader'))
+                for (let j = 1; j < this.colcount; j++) {
+                  const role = (i == 0) ? 'columnheader' : 'gridcell'
+                  const cell = this.buildCell(i, j, role)
+                  row.appendChild(cell)
+                }
+                row.setAttribute('aria-rowindex', `${i + 1}`)
+                row.setAttribute('role', 'row')
+                this.element.appendChild(row)
+              }
+              this.element.setAttribute('role', 'grid')
+              this.element.setAttribute('aria-rowcount', this.rowcount.toString())
+              this.element.setAttribute('aria-colcount', this.colcount.toString())
+            }
+
+            buildCell(i, j, role) {
+              const cell = document.createElement('td')
+              cell.className = role
+              cell.innerHTML = `<input title="${this.alpha[j]}${i + 1}" readonly>`
+              cell.setAttribute('aria-colindex', `${j + 1}`)
+              cell.setAttribute('role', role)
+              cell.tabIndex = 0
+              this.cell[i][j] = cell
+              return cell
+            }
+
+            onKeyDown = event => {
+              switch (this.shortcut(event)) {
+                case 'arrowdown':
+                  this.selectNextColCell()
+                  break
+                case 'arrowright':
+                  this.selectNextRowCell()
+                  break
+                case 'arrowup':
+                  this.selectPrevColCell()
+                  break
+                case 'arrowleft':
+                  this.selectPrevRowCell()
+                  break
+                case 'home':
+                  this.selectCell(this.currentRowindex, 0)
+                  break
+                case 'end':
+                  this.selectCell(this.currentRowindex, this.colcount - 1)
+                  break
+                case 'ctrl+home':
+                  this.selectCell(0, 0)
+                  break
+                case 'ctrl+end':
+                  this.selectCell(this.rowcount - 1, this.colcount - 1)
+                  break
+                case 'tab':
+                  this.selectNextCell()
+                  break
+                case 'shift+tab':
+                  this.selectPreviousCell()
+                  break
+                default:
+                  return // nothing to do
+              }
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            selectNextCell() {
+              if (this.currentColindex < this.colcount - 1) {
+                this.selectCell(this.currentRowindex, ++this.currentColindex)
+              }
+              else if (this.currentRowindex < this.rowcount - 1) {
+                this.selectCell(++this.currentRowindex, 0)
+              }
+              else {
+                this.selectCell(0, 0)
+              }
+            }
+
+            selectNextColCell() {
+              if (this.currentRowindex < this.rowcount - 1) {
+                this.selectCell(++this.currentRowindex, this.currentColindex)
+              }
+            }
+
+            selectNextRowCell() {
+              if (this.currentColindex < this.colcount - 1) {
+                this.selectCell(this.currentRowindex, ++this.currentColindex)
+              }
+            }
+
+            selectPreviousCell() {
+              if (this.currentColindex > 0) {
+                this.selectCell(this.currentRowindex, --this.currentColindex)
+              }
+              else if (this.currentRowindex > 0) {
+                this.selectCell(--this.currentRowindex, 0)
+              }
+              else {
+                this.selectCell(this.rowcount - 1, this.colcount - 1)
+              }
+            }
+
+            selectPrevColCell() {
+              if (this.currentRowindex > 0) {
+                this.selectCell(--this.currentRowindex, this.currentColindex)
+              }
+            }
+
+            selectPrevRowCell() {
+              if (this.currentColindex > 0) {
+                this.selectCell(this.currentRowindex, --this.currentColindex)
+              }
+            }
+
+            selectCell(i, j, focus = true) {
+              const cell = this.cell[i][j]
+              cell.classList.add('selected')
+              if (focus) {
+                const oldcell = this.cell[this.currentRowindex][this.currentColindex]
+                oldcell.classList.remove('selected')
+                //cell.focus()
+                cell.firstElementChild.focus()
+              }
+              this.currentRowindex = i
+              this.currentColindex = j
+            }
+
+            shortcut(event) {
+              const flags = ['alt', 'ctrl', 'meta', 'shift']
+              const keys = []
+              for (let flag of flags) {
+                if (event[`${flag}Key`]) {
+                  keys.push(flag)
+                }
+              }
+              keys.push(event.key.toLowerCase())
+              return keys.join('+')
+            }
+
+          }('g1')
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Non-Accessible Grid</h2>
+    <p class="help saharian-debug-explanation">
+      This is a grid implemented without using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <table id="g2" class="grid"></table>
+        <script>
+          new class {
+            currentColindex = 0
+            currentRowindex = 0
+            constructor(elementId) {
+              this.element = document.getElementById(elementId)
+              this.alpha = 'abcdefghijkl'
+              this.colcount = this.alpha.length
+              this.rowcount = this.alpha.length - 1
+              this.build()
+              this.selectCell(0, 0, false)
+            }
+
+            build() {
+              this.cell = []
+              for (let i = 0; i < this.rowcount; i++) {
+                this.cell[i] = []
+                const row = document.createElement('tr')
+                row.appendChild(this.buildCell(i, 0, 'rowheader'))
+                for (let j = 1; j < this.colcount; j++) {
+                  const role = (i == 0) ? 'columnheader' : 'gridcell'
+                  const cell = this.buildCell(i, j, role)
+                  row.appendChild(cell)
+                }
+                this.element.appendChild(row)
+              }
+            }
+
+            buildCell(i, j, role) {
+              const cell = document.createElement('td')
+              cell.className = role
+              cell.innerHTML = `<input title="${this.alpha[j]}${i + 1}" readonly>`
+              //   cell.tabIndex = 0
+              this.cell[i][j] = cell
+              return cell
+            }
+
+            selectNextCell() {
+              if (this.currentColindex < this.colcount - 1) {
+                this.selectCell(this.currentRowindex, ++this.currentColindex)
+              }
+              else if (this.currentRowindex < this.rowcount - 1) {
+                this.selectCell(++this.currentRowindex, 0)
+              }
+              else {
+                this.selectCell(0, 0)
+              }
+            }
+
+            selectNextColCell() {
+              if (this.currentRowindex < this.rowcount - 1) {
+                this.selectCell(++this.currentRowindex, this.currentColindex)
+              }
+            }
+
+            selectNextRowCell() {
+              if (this.currentColindex < this.colcount - 1) {
+                this.selectCell(this.currentRowindex, ++this.currentColindex)
+              }
+            }
+
+            selectPreviousCell() {
+              if (this.currentColindex > 0) {
+                this.selectCell(this.currentRowindex, --this.currentColindex)
+              }
+              else if (this.currentRowindex > 0) {
+                this.selectCell(--this.currentRowindex, 0)
+              }
+              else {
+                this.selectCell(this.rowcount - 1, this.colcount - 1)
+              }
+            }
+
+            selectPrevColCell() {
+              if (this.currentRowindex > 0) {
+                this.selectCell(--this.currentRowindex, this.currentColindex)
+              }
+            }
+
+            selectPrevRowCell() {
+              if (this.currentColindex > 0) {
+                this.selectCell(this.currentRowindex, --this.currentColindex)
+              }
+            }
+
+            selectCell(i, j, focus = true) {
+              const cell = this.cell[i][j]
+              cell.classList.add('selected')
+              if (focus) {
+                const oldcell = this.cell[this.currentRowindex][this.currentColindex]
+                oldcell.classList.remove('selected')
+                //cell.focus()
+                cell.firstElementChild.focus()
+              }
+              this.currentRowindex = i
+              this.currentColindex = j
+            }
+
+            shortcut(event) {
+              const flags = ['alt', 'ctrl', 'meta', 'shift']
+              const keys = []
+              for (let flag of flags) {
+                if (event[`${flag}Key`]) {
+                  keys.push(flag)
+                }
+              }
+              keys.push(event.key.toLowerCase())
+              return keys.join('+')
+            }
+
+          }('g2')
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

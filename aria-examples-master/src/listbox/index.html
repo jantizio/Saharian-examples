@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>listbox examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../js/ariaservices.js"></script>
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">listbox examples</h1>
+  <p>Here you can find different listbox examples with various accessibility degrees, implemented both by using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This listbox implementation uses native HTML elements.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <label for="listbox0">Operating system:</label>
+        <select id="listbox0">
+          <option>-- Please select an option --</option>
+          <option>Android</option>
+          <option>iOS</option>
+          <option>Mac OS</option>
+          <option>Watch OS</option>
+          <option>Linux</option>
+          <option>MS-Dos</option>
+          <option>Windows 7</option>
+          <option>Windows 8</option>
+          <option>Windows 8.1</option>
+          <option>Windows 10</option>
+          <option>Windows 11</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA listbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct listbox implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <div class="custom-select">
+          <p id="label1" class="label">Operating system:</p>
+          <input type="text" class="select-input" readonly value="-- Please select an option --" tabindex="0">
+          <ul id="listbox1" class="listbox select-options" role="listbox" aria-labelledby="label1">
+            <li role="option" aria-selected="true" tabindex="0" class="option">-- Please select an option --</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Android</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">iOS</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Mac OS</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Watch OS</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Linux</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">MS-Dos</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Windows 7</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Windows 8</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Windows 8.1</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Windows 10</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="option">Windows 11</li>
+          </ul>
+        </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', (event) => {
+            const selectInput = document.querySelector('.select-input');
+            const selectOptions = document.querySelector('.select-options');
+            const listbox = document.getElementById('listbox1');
+            let currentSelectedIndex = 0;
+
+            selectInput.addEventListener('click', function () {
+              selectOptions.style.display = (selectOptions.style.display === 'block') ? 'none' : 'block';
+            });
+
+            Array.from(listbox.children).forEach((option, index) => {
+              option.addEventListener('click', function () {
+                selectOption(index);
+              });
+            });
+
+            document.addEventListener('click', function (e) {
+              if (!selectInput.contains(e.target)) {
+                selectOptions.style.display = 'none';
+              }
+            });
+
+            selectInput.addEventListener('keydown', function (e) {
+              handleArrowKeys(e);
+            });
+
+            listbox.addEventListener('keydown', function (e) {
+              handleArrowKeys(e);
+            });
+
+            function handleArrowKeys(e) {
+              if (e.key === 'ArrowDown') {
+                if (currentSelectedIndex < listbox.children.length - 1) {
+                  currentSelectedIndex++;
+                }
+              } else if (e.key === 'ArrowUp') {
+                if (currentSelectedIndex > 0) {
+                  currentSelectedIndex--;
+                }
+              } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectOption(currentSelectedIndex);
+                return;
+              }
+              updateSelection();
+              selectOptions.style.display = 'block';
+              listbox.focus();
+            }
+
+            function selectOption(index) {
+              const selectedOption = listbox.children[index];
+              const selectedValue = selectedOption.textContent;
+              selectInput.value = selectedValue;
+              selectOptions.style.display = 'none';
+              currentSelectedIndex = index;
+              updateSelection();
+              console.log('Selected value:', selectedValue);
+            }
+
+            function updateSelection() {
+              Array.from(listbox.children).forEach((option, index) => {
+                option.setAttribute('aria-selected', 'false');
+                option.tabIndex = -1;
+                option.classList.remove('selected');
+                option.setAttribute('aria-checked', 'false');
+              });
+
+              const currentOption = listbox.children[currentSelectedIndex];
+              currentOption.setAttribute('aria-selected', 'true');
+              currentOption.tabIndex = 0;
+              currentOption.classList.add('selected');
+              currentOption.setAttribute('aria-checked', 'true');
+              currentOption.focus();
+            }
+
+            updateSelection();
+          });
+        </script>
+
+
+
+
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Wrong JavaScript Listbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a listbox implemented using custom JavaScript without ARIA attributes.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <div class="custom-select">
+          <label for="listbox2">Operating system:</label>
+          <div class="select-input2" tabindex="0">-- Please select an option --</div>
+          <ul id="listbox2" class="listbox select-options2" style="display: none;">
+            <li>Android</li>
+            <li>iOS</li>
+            <li>Mac OS</li>
+            <li>Watch OS</li>
+            <li>Linux</li>
+            <li>MS-Dos</li>
+            <li>Windows 7</li>
+            <li>Windows 8</li>
+            <li>Windows 8.1</li>
+            <li>Windows 10</li>
+            <li>Windows 11</li>
+          </ul>
+        </div>
+
+        <script>
+          const selectInput2 = document.querySelector('.select-input2');
+          const selectOptions2 = document.querySelector('.select-options2');
+
+          selectInput2.addEventListener('click', function () {
+            selectOptions2.style.display = (selectOptions2.style.display === 'block') ? 'none' : 'block';
+          });
+
+          selectOptions2.addEventListener('click', function (e) {
+            if (e.target.tagName === 'LI') {
+              const selectedValue = e.target.textContent;
+              selectInput2.textContent = selectedValue;
+              selectOptions2.style.display = 'none';
+
+              // Use the selected value as needed
+              console.log('Selected value:', selectedValue);
+            }
+          });
+
+          document.addEventListener('click', function (e) {
+            if (!selectInput2.contains(e.target) && !selectOptions2.contains(e.target)) {
+              selectOptions2.style.display = 'none';
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

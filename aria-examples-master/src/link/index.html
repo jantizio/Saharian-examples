@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>link examples</title>
+	<link rel="stylesheet" href="../common/example.css">
+	<link rel="stylesheet" href="style.css">
+	<link rel='icon' href='../common/desert-256.png' />
+</head>
+
+<body>
+	<h1 class="saharian-debug-h1">link examples</h1>
+	<p>Here you can find different link examples with various accessibility degrees, implemented both by using the
+	native link HTML Element and the WAI-ARIA specification.</p>
+
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Plain HTML</h2>
+	<p class="help saharian-debug-explanation">This is an accessible link example that leverages the native HTML
+		link element.</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+		<a href="https://www.w3.org" target="_blank">W3C HomePage</a>
+		</div>
+	</div>
+	</section>
+
+
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Correct ARIA</h2>
+	<p class="help saharian-debug-explanation">This is an accessible link implementation that leverages the WAI-ARIA
+		specification. Please note that some JavaScript code is required to handle keyboard interactions.</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+			<span role="link" tabindex="0" class="link" id="lnk1" data-url="https://www.w3.org">W3C HomePage</span>
+			<script>
+				document.getElementById('lnk1').onclick = () => 
+					window.open(event.target.dataset.url)
+			</script>
+		</div>
+	</div>
+	</section>
+
+
+	<section class="saharian-debug-wrong">
+	<h2 class="saharian-debug-h2">Link with no tabindex</h2>
+	<p class="help saharian-debug-explanation">This is a link implementation that only partially leverages the WAI-ARIA
+		specification, as it does not provide the expected keyboard support.</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+			<span role="link" class="link" id="lnk2" data-url="https://www.w3.org">W3C HomePage</span>
+			<script>
+				document.getElementById('lnk2').onclick = () => 
+					window.open(event.target.dataset.url)
+			</script>
+		</div>
+	</div>
+	</section>
+
+
+
+	<section class="saharian-debug-wrong">
+	<h2 class="saharian-debug-h2">Link with no role</h2>
+	<p class="help saharian-debug-explanation">This is an inaccessible link implementation, as it does not provide the
+		expected keyboard support and does not expose any "link" semantics to assistive technologies.</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+			<span class="link" id="lnk3" data-url="https://www.w3.org">W3C HomePage</span>
+			<script>
+				document.getElementById('lnk3').onclick = () => 
+					window.open(event.target.dataset.url)
+			</script>
+		</div>
+	</div>
+	</section>
+
+
+	<script src="../common/example.js"></script>
+</body>
+
+</html>

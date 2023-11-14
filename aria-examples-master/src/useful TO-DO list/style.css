@@ -1,0 +1,23 @@
+section {
+	margin: 4em 10em;	
+	background-color:#fffefb;
+	background-size: 100% 30px;
+	padding: 2em;
+	border-radius: 10px;
+	border: 1px solid hsl(0, 0%, 50%);
+}
+
+li {
+	margin: 0.5em;
+	line-height: 1.8em;
+}
+
+a {
+	background-color: #f6b681;
+	padding: 0.2em;
+    color: black;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}

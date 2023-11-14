@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>mixed state checkbox examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">mixed state checkbox examples</h1>
+  <p>Here you can find different mixed state checkbox examples with various accessibility degrees, implemented both by
+    using native
+    HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      This mixed state checkbox implementation uses native HTML elements.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <fieldset id="ex1">
+          <legend>Condiments</legend>
+          <label>
+            <input type="checkbox" id="chk0ex1">
+            All Condiments
+          </label>
+          <ul>
+            <li role="presentation">
+              <label>
+                <input type="checkbox" id="chk1ex1">
+                Lettuce
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk2ex1">
+                Tomato
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk3ex1">
+                Onion
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk4ex1">
+                BBQ Sauce
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk5ex1">
+                Ketchup
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk6ex1">
+                Mustard
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" id="chk7ex1">
+                Mayonnaise
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+        <script>
+          new class {
+            constructor(wrapperID) {
+              const wrapper = document.getElementById(wrapperID)
+              const checkboxes = Array.from(wrapper.querySelectorAll('input'))
+              this.mainCheckbox = checkboxes[0]
+              this.checkboxes = checkboxes.slice(1)
+              this.state = {}
+              for (let checkbox of this.checkboxes) {
+                this.state[checkbox.id] = checkbox.checked
+              }
+              this.mainCheckboxState = 'disabled'
+              this.mainCheckbox.setAttribute('aria-controls', this.checkboxes.map(checkbox => checkbox.id).join(' '))
+              wrapper.addEventListener('change', this.onCheckboxValueChange)
+            }
+
+            onCheckboxValueChange = event => {
+              if (event.target == this.mainCheckbox) {
+                this.updateControlledCheckboxes()
+              }
+              this.updateControllerCheckbox()
+              this.updateClasses(event.target)
+            }
+
+            updateControlledCheckboxes() {
+              const stateCheckedCount = this.countCheckedInState()
+              for (let checkbox of this.checkboxes) {
+                let value = false
+                if (this.mainCheckboxState == 'enabled') {
+                  value = false
+                }
+                else if (this.mainCheckboxState == 'mixed') {
+                  value = true
+                  this.state[checkbox.id] = checkbox.checked
+                }
+                else {
+                  value = stateCheckedCount > 0 ? this.state[checkbox.id] : true
+                }
+                checkbox.checked = value
+              }
+            }
+
+            updateClasses(checkbox) {
+              checkbox.className = 'checkbox'
+              if (event.target.indeterminate) {
+                checkbox.className += ' mixed'
+              }
+              else if (event.target.checked) {
+                checkbox.className += ' checked'
+              }
+            }
+
+            updateControllerCheckbox() {
+              const checkedCount = this.countChecked()
+              this.mainCheckbox.checked = (checkedCount == this.checkboxes.length)
+              this.mainCheckbox.indeterminate = (0 != checkedCount && checkedCount < this.checkboxes.length)
+              this.setMainCheckboxState()
+            }
+
+            countChecked() {
+              let checkedCount = 0
+              for (let checkbox of this.checkboxes) {
+                checkedCount += (checkbox.checked)
+              }
+              return checkedCount
+            }
+
+            countCheckedInState() {
+              let checkedCount = 0
+              for (let key of Object.keys(this.state)) {
+                checkedCount += (this.state[key])
+              }
+              return checkedCount
+            }
+
+            setMainCheckboxState() {
+              if (this.mainCheckbox.indeterminate) {
+                this.mainCheckboxState = 'mixed'
+              }
+              else if (this.mainCheckbox.checked) {
+                this.mainCheckboxState = 'enabled'
+              }
+              else {
+                this.mainCheckboxState = 'disabled'
+              }
+            }
+
+          }('ex1')
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIX DEL SECONDO CHEKBOX MIXED E AGGIUNTA DEL CHECKBOX SBAGLIATO-->
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA mixed state checkbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct mixed state checkbox implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <ul role="group" aria-labelledby="ex2-title" class="group" id="ex2">
+          <li>
+            <h3 id="ex2-title" class="title">Condiments</h3>
+          </li>
+          <li><span role="checkbox" aria-checked="false" tabindex="0" class="checkbox">All
+              condiments </span></li>
+          <li>
+            <ul>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk0ex2" class="checkbox">Lettuce</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk1ex2" class="checkbox">Tomato</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk2ex2" class="checkbox">Onion</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk3ex2" class="checkbox">BBQ Sauce</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk4ex2" class="checkbox">Ketchup</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk5ex2" class="checkbox">Mustard</span>
+              </li>
+              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk6ex2"
+                  class="checkbox">Mayonnaise</span></li>
+            </ul>
+          </li>
+        </ul>
+        </li>
+      </div>
+      <script>
+        new class {
+          constructor(wrapperID) {
+            const wrapper = document.getElementById(wrapperID)
+            const checkboxes = Array.from(wrapper.getElementsByClassName('checkbox'))
+            this.mainCheckbox = checkboxes[0]
+            this.checkboxes = checkboxes.slice(1)
+            this.state = {}
+            for (let checkbox of this.checkboxes) {
+              this.state[checkbox.id] = this.isChecked(checkbox)
+            }
+            this.mainCheckboxState = 'false'
+            this.mainCheckbox.setAttribute('aria-controls', this.checkboxes.map(checkbox => checkbox.id).join(' '))
+            wrapper.addEventListener('blur', this.onBlur)
+            wrapper.addEventListener('focus', this.onFocus)
+            wrapper.addEventListener('click', this.onClick)
+            wrapper.addEventListener('keydown', this.onKeyDown)
+          }
+
+          onBlur(event) {
+            event.target.classList.remove('focus')
+          }
+
+          onFocus(event) {
+            event.target.classList.add('focus')
+          }
+
+          onClick = event => {
+            if (!this.hasModifiers(event)) {
+              this.toggleCheckbox(event.target)
+            }
+          }
+
+          onKeyDown = event => {
+            if (this.hasModifiers(event)) {
+              return // nothing to do
+            }
+            switch (event.key) {
+              case ' ':
+              case 'Enter':
+                this.toggleCheckbox(event.target)
+              default:
+                return // nothing to do
+            }
+            event.stopPropagation()
+            event.preventDefault()
+          }
+
+          toggleCheckbox(checkbox) {
+            this.setChecked(checkbox)
+            if (checkbox == this.mainCheckbox) {
+              this.updateControlledCheckboxes()
+            }
+            this.updateControllerCheckbox()
+            this.updateClasses(event.target)
+            event.target.focus()
+          }
+
+          updateControlledCheckboxes() {
+            const stateCheckedCount = this.countCheckedInState()
+            for (let checkbox of this.checkboxes) {
+              let value = false
+              if (this.mainCheckboxState == 'true') {
+                value = false
+              }
+              else if (this.mainCheckboxState == 'mixed') {
+                value = true
+                this.state[checkbox.id] = this.isChecked(checkbox)
+              }
+              else {
+                value = stateCheckedCount > 0 ? this.state[checkbox.id] : true
+              }
+              checkbox.setAttribute('aria-checked', value.toString())
+            }
+          }
+
+          updateClasses(checkbox) {
+            checkbox.className = 'checkbox'
+            if (event.target.getAttribute('aria-checked') == 'mixed') {
+              checkbox.className += ' mixed'
+            }
+            else if (this.isChecked(event.target)) {
+              checkbox.className += ' checked'
+            }
+          }
+
+          updateControllerCheckbox() {
+            const checkedCount = this.countChecked()
+            if (checkedCount == this.checkboxes.length) {
+              this.mainCheckbox.setAttribute('aria-checked', 'true')
+            }
+            else if (checkedCount > 0 && checkedCount < this.checkboxes.length) {
+              this.mainCheckbox.setAttribute('aria-checked', 'mixed')
+            }
+            else {
+              this.mainCheckbox.setAttribute('aria-checked', 'false')
+            }
+            this.setMainCheckboxState()
+          }
+
+          countChecked() {
+            let checkedCount = 0
+            for (let checkbox of this.checkboxes) {
+              checkedCount += (this.isChecked(checkbox))
+            }
+            return checkedCount
+          }
+
+          countCheckedInState() {
+            let checkedCount = 0
+            for (let key of Object.keys(this.state)) {
+              checkedCount += (this.state[key])
+            }
+            return checkedCount
+          }
+
+          isChecked(checkbox) {
+            return checkbox.getAttribute('aria-checked') == 'true'
+          }
+
+          setChecked(checkbox) {
+            const state = checkbox.getAttribute('aria-checked')
+            if (state == 'true') {
+              checkbox.setAttribute('aria-checked', 'false')
+            }
+            else if (state == 'false') {
+              if (checkbox.hasAttribute('aria-controls') && this.countCheckedInState() > 0) {
+                checkbox.setAttribute('aria-checked', 'mixed')
+              }
+              else {
+                checkbox.setAttribute('aria-checked', 'true')
+              }
+            }
+            else {
+              checkbox.setAttribute('aria-checked', 'true')
+            }
+          }
+
+          setMainCheckboxState() {
+            this.mainCheckboxState = this.mainCheckbox.getAttribute('aria-checked')
+          }
+
+          hasModifiers(event) {
+            return event.altKey
+              || event.ctrlKey
+              || event.metaKey
+              || event.shiftKey
+          }
+
+        }('ex2')
+      </script>
+    </div>
+    </div>
+  </section>
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Non-ARIA Checkbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a non-ARIA version of the mixed state checkbox.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <ul class="group" id="ex3">
+          <li>
+            <h3 class="title">Condiments</h3>
+          </li>
+          <li><span class="checkbox1">All condiments </span></li>
+          <li>
+            <ul>
+              <li><span id="chk0ex3" class="checkbox1">Lettuce</span></li>
+              <li><span id="chk1ex3" class="checkbox1">Tomato</span></li>
+              <li><span id="chk2ex3" class="checkbox1">Onion</span></li>
+              <li><span id="chk3ex3" class="checkbox1">BBQ Sauce</span></li>
+              <li><span id="chk4ex3" class="checkbox1">Ketchup</span></li>
+              <li><span id="chk5ex3" class="checkbox1">Mustard</span></li>
+              <li><span id="chk6ex3" class="checkbox1">Mayonnaise</span></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <script>
+        new class {
+          constructor(wrapperID) {
+            const wrapper = document.getElementById(wrapperID);
+            const checkboxes = Array.from(wrapper.getElementsByClassName('checkbox1'));
+            this.mainCheckbox = checkboxes[0];
+            this.checkboxes = checkboxes.slice(1);
+            this.state = {};
+            for (let checkbox of this.checkboxes) {
+              this.state[checkbox.id] = this.isChecked(checkbox);
+              this.updateCheckboxAttribute(checkbox, this.state[checkbox.id]);
+            }
+            wrapper.addEventListener('click', this.onClick.bind(this));
+            wrapper.addEventListener('keydown', this.onKeyDown.bind(this));
+            this.updateControllerCheckbox(); // Initialize the main checkbox state
+          }
+
+          onClick(event) {
+            console.log("Element clicked:", event.target);
+            if (event.target.classList.contains('checkbox1') && !this.hasModifiers(event)) {
+              console.log("Checkbox clicked!"); // This will log if a checkbox is clicked
+              this.toggleCheckbox(event.target);
+            }
+          }
+
+          toggleCheckbox(checkbox) {
+            this.setChecked(checkbox);
+            this.updateState(checkbox);
+            if (checkbox === this.mainCheckbox) {
+              this.updateControlledCheckboxes();
+            }
+            this.updateControllerCheckbox();
+          }
+
+          updateControlledCheckboxes() {
+            const stateCheckedCount = this.countCheckedInState();
+            for (let checkbox of this.checkboxes) {
+              let value = false;
+              if (this.mainCheckbox.getAttribute('data-checked') === 'true') {
+                value = true;
+              } else if (this.mainCheckbox.getAttribute('data-checked') === 'mixed') {
+                value = this.state[checkbox.id];
+              } else {
+                value = stateCheckedCount > 0 ? this.state[checkbox.id] : false;
+              }
+              this.updateCheckboxAttribute(checkbox, value);
+            }
+          }
+
+          updateControllerCheckbox() {
+            const checkedCount = this.countChecked();
+            if (checkedCount === this.checkboxes.length) {
+              this.updateCheckboxAttribute(this.mainCheckbox, true);
+            } else if (checkedCount > 0 && checkedCount < this.checkboxes.length) {
+              this.mainCheckbox.setAttribute('data-checked', 'mixed');
+            } else {
+              this.updateCheckboxAttribute(this.mainCheckbox, false);
+            }
+          }
+
+          countChecked() {
+            return this.checkboxes.filter(checkbox => this.isChecked(checkbox)).length;
+          }
+
+          countCheckedInState() {
+            return Object.values(this.state).filter(value => value).length;
+          }
+
+          isChecked(checkbox) {
+            return checkbox.getAttribute('data-checked') === 'true';
+          }
+
+          setChecked(checkbox) {
+            const state = checkbox.getAttribute('data-checked');
+            if (state === 'true') {
+              this.updateCheckboxAttribute(checkbox, false);
+            } else if (state === 'false' || state === 'mixed') {
+              this.updateCheckboxAttribute(checkbox, true);
+            }
+          }
+
+          updateState(checkbox) {
+            if (checkbox !== this.mainCheckbox) {
+              this.state[checkbox.id] = this.isChecked(checkbox);
+            }
+          }
+
+          updateCheckboxAttribute(checkbox, value) {
+            checkbox.setAttribute('data-checked', value.toString());
+          }
+
+          hasModifiers(event) {
+            return event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+          }
+
+        }('ex3');
+      </script>
+
+
+    </div>
+  </section>
+
+
+
+
+  <script src="../common/example.js">
+  </script>
+</body>
+
+</html>

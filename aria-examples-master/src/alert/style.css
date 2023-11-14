@@ -1,0 +1,11 @@
+.alert {
+	display: block;
+	padding: 5px; 
+	margin: 5px; 
+	background-color: #ffdddd; 
+	border: solid 1px red; 
+}
+
+.alert:empty {
+  display: none;
+}

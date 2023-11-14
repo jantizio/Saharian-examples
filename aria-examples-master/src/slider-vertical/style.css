@@ -1,0 +1,36 @@
+﻿input[type="range"],
+.slider {}
+
+/* AGGIUNTO PER RENDERE LO SLIDER VERTICALE */
+input[type="range"][aria-orientation="vertical"] {
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+    width: 8px;
+    height: 150px;
+    padding: 0 5px;
+    transform: rotate(360deg);
+    transform-origin: center;
+    margin: 75px 0;
+}
+
+/* ARIA Slider container */
+/* ARIA Slider container */
+.slider-track {
+    width: 5px;
+    height: 200px;
+    background-color: #ccc;
+    position: relative;
+    margin: 20px auto;
+}
+
+.slider-thumb {
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Initial position - can be set using JavaScript */
+    top: 50%;
+}

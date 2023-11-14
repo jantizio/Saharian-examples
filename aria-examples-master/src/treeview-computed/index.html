@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Treeview (with computed properties) examples</title>
+  <link rel="stylesheet" href="../common/example.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel='icon' href='../common/desert-256.png' />
+  <script src="lib.js"></script>
+</head>
+
+<body>
+  <h1 class="saharian-debug-h1">Treeview examples (with computed properties)</h1>
+  <p>Here you can find different treeview (with computed properties) examples with various accessibility degrees,
+    implemented both by using native
+    HTML elements and attributes from the WAI-ARIA specification. The fact that they use "computed properties" indicates
+    that the browser is responsible for calculating appropriate values for <code>aria-level</code>,
+    <code>aria-posinset</code> and <code>aria-setsize</code> for each node based on the DOM hierarcy.
+  </p>
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Plain HTML</h2>
+    <p class="help saharian-debug-explanation">
+      Or well... HTML does not provide native elements to represent treeviews.
+    </p>
+  </section>
+
+
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA treeview</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct treeview implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <ul id="t1" class="tree"></ul>
+        <script>
+          new class TreeView {
+            constructor(elementID) {
+              this.currentNode = null
+              this.lookupPrefix = ''
+              this.lookupPrefixtimeout = null
+              this.element = document.getElementById(elementID)
+              this.element.addEventListener('click', this.onClick)
+              this.element.addEventListener('keydown', this.onKeyDown)
+              // handling single characters on 'keydown' is unreliable, use 'keypress' to make your life easier
+              this.element.addEventListener('keypress', this.onInput)
+              const tree = new Tree()
+              this.element.setAttribute('role', 'tree')
+              this.renderNodes(tree.children(), this.element, 1)
+              this.selectFirstNode()
+            }
+
+            onClick = event => {
+              if (!this.hasModifiers(event)) {
+                this.selectNode(event.target)
+                this.activateCurrentNode()
+              }
+            }
+
+            onKeyDown = event => {
+              if (!this.hasModifiers(event)) {
+                switch (event.key) {
+                  case 'ArrowDown':
+                    this.selectNextNode()
+                    break
+                  case 'ArrowRight':
+                    this.expandFocusChild()
+                    break
+                  case 'ArrowUp':
+                    this.selectPreviousNode()
+                    break
+                  case 'ArrowLeft':
+                    this.collapseFocusParent()
+                    break
+                  case 'Home':
+                    this.selectFirstNode()
+                    break
+                  case 'End':
+                    this.selectLastNode()
+                    break
+                  case 'Enter':
+                  case ' ':
+                    this.activateCurrentNode()
+                    break
+                  default:
+                    return
+                }
+              }
+              // entering * involves pressing the shift key in many keyboard layouts
+              else if (this.hasOnlyShiftModifier(event) && event.key == '*') {
+                this.expandCurrentNodeSiblings()
+              }
+              else {
+                return
+              }
+              event.stopPropagation()
+              event.preventDefault()
+            }
+
+            onInput = event => {
+              // key capitalization can vary, but we won't case-insensitive searching
+              const str = event.key.toLowerCase()
+              // filter unwanted control keys and backspace
+              if (str.length === 1) {
+                // when user enters a valid character, we start a timeout to collect additional ones
+                // if another character arrives, the timeout is reset
+                // search is actually triggered when timeout expires
+                if (this.lookupPrefixTimeout !== null) {
+                  clearTimeout(this.lookupPrefixTimeout)
+                }
+                this.lookupPrefix += str
+                this.lookupPrefixTimeout = setTimeout(() => {
+                  this.selectNodeByPrefix()
+                }, 300)
+                // a 300 ms timeout seems good according to empirical tests,but assistive technologies use similar input timeout values as well
+                event.preventDefault()
+                event.stopPropagation()
+              }
+              else {
+                // Nothing to do
+              }
+            }
+
+            renderNodes(nodes, container) {
+              for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i]
+                this.renderNode(node, container)
+              }
+            }
+
+            renderNode(node, container) {
+              const element = document.createElement('li')
+              element.classList.add('item')
+              element.innerText = node.value
+              element.setAttribute('role', 'treeitem')
+              element.tabIndex = -1
+              container.appendChild(element)
+              if (node.children) {
+                element.classList.add('collapsible')
+                element.setAttribute('aria-expanded', 'false')
+                const group = document.createElement('ul')
+                group.classList.add('group')
+                group.setAttribute('role', 'group')
+                element.appendChild(group)
+                this.renderNodes(node.children, group)
+              }
+            }
+
+            activateCurrentNode() {
+              if (this.isCollapsible(this.currentNode)) {
+                this.isExpanded(this.currentNode) ? this.collapseNode(this.currentNode) : this.expandNode(this.currentNode)
+              }
+              else {
+                alert(`Node ${this.currentNode.innerText} activated`)
+              }
+            }
+
+            isCollapsible(node) {
+              return node.hasAttribute('aria-expanded')
+            }
+
+            isExpanded(node) {
+              return node.getAttribute('aria-expanded') == 'true'
+            }
+
+            collapseNode(node) {
+              node.classList.remove('expanded')
+              node.setAttribute('aria-expanded', 'false')
+              node.focus()
+            }
+
+            collapseFocusParent(tree) {
+              if (this.isExpanded(this.currentNode)) {
+                this.collapseNode(this.currentNode)
+              }
+              else {
+                const parent = this.parent(this.currentNode)
+                if (parent !== null) {
+                  this.selectNode(parent)
+                }
+                else {
+                  // Nothing to do
+                }
+              }
+            }
+
+            expandCurrentNodeSiblings() {
+              if (this.currentNode != null) {
+                const siblings = this.currentNode.parentElement.children
+                for (let sibling of siblings) {
+                  if (this.isCollapsible(sibling)) {
+                    this.expandNode(sibling, false)
+                  }
+                }
+              }
+              else {
+                // nothing to do
+              }
+            }
+
+            expandNode(node, moveFocus = true) {
+              node.classList.add('expanded')
+              node.setAttribute('aria-expanded', 'true')
+              if (moveFocus) {
+                node.focus()
+              }
+            }
+
+            expandFocusChild() {
+              if (this.isCollapsible(this.currentNode)) {
+                if (!this.isExpanded(this.currentNode)) {
+                  this.expandNode(this.currentNode)
+                }
+                else {
+                  this.selectNode(this.currentNode.firstElementChild.firstElementChild)
+                }
+              }
+              else {
+                // Nothing to do
+              }
+            }
+
+            findNextNode(node, goingUp = false) {
+              if (node == null) {
+                return null
+              }
+              else if (this.isExpanded(node) && node.firstElementChild.childElementCount > 0 && !goingUp) {
+                return node.firstElementChild.firstElementChild
+              }
+              else if (node.nextElementSibling !== null) {
+                return node.nextElementSibling
+              }
+              else {
+                return this.findNextNode(this.parent(node), true)
+              }
+            }
+
+            findPreviousNode(node) {
+              if (node == null) {
+                return null
+              }
+              let sibling = node.previousElementSibling
+              if (sibling !== null) {
+                while (this.isExpanded(sibling) && sibling.lastElementChild.childElementCount > 0) {
+                  sibling = sibling.lastElementChild.lastElementChild
+                }
+                return sibling
+              }
+              else {
+                return this.parent(node)
+              }
+            }
+
+            findVisibleNodeByPrefix(prefix) {
+              let node = this.element.firstElementChild
+              do {
+                if (node.innerText.toLowerCase().startsWith(prefix)) {
+                  return node
+                }
+                else {
+                  node = this.findNextNode(node)
+                }
+              }
+              while (node !== null)
+              return null
+            }
+
+            parent(node) {
+              const pNode = node.parentElement
+              if (pNode === this.element) {
+                return null
+              }
+              else if (pNode !== null) {
+                // account for children wrapper
+                return pNode.parentElement
+              }
+              return pNode // null
+            }
+
+            deselectCurrentNode() {
+              this.currentNode.classList.remove('selected')
+              this.currentNode.setAttribute('aria-selected', 'false')
+              this.currentNode.tabIndex = -1
+            }
+
+            selectFirstNode() {
+              this.selectNode(this.element.firstElementChild)
+            }
+
+            selectLastNode() {
+              this.selectNode(this.element.lastElementChild)
+            }
+
+            selectNextNode() {
+              const node = this.findNextNode(this.currentNode, false)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+              else {
+                // no next node to go to, do nothing
+              }
+            }
+
+            selectPreviousNode() {
+              const node = this.findPreviousNode(this.currentNode)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+              else {
+                // no previousnode to go to, do nothing
+              }
+            }
+
+            selectNode(node) {
+              node.classList.add('selected')
+              node.setAttribute('aria-selected', true)
+              node.tabIndex = 0
+              if (this.currentNode !== null) {
+                this.deselectCurrentNode()
+                node.focus()
+              }
+              this.currentNode = node
+            }
+
+            selectNodeByPrefix() {
+              const node = this.findVisibleNodeByPrefix(this.lookupPrefix)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+              this.lookupPrefix = ''
+            }
+
+            hasModifiers(event) {
+              return event.altKey
+                || event.ctrlKey
+                || event.metaKey
+                || event.shiftKey
+            }
+
+            hasOnlyShiftModifier(event) {
+              return !event.altKey
+                && !event.ctrlKey
+                && !event.metaKey
+            }
+
+          }('t1')
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGGIUNTO TREE VIEW SENZA ARIA-->
+
+  <section class="saharian-debug-wrong">
+    <h2 class="saharian-debug-h2">Non-Accessible Treeview with Computed Properties</h2>
+    <p class="help saharian-debug-explanation">
+      This is a treeview without any accessibility features, but with computed properties.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <ul id="t2" class="tree"></ul>
+        <script>
+          new class SimpleTreeView {
+            constructor(elementID) {
+              this.currentNode = null
+              this.lookupPrefix = ''
+              this.lookupPrefixtimeout = null
+              this.element = document.getElementById(elementID)
+              this.element.addEventListener('click', this.onClick)
+              this.element.addEventListener('keydown', this.onKeyDown)
+              this.element.addEventListener('keypress', this.onInput)
+              const tree = new Tree()
+              this.renderNodes(tree.children(), this.element)
+              this.selectFirstNode()
+            }
+
+            onClick = event => {
+              this.selectNode(event.target)
+              this.activateCurrentNode()
+            }
+
+            onKeyDown = event => {
+              switch (event.key) {
+                case 'ArrowDown':
+                  this.selectNextNode()
+                  break
+                case 'ArrowRight':
+                  this.expandFocusChild()
+                  break
+                case 'ArrowUp':
+                  this.selectPreviousNode()
+                  break
+                case 'ArrowLeft':
+                  this.collapseFocusParent()
+                  break
+                case 'Enter':
+                case ' ':
+                  this.activateCurrentNode()
+                  break
+                default:
+                  return
+              }
+              event.stopPropagation()
+              event.preventDefault()
+            }
+
+            onInput = event => {
+              const str = event.key.toLowerCase()
+              if (str.length === 1) {
+                if (this.lookupPrefixTimeout !== null) {
+                  clearTimeout(this.lookupPrefixTimeout)
+                }
+                this.lookupPrefix += str
+                this.lookupPrefixTimeout = setTimeout(() => {
+                  this.selectNodeByPrefix()
+                }, 300)
+                event.preventDefault()
+                event.stopPropagation()
+              }
+            }
+
+            renderNodes(nodes, container) {
+              for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i]
+                this.renderNode(node, container)
+              }
+            }
+
+            renderNode(node, container) {
+              const element = document.createElement('li')
+              element.classList.add('item')
+              element.innerText = node.value
+              element.tabIndex = -1
+              container.appendChild(element)
+              if (node.children) {
+                element.classList.add('collapsible')
+                const group = document.createElement('ul')
+                group.classList.add('group')
+                element.appendChild(group)
+                this.renderNodes(node.children, group)
+              }
+            }
+
+            activateCurrentNode() {
+              if (this.currentNode.classList.contains('collapsible')) {
+                this.isExpanded(this.currentNode) ? this.collapseNode(this.currentNode) : this.expandNode(this.currentNode)
+              }
+              else {
+                alert(`Node ${this.currentNode.innerText} activated`)
+              }
+            }
+
+            isExpanded(node) {
+              return node.classList.contains('expanded')
+            }
+
+            collapseNode(node) {
+              node.classList.remove('expanded')
+              node.focus()
+            }
+
+            collapseFocusParent(tree) {
+              if (this.isExpanded(this.currentNode)) {
+                this.collapseNode(this.currentNode)
+              }
+              else {
+                const parent = this.parent(this.currentNode)
+                if (parent !== null) {
+                  this.selectNode(parent)
+                }
+              }
+            }
+
+            expandNode(node, moveFocus = true) {
+              node.classList.add('expanded')
+              if (moveFocus) {
+                node.focus()
+              }
+            }
+
+            expandFocusChild() {
+              if (this.currentNode.classList.contains('collapsible')) {
+                if (!this.isExpanded(this.currentNode)) {
+                  this.expandNode(this.currentNode)
+                }
+                else {
+                  this.selectNode(this.currentNode.firstElementChild.firstElementChild)
+                }
+              }
+            }
+
+            findNextNode(node, goingUp = false) {
+              if (node == null) {
+                return null
+              }
+              else if (this.isExpanded(node) && node.firstElementChild.childElementCount > 0 && !goingUp) {
+                return node.firstElementChild.firstElementChild
+              }
+              else if (node.nextElementSibling !== null) {
+                return node.nextElementSibling
+              }
+              else {
+                return this.findNextNode(this.parent(node), true)
+              }
+            }
+
+            findPreviousNode(node) {
+              if (node == null) {
+                return null
+              }
+              let sibling = node.previousElementSibling
+              if (sibling !== null) {
+                while (this.isExpanded(sibling) && sibling.lastElementChild.childElementCount > 0) {
+                  sibling = sibling.lastElementChild.lastElementChild
+                }
+                return sibling
+              }
+              else {
+                return this.parent(node)
+              }
+            }
+
+            findVisibleNodeByPrefix(prefix) {
+              let node = this.element.firstElementChild
+              do {
+                if (node.innerText.toLowerCase().startsWith(prefix)) {
+                  return node
+                }
+                else {
+                  node = this.findNextNode(node)
+                }
+              }
+              while (node !== null)
+              return null
+            }
+
+            parent(node) {
+              const pNode = node.parentElement
+              if (pNode === this.element) {
+                return null
+              }
+              else if (pNode !== null) {
+                return pNode.parentElement
+              }
+              return pNode
+            }
+
+            deselectCurrentNode() {
+              this.currentNode.classList.remove('selected')
+              this.currentNode.tabIndex = -1
+            }
+
+            selectFirstNode() {
+              this.selectNode(this.element.firstElementChild)
+            }
+
+            selectLastNode() {
+              this.selectNode(this.element.lastElementChild)
+            }
+
+            selectNextNode() {
+              const node = this.findNextNode(this.currentNode, false)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+            }
+
+            selectPreviousNode() {
+              const node = this.findPreviousNode(this.currentNode)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+            }
+
+            selectNode(node) {
+              node.classList.add('selected')
+              node.tabIndex = 0
+              if (this.currentNode !== null) {
+                this.deselectCurrentNode()
+                node.focus()
+              }
+              this.currentNode = node
+            }
+
+            selectNodeByPrefix() {
+              const node = this.findVisibleNodeByPrefix(this.lookupPrefix)
+              if (node !== null) {
+                this.selectNode(node)
+              }
+              this.lookupPrefix = ''
+            }
+
+          }('t2')
+        </script>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="../common/example.js"></script>
+</body>
+
+</html>

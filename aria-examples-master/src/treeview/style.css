@@ -1,0 +1,44 @@
+.tree {
+font-size: 120%;
+margin: 0;
+padding: 0;
+list-style: none;
+}
+
+.collapsible:before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.collapsible.expanded:before {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg); 
+  transform: rotate(90deg);  
+}
+
+.collapsible > ul {
+  display: none;
+}
+
+.collapsible.expanded > ul {
+  display: block;
+}
+
+.item {
+  width: 9em;
+  margin: 0;
+  padding: 0.125em;
+  border: 2px transparent solid;
+  display: block;
+  list-style: none;
+}
+
+.item:focus, .item:hover {
+    border: 2px solid #ffdfb1;
+    border-radius: 3px;
+    background-color: #ffefd9;
+    max-width: fit-content;
+	outline: none;
+}

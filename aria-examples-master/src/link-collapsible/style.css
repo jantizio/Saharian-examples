@@ -1,0 +1,18 @@
+a,
+.link {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.collapsible {}
+
+.collapsible+.group {
+  display: none;
+}
+
+.expanded {}
+
+.expanded+.group {
+  display: block;
+}

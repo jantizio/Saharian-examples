@@ -1,0 +1,59 @@
+fieldset,
+.group {}
+
+fieldset legend,
+.group .title {}
+
+fieldset li,
+.group li {
+  list-style: none;
+}
+
+/* CSS PER IL CHECKBOX CON ARIA */
+
+
+[role="checkbox"] {
+  padding: 5px;
+}
+
+[role="checkbox"]:focus {
+  border: 2px solid #0198e1;
+}
+
+[aria-checked="true"]::before {
+  content: "\002611";
+}
+
+[aria-checked="false"]::before {
+  content: "\002610";
+}
+
+[aria-checked="mixed"]::before {
+  content: "\0025a3";
+}
+
+/* CSS PER IL CHECKBOX SENZA ARIA */
+
+.checkbox1 {
+  cursor: pointer;
+  display: inline-block;
+  padding-right: 5px;
+  position: relative;
+}
+
+.checkbox1::before {
+  content: '☐';
+  /* Default unchecked box */
+  position: absolute;
+  left: -1.5em;
+}
+
+.checkbox1[data-checked="true"]::before {
+  content: '✔';
+  /* Checked box */
+}
+
+.checkbox1[data-checked="mixed"]::before {
+  content: '▣';
+  /* Mixed state box */
+}

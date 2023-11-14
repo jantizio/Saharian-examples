@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>collapsible examples</title>
+	<link rel="stylesheet" href="../common/example.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1 class="saharian-debug-h1">Collapsible button examples</h1>
+	<p>Here you can find different collapsible examples (both buttons and links) with various accessibility degrees, implemented both by
+	using
+	native HTML Elements and attributes from the WAI-ARIA specification.</p>
+
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Plain HTML</h2>
+	<p class="help saharian-debug-explanation">
+		This is a correct collapsible button implemented by leveraging native HTML elements.
+	</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+			<details id="lnk0">
+				<summary id="btn1">Some W3C accessibility resources</summary>
+				<ul id="btng12" aria-labelledby="btn1" class="group">
+					<li><a href="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</a></li>
+					<li><a href="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</a></li>
+					<li><a href="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</a></li>
+				</ul>
+			</details>
+		</div>
+	</div>
+	</section>
+
+
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Correct collapsible button & link</h2>
+	<p class="help saharian-debug-explanation">
+		This is a correct collapsible button and a correct collapsible link implemented by using native HTML elements combined with attributes from the WAI-ARIA specification.
+	</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+				<button id="btn2" class="block button collapsible" onclick="toggleButton2()"
+					aria-controls="btngr2" aria-expanded="false">
+						Some W3C accessibility resources
+				</button>
+				<ul id="btngr2" aria-labelledby="btn2" class="group">
+					<li><a href="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</a></li>
+					<li><a href="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</a></li>
+					<li><a href="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</a></li>
+				</ul>
+				<script>
+					function toggleButton2() {
+						event.target.classList.toggle('expanded')
+						event.target.ariaExpanded = !event.target.ariaExpanded
+					}
+				</script>
+
+
+				<a href="javascript:toggleLink1('lnk1')" id="lnk1" class="block button collapsible" aria-controls="lnkgr1" aria-expanded="false">
+					Some W3C accessibility resources
+				</a>
+				<ul id="lnkgr1" aria-labelledby="lnk1" class="group">
+					<li><a href="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</a></li>
+					<li><a href="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</a></li>
+					<li><a href="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</a></li>
+				</ul>
+				<script>
+					function toggleLink1(id) {
+						var el = document.getElementById(id)
+						el.classList.toggle('expanded')
+						el.ariaExpanded = !el.ariaExpanded
+					}
+				</script>
+		</div>
+	</div>
+	</section>
+
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Fully ARIA collapsible button & link</h2>
+	<p class="help saharian-debug-explanation">
+		This is a correct collapsible button implemented by using only attributes from the WAI-ARIA specification.
+	</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+			<span id="btn3" class="block button collapsible" role="button" 
+				aria-controls="btngr3" aria-expanded="false" tabindex="0">
+				Some W3C accessibility resources
+			</span>
+			<ul id="btngr3" aria-labelledby="btn3" class="group">
+				<li><span class="link" role="link" tabindex="0" 
+					data-url="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</span></li>
+				<li><span class="link" role="link" tabindex="0" data-url="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</span></li>
+				<li><span class="link" role="link" tabindex="0" data-url="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</span></li>
+			</ul>
+			<script>
+				document.getElementById('btn3').onclick = toggleButton3
+				Array.from(document.querySelectorAll('#btngr2 .link')).forEach( i=> i.onclick = goTo3 )
+ 
+				function toggleButton3() {
+					event.target.classList.toggle('expanded')
+					event.target.ariaExpanded = !event.target.ariaExpanded
+				}
+				function goTo3() {
+					document.location = event.target.dataset.url
+				}
+			</script>
+
+			<span id="lnk2" class="block button collapsible" role="link" aria-controls="lnkgr2" aria-expanded="false" tabindex="0">Some W3C accessibility resources</span>
+			<ul id="lnkgr2" aria-labelledby="lnk2" class="group">
+				<li><span class="link" role="link" tabindex="0" data-url="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</span></li>
+				<li><span class="link" role="link" tabindex="0" data-url="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</span></li>
+				<li><span class="link" role="link" tabindex="0" data-url="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</span></li>
+			</ul>
+			<script>
+				document.getElementById('lnk2').onclick = toggleLink3
+				Array.from(document.querySelectorAll('#lnkgr2 .link')).forEach( i=> i.onclick = linkTo3 )
+ 
+				function toggleLink3() {
+					event.target.classList.toggle('expanded')
+					event.target.ariaExpanded = !event.target.ariaExpanded
+				}
+				function linkTo3() {
+					document.location = event.target.dataset.url
+				}
+			</script>
+	</div>
+	</section>
+
+
+
+	<section class="saharian-debug-wrong">
+	<h2 class="saharian-debug-h2">Incorrect collapsible button & link</h2>
+	<p class="help saharian-debug-explanation">
+		This is an  collapsible button with no ARIA support. <span class="FIXME">Da migliorare</span>
+	</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+				<button id="btn2" class="block button collapsible" onclick="toggleButton2()">
+						Some W3C accessibility resources
+				</button>
+				<ul id="btngr2" class="group">
+					<li><a href="https://www.w3.org/WAI/WCAG21/quickref/">How to meet WCAG</a></li>
+					<li><a href="http://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines (WCAG) 2.1</a></li>
+					<li><a href="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA 1.1</a></li>
+				</ul>
+				<script>
+					function toggleButton2() {
+						event.target.classList.toggle('expanded')
+						event.target.ariaExpanded = !event.target.ariaExpanded
+					}
+				</script>
+		</div>
+	</div>
+	</section>
+
+
+
+<!--
+	<section class="saharian-debug-correct">
+	<h2 class="saharian-debug-h2">Fully ARIA collapsible button</h2>
+	<p class="help saharian-debug-explanation">
+		This is a correct collapsible button implemented by using only attributes from the WAI-ARIA specification.
+	</p>
+	<div class="example saharian-debug-flex">
+		<div class="container">
+		<span id="btn3" class="link collapsible" role="button" aria-controls="btngr3" aria-expanded="false" tabindex="0"
+			data-url="https://www.w3.org">Some W3C accessibility resources</span>
+		<ul id="btngr3" aria-labelledby="btn3" class="group">
+			<li>
+			<span class="link" role="link" tabindex="0" data-url="https://www.w3.org/WAI/WCAG21/quickref/">How to meet
+				WCAG</span>
+			</li>
+			<li>
+			<span class="link" role="link" tabindex="0" data-url="http://www.w3.org/TR/WCAG21/">Web Content
+				Accessibility
+				Guidelines (WCAG) 2.1</span>
+			</li>
+			<li>
+			<span class="link" role="link" tabindex="0" data-url="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA
+				1.1</span>
+			</li>
+		</ul>
+		<script>
+			new class {
+			constructor(elementId) {
+				const element = document.getElementById(elementId).parentElement
+				element.addEventListener('blur', this.onBlur)
+				element.addEventListener('focus', this.onFocus)
+				element.addEventListener('click', this.onClick)
+				element.addEventListener('keydown', this.onKeyDown)
+			}
+
+			onBlur(event) {
+				event.target.classList.remove('focus')
+			}
+
+			onFocus(event) {
+				event.target.classList.add('focus')
+			}
+
+			onClick = event => {
+				if (!this.hasModifiers(event)) {
+				this.press(event.target)
+				}
+			}
+
+			onKeyDown = event => {
+				if (this.hasModifiers(event)) {
+				return // nothing to do
+				}
+				switch (event.key) {
+				case 'Spacebar':
+				case 'Enter':
+					this.press(event.target)
+				default:
+					return // nothing to do
+				}
+				event.stopPropagation()
+				event.preventDefault()
+			}
+
+			press(element) {
+				if (element.hasAttribute('aria-expanded')) {
+				const expanded = event.target.classList.contains('expanded')
+				if (expanded) { // collapse
+					element.classList.remove('expanded')
+					element.setAttribute('aria-expanded', 'false')
+				}
+				else { // expand
+					element.classList.add('expanded')
+					element.setAttribute('aria-expanded', 'true')
+				}
+				// should happen in both cases
+				element.focus()
+				}
+				else {
+				window.open(element.dataset.url)
+				}
+			}
+
+			hasModifiers(event) {
+				return event.altKey
+				|| event.ctrlKey
+				|| event.metaKey
+				|| event.shiftKey
+			}
+
+			}('btn3')
+		</script>
+		</div>
+	</div>
+	</section>
+-->
+
+	<script src="../common/example.js"></script>
+</body>
+
+</html>

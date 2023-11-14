@@ -1,0 +1,84 @@
+﻿@import url(//fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=Roboto:wght@300;400&display=swap);
+
+body {
+	background-color: #fffceb;
+	padding-left: 2.5em;
+	padding-right: 1.5em;
+	font-family: 'Roboto', sans-serif;
+}
+
+.saharian-debug-h1 {
+    background-image: url(../common/desert-256.png);
+	background-color: #f6b681;
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: center;
+    padding: 0.7em;
+    border-radius: 0.625em;
+    margin-bottom: 1em;
+}
+
+.saharian-debug-showcode {
+	font-size: 0.9rem; 
+	white-space: pre-wrap;
+	align-self: flex-start;
+	padding: 1em;
+	margin-left: 3em; 
+	max-width: 50%; 
+	width: fit-content;
+}
+
+
+.saharian-debug-correct .saharian-debug-showcode {
+	border: solid 1px #307e8d;
+	background-color: #f0ffff; 
+	border-radius: 0.3125em;
+}
+
+.saharian-debug-correct .saharian-debug-showcode::before {
+	content: "CORRECT";
+	background-color: #307e8d;
+	color: white; 
+	font-size: 100%; 
+	font-family: "Arial"; 
+	position: relative;
+	top: -0.9em; 
+	left: -1em;
+	padding: 0.2em 0.5em;
+	border-radius: 0.3125em;
+}
+ 
+.saharian-debug-wrong .saharian-debug-showcode {
+	border: solid 1px #aa5d83;
+	background-color: #fff0f0; 
+	border-radius: 0.3125em;
+}
+.saharian-debug-wrong .saharian-debug-showcode::before {
+	content: "INCORRECT";
+	background-color: #aa5d83;
+	color: white; 
+	font-size: 100%; 
+	font-family: "Arial"; 
+	position: relative;
+	top: -0.9em; 
+	left: -1em;
+	padding: 0.2em 0.5em;
+	border-radius: 0.3125em;
+}
+
+.saharian-debug-flex {
+	display: flex;
+ 	justify-content: space-between ;
+ }
+
+.saharian-debug-explanation {
+	font-size: 90%; 
+	font-style: italic;
+}
+
+.FIXME {
+	color: red;
+	font-weight: bold;
+	background-color: #ffdddd;
+	padding: 0.5em; 
+}
