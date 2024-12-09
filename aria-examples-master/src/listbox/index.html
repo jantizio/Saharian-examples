@@ -40,6 +40,7 @@
     </div>
   </section>
 
+  <!-- DA REDIREZIONARE IL CLICK DEL MOUSE-->
   <section class="saharian-debug-correct">
     <h2 class="saharian-debug-h2">Correct ARIA listbox</h2>
     <p class="help saharian-debug-explanation">
@@ -66,90 +67,77 @@
           </ul>
         </div>
 
+
         <script>
-          document.addEventListener('DOMContentLoaded', (event) => {
+          document.addEventListener('DOMContentLoaded', () => {
             const selectInput = document.querySelector('.select-input');
             const selectOptions = document.querySelector('.select-options');
             const listbox = document.getElementById('listbox1');
             let currentSelectedIndex = 0;
 
-            selectInput.addEventListener('click', function () {
-              selectOptions.style.display = (selectOptions.style.display === 'block') ? 'none' : 'block';
-            });
+            function toggleSelectOptions() {
+              const isDisplayed = selectOptions.style.display === 'block';
+              selectOptions.style.display = isDisplayed ? 'none' : 'block';
+              if (!isDisplayed) {
+                listbox.focus();
+                updateSelection();
+              }
+            }
+
+            selectInput.addEventListener('click', toggleSelectOptions);
 
             Array.from(listbox.children).forEach((option, index) => {
-              option.addEventListener('click', function () {
-                selectOption(index);
-              });
+              option.addEventListener('click', () => selectOption(index));
             });
 
-            document.addEventListener('click', function (e) {
-              if (!selectInput.contains(e.target)) {
+            document.addEventListener('click', (e) => {
+              if (!selectInput.contains(e.target) && !listbox.contains(e.target)) {
                 selectOptions.style.display = 'none';
               }
             });
 
-            selectInput.addEventListener('keydown', function (e) {
-              handleArrowKeys(e);
-            });
-
-            listbox.addEventListener('keydown', function (e) {
-              handleArrowKeys(e);
-            });
-
             function handleArrowKeys(e) {
-              if (e.key === 'ArrowDown') {
-                if (currentSelectedIndex < listbox.children.length - 1) {
-                  currentSelectedIndex++;
-                }
-              } else if (e.key === 'ArrowUp') {
-                if (currentSelectedIndex > 0) {
-                  currentSelectedIndex--;
-                }
+              if (e.key === 'ArrowDown' && currentSelectedIndex < listbox.children.length - 1) {
+                e.preventDefault();
+                currentSelectedIndex++;
+                updateSelection();
+              } else if (e.key === 'ArrowUp' && currentSelectedIndex > 0) {
+                e.preventDefault();
+                currentSelectedIndex--;
+                updateSelection();
               } else if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 selectOption(currentSelectedIndex);
-                return;
+                toggleSelectOptions();
               }
-              updateSelection();
-              selectOptions.style.display = 'block';
-              listbox.focus();
             }
+
+            selectInput.addEventListener('keydown', handleArrowKeys);
+            listbox.addEventListener('keydown', handleArrowKeys);
 
             function selectOption(index) {
               const selectedOption = listbox.children[index];
-              const selectedValue = selectedOption.textContent;
-              selectInput.value = selectedValue;
-              selectOptions.style.display = 'none';
+              selectInput.value = selectedOption.textContent;
               currentSelectedIndex = index;
               updateSelection();
-              console.log('Selected value:', selectedValue);
             }
 
             function updateSelection() {
               Array.from(listbox.children).forEach((option, index) => {
-                option.setAttribute('aria-selected', 'false');
-                option.tabIndex = -1;
-                option.classList.remove('selected');
-                option.setAttribute('aria-checked', 'false');
+                const isSelected = index === currentSelectedIndex;
+                // Update aria-selected attribute and class
+                option.setAttribute('aria-selected', isSelected.toString());
+                option.classList.toggle('selected', isSelected);
+                // Update tabindex
+                option.tabIndex = isSelected ? 0 : -1;
               });
-
-              const currentOption = listbox.children[currentSelectedIndex];
-              currentOption.setAttribute('aria-selected', 'true');
-              currentOption.tabIndex = 0;
-              currentOption.classList.add('selected');
-              currentOption.setAttribute('aria-checked', 'true');
-              currentOption.focus();
+              // Focus the selected item
+              listbox.children[currentSelectedIndex].focus();
             }
 
             updateSelection();
           });
         </script>
-
-
-
-
-
       </div>
     </div>
   </section>

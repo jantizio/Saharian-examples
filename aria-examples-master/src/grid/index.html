@@ -30,167 +30,47 @@
       <div class="container">
         <table id="g1" class="grid"></table>
         <script>
-          new class {
-            currentColindex = 0
-            currentRowindex = 0
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.alpha = 'abcdefghijkl'
-              this.colcount = this.alpha.length
-              this.rowcount = this.alpha.length - 1
-              this.build()
-              this.selectCell(0, 0, false)
-              this.element.addEventListener('keydown', this.onKeyDown)
-            }
+          const createGrid = (elementId) => {
+            const element = document.getElementById(elementId);
+            const alpha = 'abcde';
+            const colcount = 5;
+            const rowcount = 5;
+            const cell = [];
 
-            build() {
-              this.cell = []
-              for (let i = 0; i < this.rowcount; i++) {
-                this.cell[i] = []
-                const row = document.createElement('tr')
-                row.appendChild(this.buildCell(i, 0, 'rowheader'))
-                for (let j = 1; j < this.colcount; j++) {
-                  const role = (i == 0) ? 'columnheader' : 'gridcell'
-                  const cell = this.buildCell(i, j, role)
-                  row.appendChild(cell)
-                }
-                row.setAttribute('aria-rowindex', `${i + 1}`)
-                row.setAttribute('role', 'row')
-                this.element.appendChild(row)
-              }
-              this.element.setAttribute('role', 'grid')
-              this.element.setAttribute('aria-rowcount', this.rowcount.toString())
-              this.element.setAttribute('aria-colcount', this.colcount.toString())
-            }
+            const buildCell = (i, j, role) => {
+              const cell = document.createElement('td');
+              cell.className = role;
+              cell.innerHTML = `<input title="${alpha[j]}${i + 1}" readonly>`;
+              cell.setAttribute('aria-colindex', `${j + 1}`);
+              cell.setAttribute('role', role);
+              cell.tabIndex = 0;
+              return cell;
+            };
 
-            buildCell(i, j, role) {
-              const cell = document.createElement('td')
-              cell.className = role
-              cell.innerHTML = `<input title="${this.alpha[j]}${i + 1}" readonly>`
-              cell.setAttribute('aria-colindex', `${j + 1}`)
-              cell.setAttribute('role', role)
-              cell.tabIndex = 0
-              this.cell[i][j] = cell
-              return cell
+            for (let i = 0; i < rowcount; i++) {
+              cell[i] = [];
+              const row = document.createElement('tr');
+              for (let j = 0; j < colcount; j++) {
+                const role = (i === 0 || j === 0) ? 'gridcell' : 'gridcell';
+                const cellElement = buildCell(i, j, role);
+                row.appendChild(cellElement);
+                cell[i][j] = cellElement;
+              }
+              row.setAttribute('aria-rowindex', `${i + 1}`);
+              row.setAttribute('role', 'row');
+              element.appendChild(row);
             }
+            element.setAttribute('role', 'grid');
+            element.setAttribute('aria-rowcount', rowcount.toString());
+            element.setAttribute('aria-colcount', colcount.toString());
+          };
 
-            onKeyDown = event => {
-              switch (this.shortcut(event)) {
-                case 'arrowdown':
-                  this.selectNextColCell()
-                  break
-                case 'arrowright':
-                  this.selectNextRowCell()
-                  break
-                case 'arrowup':
-                  this.selectPrevColCell()
-                  break
-                case 'arrowleft':
-                  this.selectPrevRowCell()
-                  break
-                case 'home':
-                  this.selectCell(this.currentRowindex, 0)
-                  break
-                case 'end':
-                  this.selectCell(this.currentRowindex, this.colcount - 1)
-                  break
-                case 'ctrl+home':
-                  this.selectCell(0, 0)
-                  break
-                case 'ctrl+end':
-                  this.selectCell(this.rowcount - 1, this.colcount - 1)
-                  break
-                case 'tab':
-                  this.selectNextCell()
-                  break
-                case 'shift+tab':
-                  this.selectPreviousCell()
-                  break
-                default:
-                  return // nothing to do
-              }
-              event.preventDefault()
-              event.stopPropagation()
-            }
-
-            selectNextCell() {
-              if (this.currentColindex < this.colcount - 1) {
-                this.selectCell(this.currentRowindex, ++this.currentColindex)
-              }
-              else if (this.currentRowindex < this.rowcount - 1) {
-                this.selectCell(++this.currentRowindex, 0)
-              }
-              else {
-                this.selectCell(0, 0)
-              }
-            }
-
-            selectNextColCell() {
-              if (this.currentRowindex < this.rowcount - 1) {
-                this.selectCell(++this.currentRowindex, this.currentColindex)
-              }
-            }
-
-            selectNextRowCell() {
-              if (this.currentColindex < this.colcount - 1) {
-                this.selectCell(this.currentRowindex, ++this.currentColindex)
-              }
-            }
-
-            selectPreviousCell() {
-              if (this.currentColindex > 0) {
-                this.selectCell(this.currentRowindex, --this.currentColindex)
-              }
-              else if (this.currentRowindex > 0) {
-                this.selectCell(--this.currentRowindex, 0)
-              }
-              else {
-                this.selectCell(this.rowcount - 1, this.colcount - 1)
-              }
-            }
-
-            selectPrevColCell() {
-              if (this.currentRowindex > 0) {
-                this.selectCell(--this.currentRowindex, this.currentColindex)
-              }
-            }
-
-            selectPrevRowCell() {
-              if (this.currentColindex > 0) {
-                this.selectCell(this.currentRowindex, --this.currentColindex)
-              }
-            }
-
-            selectCell(i, j, focus = true) {
-              const cell = this.cell[i][j]
-              cell.classList.add('selected')
-              if (focus) {
-                const oldcell = this.cell[this.currentRowindex][this.currentColindex]
-                oldcell.classList.remove('selected')
-                //cell.focus()
-                cell.firstElementChild.focus()
-              }
-              this.currentRowindex = i
-              this.currentColindex = j
-            }
-
-            shortcut(event) {
-              const flags = ['alt', 'ctrl', 'meta', 'shift']
-              const keys = []
-              for (let flag of flags) {
-                if (event[`${flag}Key`]) {
-                  keys.push(flag)
-                }
-              }
-              keys.push(event.key.toLowerCase())
-              return keys.join('+')
-            }
-
-          }('g1')
+          createGrid('g1');
         </script>
       </div>
     </div>
   </section>
+
 
   <section class="saharian-debug-wrong">
     <h2 class="saharian-debug-h2">Non-Accessible Grid</h2>
@@ -201,120 +81,39 @@
       <div class="container">
         <table id="g2" class="grid"></table>
         <script>
-          new class {
-            currentColindex = 0
-            currentRowindex = 0
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.alpha = 'abcdefghijkl'
-              this.colcount = this.alpha.length
-              this.rowcount = this.alpha.length - 1
-              this.build()
-              this.selectCell(0, 0, false)
-            }
+          const createNonAccessibleGrid = (elementId) => {
+            const element = document.getElementById(elementId);
+            const alpha = 'abcde';
+            const colcount = 5;
+            const rowcount = 5;
+            const cell = [];
 
-            build() {
-              this.cell = []
-              for (let i = 0; i < this.rowcount; i++) {
-                this.cell[i] = []
-                const row = document.createElement('tr')
-                row.appendChild(this.buildCell(i, 0, 'rowheader'))
-                for (let j = 1; j < this.colcount; j++) {
-                  const role = (i == 0) ? 'columnheader' : 'gridcell'
-                  const cell = this.buildCell(i, j, role)
-                  row.appendChild(cell)
-                }
-                this.element.appendChild(row)
-              }
-            }
+            const buildCell = (i, j, role) => {
+              const cell = document.createElement('td');
+              cell.className = role;
+              cell.innerHTML = `<input title="${alpha[j]}${i + 1}" readonly>`;
+              return cell;
+            };
 
-            buildCell(i, j, role) {
-              const cell = document.createElement('td')
-              cell.className = role
-              cell.innerHTML = `<input title="${this.alpha[j]}${i + 1}" readonly>`
-              //   cell.tabIndex = 0
-              this.cell[i][j] = cell
-              return cell
+            for (let i = 0; i < rowcount; i++) {
+              cell[i] = [];
+              const row = document.createElement('tr');
+              for (let j = 0; j < colcount; j++) {
+                const role = (i === 0 || j === 0) ? 'gridcell' : 'gridcell';
+                const cellElement = buildCell(i, j, role);
+                row.appendChild(cellElement);
+                cell[i][j] = cellElement;
+              }
+              element.appendChild(row);
             }
+          };
 
-            selectNextCell() {
-              if (this.currentColindex < this.colcount - 1) {
-                this.selectCell(this.currentRowindex, ++this.currentColindex)
-              }
-              else if (this.currentRowindex < this.rowcount - 1) {
-                this.selectCell(++this.currentRowindex, 0)
-              }
-              else {
-                this.selectCell(0, 0)
-              }
-            }
-
-            selectNextColCell() {
-              if (this.currentRowindex < this.rowcount - 1) {
-                this.selectCell(++this.currentRowindex, this.currentColindex)
-              }
-            }
-
-            selectNextRowCell() {
-              if (this.currentColindex < this.colcount - 1) {
-                this.selectCell(this.currentRowindex, ++this.currentColindex)
-              }
-            }
-
-            selectPreviousCell() {
-              if (this.currentColindex > 0) {
-                this.selectCell(this.currentRowindex, --this.currentColindex)
-              }
-              else if (this.currentRowindex > 0) {
-                this.selectCell(--this.currentRowindex, 0)
-              }
-              else {
-                this.selectCell(this.rowcount - 1, this.colcount - 1)
-              }
-            }
-
-            selectPrevColCell() {
-              if (this.currentRowindex > 0) {
-                this.selectCell(--this.currentRowindex, this.currentColindex)
-              }
-            }
-
-            selectPrevRowCell() {
-              if (this.currentColindex > 0) {
-                this.selectCell(this.currentRowindex, --this.currentColindex)
-              }
-            }
-
-            selectCell(i, j, focus = true) {
-              const cell = this.cell[i][j]
-              cell.classList.add('selected')
-              if (focus) {
-                const oldcell = this.cell[this.currentRowindex][this.currentColindex]
-                oldcell.classList.remove('selected')
-                //cell.focus()
-                cell.firstElementChild.focus()
-              }
-              this.currentRowindex = i
-              this.currentColindex = j
-            }
-
-            shortcut(event) {
-              const flags = ['alt', 'ctrl', 'meta', 'shift']
-              const keys = []
-              for (let flag of flags) {
-                if (event[`${flag}Key`]) {
-                  keys.push(flag)
-                }
-              }
-              keys.push(event.key.toLowerCase())
-              return keys.join('+')
-            }
-
-          }('g2')
+          createNonAccessibleGrid('g2');
         </script>
       </div>
     </div>
   </section>
+
 
 
 

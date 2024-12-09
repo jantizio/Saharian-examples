@@ -73,93 +73,29 @@
           </ul>
         </fieldset>
         <script>
-          new class {
-            constructor(wrapperID) {
-              const wrapper = document.getElementById(wrapperID)
-              const checkboxes = Array.from(wrapper.querySelectorAll('input'))
-              this.mainCheckbox = checkboxes[0]
-              this.checkboxes = checkboxes.slice(1)
-              this.state = {}
-              for (let checkbox of this.checkboxes) {
-                this.state[checkbox.id] = checkbox.checked
-              }
-              this.mainCheckboxState = 'disabled'
-              this.mainCheckbox.setAttribute('aria-controls', this.checkboxes.map(checkbox => checkbox.id).join(' '))
-              wrapper.addEventListener('change', this.onCheckboxValueChange)
-            }
+          document.addEventListener('DOMContentLoaded', function () {
+            const mainCheckbox = document.querySelector('#ex1 input[type="checkbox"]');
+            const checkboxes = document.querySelectorAll('#ex1 ul input[type="checkbox"]');
 
-            onCheckboxValueChange = event => {
-              if (event.target == this.mainCheckbox) {
-                this.updateControlledCheckboxes()
-              }
-              this.updateControllerCheckbox()
-              this.updateClasses(event.target)
-            }
+            mainCheckbox.addEventListener('change', function () {
+              checkboxes.forEach(checkbox => checkbox.checked = mainCheckbox.checked);
+              mainCheckbox.indeterminate = false;
+            });
 
-            updateControlledCheckboxes() {
-              const stateCheckedCount = this.countCheckedInState()
-              for (let checkbox of this.checkboxes) {
-                let value = false
-                if (this.mainCheckboxState == 'enabled') {
-                  value = false
-                }
-                else if (this.mainCheckboxState == 'mixed') {
-                  value = true
-                  this.state[checkbox.id] = checkbox.checked
-                }
-                else {
-                  value = stateCheckedCount > 0 ? this.state[checkbox.id] : true
-                }
-                checkbox.checked = value
-              }
-            }
+            checkboxes.forEach(checkbox => {
+              checkbox.addEventListener('change', function () {
+                updateMainCheckbox();
+              });
+            });
 
-            updateClasses(checkbox) {
-              checkbox.className = 'checkbox'
-              if (event.target.indeterminate) {
-                checkbox.className += ' mixed'
-              }
-              else if (event.target.checked) {
-                checkbox.className += ' checked'
-              }
-            }
+            function updateMainCheckbox() {
+              const allChecked = [...checkboxes].every(checkbox => checkbox.checked);
+              const allUnchecked = [...checkboxes].every(checkbox => !checkbox.checked);
 
-            updateControllerCheckbox() {
-              const checkedCount = this.countChecked()
-              this.mainCheckbox.checked = (checkedCount == this.checkboxes.length)
-              this.mainCheckbox.indeterminate = (0 != checkedCount && checkedCount < this.checkboxes.length)
-              this.setMainCheckboxState()
+              mainCheckbox.checked = allChecked;
+              mainCheckbox.indeterminate = !allChecked && !allUnchecked;
             }
-
-            countChecked() {
-              let checkedCount = 0
-              for (let checkbox of this.checkboxes) {
-                checkedCount += (checkbox.checked)
-              }
-              return checkedCount
-            }
-
-            countCheckedInState() {
-              let checkedCount = 0
-              for (let key of Object.keys(this.state)) {
-                checkedCount += (this.state[key])
-              }
-              return checkedCount
-            }
-
-            setMainCheckboxState() {
-              if (this.mainCheckbox.indeterminate) {
-                this.mainCheckboxState = 'mixed'
-              }
-              else if (this.mainCheckbox.checked) {
-                this.mainCheckboxState = 'enabled'
-              }
-              else {
-                this.mainCheckboxState = 'disabled'
-              }
-            }
-
-          }('ex1')
+          });
         </script>
       </div>
     </div>
@@ -202,155 +138,46 @@
         </li>
       </div>
       <script>
-        new class {
-          constructor(wrapperID) {
-            const wrapper = document.getElementById(wrapperID)
-            const checkboxes = Array.from(wrapper.getElementsByClassName('checkbox'))
-            this.mainCheckbox = checkboxes[0]
-            this.checkboxes = checkboxes.slice(1)
-            this.state = {}
-            for (let checkbox of this.checkboxes) {
-              this.state[checkbox.id] = this.isChecked(checkbox)
-            }
-            this.mainCheckboxState = 'false'
-            this.mainCheckbox.setAttribute('aria-controls', this.checkboxes.map(checkbox => checkbox.id).join(' '))
-            wrapper.addEventListener('blur', this.onBlur)
-            wrapper.addEventListener('focus', this.onFocus)
-            wrapper.addEventListener('click', this.onClick)
-            wrapper.addEventListener('keydown', this.onKeyDown)
-          }
+        document.addEventListener('DOMContentLoaded', function () {
+          const wrapper = document.getElementById('ex2');
+          const mainCheckbox = wrapper.querySelector('li > span.checkbox');
+          const childCheckboxes = wrapper.querySelectorAll('ul ul > li > span.checkbox'); // Selecting checkboxes inside the nested ul
 
-          onBlur(event) {
-            event.target.classList.remove('focus')
-          }
-
-          onFocus(event) {
-            event.target.classList.add('focus')
-          }
-
-          onClick = event => {
-            if (!this.hasModifiers(event)) {
-              this.toggleCheckbox(event.target)
+          function setAriaChecked(element, state) {
+            if (typeof state === 'boolean') {
+              element.setAttribute('aria-checked', state ? 'true' : 'false');
+            } else {
+              element.setAttribute('aria-checked', state);
             }
           }
 
-          onKeyDown = event => {
-            if (this.hasModifiers(event)) {
-              return // nothing to do
-            }
-            switch (event.key) {
-              case ' ':
-              case 'Enter':
-                this.toggleCheckbox(event.target)
-              default:
-                return // nothing to do
-            }
-            event.stopPropagation()
-            event.preventDefault()
-          }
+          function updateMainCheckboxState() {
+            const allChecked = [...childCheckboxes].every(c => c.getAttribute('aria-checked') === 'true');
+            const anyChecked = [...childCheckboxes].some(c => c.getAttribute('aria-checked') === 'true');
 
-          toggleCheckbox(checkbox) {
-            this.setChecked(checkbox)
-            if (checkbox == this.mainCheckbox) {
-              this.updateControlledCheckboxes()
-            }
-            this.updateControllerCheckbox()
-            this.updateClasses(event.target)
-            event.target.focus()
-          }
-
-          updateControlledCheckboxes() {
-            const stateCheckedCount = this.countCheckedInState()
-            for (let checkbox of this.checkboxes) {
-              let value = false
-              if (this.mainCheckboxState == 'true') {
-                value = false
-              }
-              else if (this.mainCheckboxState == 'mixed') {
-                value = true
-                this.state[checkbox.id] = this.isChecked(checkbox)
-              }
-              else {
-                value = stateCheckedCount > 0 ? this.state[checkbox.id] : true
-              }
-              checkbox.setAttribute('aria-checked', value.toString())
+            if (allChecked) {
+              setAriaChecked(mainCheckbox, true);
+            } else if (anyChecked) {
+              setAriaChecked(mainCheckbox, 'mixed');
+            } else {
+              setAriaChecked(mainCheckbox, false);
             }
           }
 
-          updateClasses(checkbox) {
-            checkbox.className = 'checkbox'
-            if (event.target.getAttribute('aria-checked') == 'mixed') {
-              checkbox.className += ' mixed'
-            }
-            else if (this.isChecked(event.target)) {
-              checkbox.className += ' checked'
-            }
-          }
+          mainCheckbox.addEventListener('click', function () {
+            const newState = mainCheckbox.getAttribute('aria-checked') !== 'true';
+            setAriaChecked(mainCheckbox, newState);
+            childCheckboxes.forEach(checkbox => setAriaChecked(checkbox, newState));
+          });
 
-          updateControllerCheckbox() {
-            const checkedCount = this.countChecked()
-            if (checkedCount == this.checkboxes.length) {
-              this.mainCheckbox.setAttribute('aria-checked', 'true')
-            }
-            else if (checkedCount > 0 && checkedCount < this.checkboxes.length) {
-              this.mainCheckbox.setAttribute('aria-checked', 'mixed')
-            }
-            else {
-              this.mainCheckbox.setAttribute('aria-checked', 'false')
-            }
-            this.setMainCheckboxState()
-          }
-
-          countChecked() {
-            let checkedCount = 0
-            for (let checkbox of this.checkboxes) {
-              checkedCount += (this.isChecked(checkbox))
-            }
-            return checkedCount
-          }
-
-          countCheckedInState() {
-            let checkedCount = 0
-            for (let key of Object.keys(this.state)) {
-              checkedCount += (this.state[key])
-            }
-            return checkedCount
-          }
-
-          isChecked(checkbox) {
-            return checkbox.getAttribute('aria-checked') == 'true'
-          }
-
-          setChecked(checkbox) {
-            const state = checkbox.getAttribute('aria-checked')
-            if (state == 'true') {
-              checkbox.setAttribute('aria-checked', 'false')
-            }
-            else if (state == 'false') {
-              if (checkbox.hasAttribute('aria-controls') && this.countCheckedInState() > 0) {
-                checkbox.setAttribute('aria-checked', 'mixed')
-              }
-              else {
-                checkbox.setAttribute('aria-checked', 'true')
-              }
-            }
-            else {
-              checkbox.setAttribute('aria-checked', 'true')
-            }
-          }
-
-          setMainCheckboxState() {
-            this.mainCheckboxState = this.mainCheckbox.getAttribute('aria-checked')
-          }
-
-          hasModifiers(event) {
-            return event.altKey
-              || event.ctrlKey
-              || event.metaKey
-              || event.shiftKey
-          }
-
-        }('ex2')
+          childCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function () {
+              const newState = checkbox.getAttribute('aria-checked') !== 'true';
+              setAriaChecked(checkbox, newState);
+              updateMainCheckboxState();
+            });
+          });
+        });
       </script>
     </div>
     </div>
@@ -382,101 +209,47 @@
         </ul>
       </div>
       <script>
-        new class {
-          constructor(wrapperID) {
-            const wrapper = document.getElementById(wrapperID);
-            const checkboxes = Array.from(wrapper.getElementsByClassName('checkbox1'));
-            this.mainCheckbox = checkboxes[0];
-            this.checkboxes = checkboxes.slice(1);
-            this.state = {};
-            for (let checkbox of this.checkboxes) {
-              this.state[checkbox.id] = this.isChecked(checkbox);
-              this.updateCheckboxAttribute(checkbox, this.state[checkbox.id]);
-            }
-            wrapper.addEventListener('click', this.onClick.bind(this));
-            wrapper.addEventListener('keydown', this.onKeyDown.bind(this));
-            this.updateControllerCheckbox(); // Initialize the main checkbox state
+        document.addEventListener('DOMContentLoaded', function () {
+          const wrapper = document.getElementById('ex3');
+          const mainCheckbox = wrapper.querySelector('.checkbox1:first-child');
+          // Selecting child checkboxes more specifically
+          const childCheckboxes = wrapper.querySelectorAll('ul > li > ul > li > span.checkbox1');
+
+          function setCheckboxState(checkbox, state) {
+            checkbox.setAttribute('data-checked', state ? 'true' : 'false');
           }
 
-          onClick(event) {
-            console.log("Element clicked:", event.target);
-            if (event.target.classList.contains('checkbox1') && !this.hasModifiers(event)) {
-              console.log("Checkbox clicked!"); // This will log if a checkbox is clicked
-              this.toggleCheckbox(event.target);
-            }
+          function toggleCheckboxState(checkbox) {
+            const currentState = checkbox.getAttribute('data-checked') === 'true';
+            setCheckboxState(checkbox, !currentState);
           }
 
-          toggleCheckbox(checkbox) {
-            this.setChecked(checkbox);
-            this.updateState(checkbox);
-            if (checkbox === this.mainCheckbox) {
-              this.updateControlledCheckboxes();
-            }
-            this.updateControllerCheckbox();
-          }
+          function updateMainCheckboxState() {
+            const allChecked = [...childCheckboxes].every(cb => cb.getAttribute('data-checked') === 'true');
+            const anyChecked = [...childCheckboxes].some(cb => cb.getAttribute('data-checked') === 'true');
 
-          updateControlledCheckboxes() {
-            const stateCheckedCount = this.countCheckedInState();
-            for (let checkbox of this.checkboxes) {
-              let value = false;
-              if (this.mainCheckbox.getAttribute('data-checked') === 'true') {
-                value = true;
-              } else if (this.mainCheckbox.getAttribute('data-checked') === 'mixed') {
-                value = this.state[checkbox.id];
-              } else {
-                value = stateCheckedCount > 0 ? this.state[checkbox.id] : false;
-              }
-              this.updateCheckboxAttribute(checkbox, value);
-            }
-          }
-
-          updateControllerCheckbox() {
-            const checkedCount = this.countChecked();
-            if (checkedCount === this.checkboxes.length) {
-              this.updateCheckboxAttribute(this.mainCheckbox, true);
-            } else if (checkedCount > 0 && checkedCount < this.checkboxes.length) {
-              this.mainCheckbox.setAttribute('data-checked', 'mixed');
+            if (allChecked) {
+              setCheckboxState(mainCheckbox, true);
+            } else if (anyChecked) {
+              mainCheckbox.setAttribute('data-checked', 'mixed');
             } else {
-              this.updateCheckboxAttribute(this.mainCheckbox, false);
+              setCheckboxState(mainCheckbox, false);
             }
           }
 
-          countChecked() {
-            return this.checkboxes.filter(checkbox => this.isChecked(checkbox)).length;
-          }
+          mainCheckbox.addEventListener('click', function () {
+            toggleCheckboxState(mainCheckbox);
+            const newState = mainCheckbox.getAttribute('data-checked') === 'true';
+            childCheckboxes.forEach(cb => setCheckboxState(cb, newState));
+          });
 
-          countCheckedInState() {
-            return Object.values(this.state).filter(value => value).length;
-          }
-
-          isChecked(checkbox) {
-            return checkbox.getAttribute('data-checked') === 'true';
-          }
-
-          setChecked(checkbox) {
-            const state = checkbox.getAttribute('data-checked');
-            if (state === 'true') {
-              this.updateCheckboxAttribute(checkbox, false);
-            } else if (state === 'false' || state === 'mixed') {
-              this.updateCheckboxAttribute(checkbox, true);
-            }
-          }
-
-          updateState(checkbox) {
-            if (checkbox !== this.mainCheckbox) {
-              this.state[checkbox.id] = this.isChecked(checkbox);
-            }
-          }
-
-          updateCheckboxAttribute(checkbox, value) {
-            checkbox.setAttribute('data-checked', value.toString());
-          }
-
-          hasModifiers(event) {
-            return event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
-          }
-
-        }('ex3');
+          childCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function () {
+              toggleCheckboxState(checkbox);
+              updateMainCheckboxState();
+            });
+          });
+        });
       </script>
 
 

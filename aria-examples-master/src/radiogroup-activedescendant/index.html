@@ -16,7 +16,8 @@
 
 	<section class="saharian-debug-correct">
 		<h2 class="saharian-debug-h2">Plain HTML</h2>
-		<p class="help saharian-debug-explanation">This is an accessible radio group implementation that uses native HTML
+		<p class="help saharian-debug-explanation">This is an accessible radio group implementation that uses native
+			HTML
 			elements.</p>
 		<div class="example saharian-debug-flex">
 			<div class="container">
@@ -38,8 +39,8 @@
 			specification. This implementation leverages the "active descendant" technique.</p>
 		<div class="example saharian-debug-flex">
 			<div class="container">
-				<div id="rg1b" class="radiogroup" role="radiogroup" aria-activedescendant="rg1br1" aria-labelledby="rg1b-title"
-					tabindex="0">
+				<div id="rg1b" class="radiogroup" role="radiogroup" aria-activedescendant="rg1br1"
+					aria-labelledby="rg1b-title" tabindex="0">
 					<h3 id="rg1b-title">Steak doneness:</h3>
 					<span id="rg1br1" class="radio" role="radio" aria-checked="false" tabindex="-1">rare</span>
 					<span id="rg1br2" class="radio" role="radio" aria-checked="false" tabindex="-1">medium-rare</span>
@@ -47,84 +48,35 @@
 					<span id="rg1br4" class="radio" role="radio" aria-checked="false" tabindex="-1">medium-well</span>
 					<span id="rg1br5" class="radio" role="radio" aria-checked="false" tabindex="-1">well-done</span>
 				</div>
+
 				<script>
-					new class {
-						constructor(elementId) {
-							this.element = document.getElementById(elementId)
-							this.element.addEventListener('blur', this.onBlur)
-							this.element.addEventListener('focus', this.onFocus)
-							this.element.addEventListener('click', this.onClick)
-							this.element.addEventListener('keydown', this.onKeyDown)
-							this.currentRadio = null
-							this.radios = [...this.element.querySelectorAll('.radio')]
-						}
+					document.addEventListener('DOMContentLoaded', () => {
+						const radioGroup = document.getElementById('rg1b');
+						const radios = Array.from(radioGroup.querySelectorAll('.radio'));
+						let currentSelectedIndex = 0;
 
-						onBlur(event) {
-							event.target.classList.remove('focus')
-						}
-
-						onFocus(event) {
-							event.target.classList.add('focus')
-						}
-
-						onClick = event => {
-							if (!this.hasModifiers(event)) {
-								const radioIndex = this.radios.indexOf(event.target)
-								this.selectRadio(radioIndex)
+						radioGroup.addEventListener('keydown', (e) => {
+							if (['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+								e.preventDefault();
+								currentSelectedIndex = (currentSelectedIndex + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1) + radios.length) % radios.length;
+								selectRadio(currentSelectedIndex);
 							}
+						});
+
+						radios.forEach((radio, index) => {
+							radio.addEventListener('click', () => selectRadio(index));
+						});
+
+						function selectRadio(index) {
+							radios.forEach((radio, idx) => {
+								radio.setAttribute('aria-checked', idx === index);
+								radio.classList.toggle('checked', idx === index);
+							});
+							radioGroup.setAttribute('aria-activedescendant', radios[index].id);
 						}
 
-						onKeyDown = event => {
-							if (this.hasModifiers(event)) {
-								return // nothing to do
-							}
-							const currentRadioIndex = (this.currentRadio) ? this.radios.indexOf(this.currentRadio) : 0
-							switch (event.key) {
-								case 'ArrowDown':
-								case 'ArrowRight':
-									this.selectNextRadio(currentRadioIndex)
-									break
-								case 'ArrowUp':
-								case 'ArrowLeft':
-									this.selectPreviousRadio(currentRadioIndex)
-									break
-								default:
-									return // nothing to do
-							}
-							event.stopPropagation()
-							event.preventDefault()
-						}
-
-						selectNextRadio(index) {
-							const nextIndex = (index + 1) % this.radios.length
-							this.selectRadio(nextIndex)
-						}
-
-						selectPreviousRadio(index) {
-							const prevIndex = (this.radios.length + index - 1) % this.radios.length
-							this.selectRadio(prevIndex)
-						}
-
-						selectRadio(index) {
-							if (this.currentRadio !== null) {
-								this.currentRadio.classList.remove('checked')
-								this.currentRadio.setAttribute('aria-checked', 'false')
-							}
-							this.currentRadio = this.radios[index]
-							this.currentRadio.classList.add('checked')
-							this.currentRadio.setAttribute('aria-checked', 'true')
-							this.element.setAttribute('aria-activedescendant', this.currentRadio.id)
-							this.element.focus()
-						}
-
-						hasModifiers(event) {
-							return event.altKey
-								|| event.ctrlKey
-								|| event.metaKey
-								|| event.shiftKey
-						}
-
-					}('rg1b')
+						selectRadio(currentSelectedIndex); // Initialize selection
+					});
 				</script>
 			</div>
 		</div>

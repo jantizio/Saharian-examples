@@ -47,20 +47,37 @@ input[type="range"]::-moz-range-thumb {
 
 .slider-track {
   width: 200px;
-  height: 5px;
-  background-color: #ccc;
+  height: 10px;
+  /* Increased height for a thicker track */
+  background-color: white;
+  /* Set the track color to white */
   position: relative;
-  margin: 10px 0;
+  margin: 20px 0;
+  /* More vertical space around the slider */
+  border-radius: 5px;
+  /* Rounded corners for the track */
+  border: 1px solid #ccc;
+  /* Add a light grey border to distinguish the track */
 }
 
+
 .slider-thumb {
-  width: 10px;
-  height: 10px;
-  background-color: #333;
+  width: 20px;
+  /* Larger thumb for easier grabbing */
+  height: 20px;
+  /* Larger thumb for easier grabbing */
+  background-color: #f6b681;
+  /* Peachy color like in the image */
   border-radius: 50%;
+  /* Circular thumb */
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  /* Initial position - can be set using JavaScript */
+  transform: translateY(-50%) translateX(-50%);
+  /* Center the thumb on the track */
   left: 50%;
+  /* Adjust this value with JavaScript to represent the slider value */
+  cursor: pointer;
+  /* Cursor indicates the thumb is draggable */
+  border: none;
+  /* No border for the thumb in the image */
 }

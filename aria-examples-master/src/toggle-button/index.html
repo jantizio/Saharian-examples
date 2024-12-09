@@ -58,60 +58,26 @@
       <div class="container">
         <span id="toggle2" class="toggleButton" role="button" aria-pressed="false" tabindex="0">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
-              this.element.addEventListener('keydown', this.onKeyDown)
-            }
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle2');
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
+            toggleButton.addEventListener('click', () => {
+              toggleState(toggleButton);
+            });
 
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
+            toggleButton.addEventListener('keydown', (event) => {
+              if (event.key === ' ' || event.key === 'Enter') {
+                toggleState(toggleButton);
+                event.preventDefault();
               }
-            }
+            });
 
-            onKeyDown = event => {
-              if (this.hasModifiers(event)) {
-                return // nothing to do
-              }
-              switch (event.key) {
-                case 'Spacebar':
-                case 'Enter':
-                  this.toggle()
-                  break
-                default:
-                  return // nothing to do
-              }
-              event.stopPropagation()
-              event.preventDefault()
+            function toggleState(button) {
+              const isPressed = button.getAttribute('aria-pressed') === 'true';
+              button.setAttribute('aria-pressed', String(!isPressed));
+              button.classList.toggle('pressed', !isPressed);
             }
-
-            toggle() {
-              const flag = this.element.classList.toggle('pressed')
-              this.element.classList.add('focus')
-              this.element.setAttribute('aria-pressed', flag.toString())
-              this.element.focus()
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle2')
+          });
         </script>
       </div>
     </div>
@@ -128,60 +94,26 @@
       <div class="container">
         <span id="toggle3" class="toggleButton" role="button" aria-checked="false" tabindex="0">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
-              this.element.addEventListener('keydown', this.onKeyDown)
-            }
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle3');
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
+            toggleButton.addEventListener('click', () => {
+              toggleState(toggleButton);
+            });
 
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
+            toggleButton.addEventListener('keydown', (event) => {
+              if (event.key === ' ' || event.key === 'Enter') {
+                toggleState(toggleButton);
+                event.preventDefault();
               }
-            }
+            });
 
-            onKeyDown = event => {
-              if (this.hasModifiers(event)) {
-                return // nothing to do
-              }
-              switch (event.key) {
-                case 'Spacebar':
-                case 'Enter':
-                  this.toggle()
-                  break
-                default:
-                  return // nothing to do
-              }
-              event.stopPropagation()
-              event.preventDefault()
+            function toggleState(button) {
+              const isChecked = button.getAttribute('aria-checked') === 'true';
+              button.setAttribute('aria-checked', String(!isChecked));
+              button.classList.toggle('pressed', !isChecked);
             }
-
-            toggle() {
-              const flag = this.element.classList.toggle('pressed')
-              this.element.classList.add('focus')
-              this.element.setAttribute('aria-checked', flag.toString())
-              this.element.focus()
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle3')
+          });
         </script>
       </div>
     </div>
@@ -197,58 +129,22 @@
       <div class="container">
         <span id="toggle4" class="toggleButton static" role="button" aria-pressed="false">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
-              this.element.addEventListener('keydown', this.onKeyDown)
-            }
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle4');
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
+            toggleButton.addEventListener('click', () => {
+              toggleButton.classList.toggle('pressed');
+              toggleButton.classList.add('focus');
+            });
 
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
+            toggleButton.addEventListener('keydown', (event) => {
+              if (event.key === ' ' || event.key === 'Enter') {
+                toggleButton.classList.toggle('pressed');
+                toggleButton.classList.add('focus');
+                event.preventDefault();
               }
-            }
-
-            onKeyDown = event => {
-              if (this.hasModifiers(event)) {
-                return // nothing to do
-              }
-              switch (event.key) {
-                case 'Spacebar':
-                case 'Enter':
-                  this.toggle()
-                  break
-                default:
-                  return // nothing to do
-              }
-              event.stopPropagation()
-              event.preventDefault()
-            }
-
-            toggle() {
-              this.element.classList.toggle('pressed')
-              this.element.classList.add('focus')
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle4')
+            });
+          });
         </script>
       </div>
     </div>
@@ -264,61 +160,27 @@
       <div class="container">
         <span id="toggle5" class="toggleButton" role="button" aria-pressed="false" tabindex="0">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
-              this.element.addEventListener('keydown', this.onKeyDown)
-            }
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle5');
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
+            toggleButton.addEventListener('click', () => {
+              toggleState(toggleButton);
+            });
 
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
+            toggleButton.addEventListener('keydown', (event) => {
+              if (event.key === ' ' || event.key === 'Enter') {
+                toggleState(toggleButton);
+                event.preventDefault();
               }
-            }
+            });
 
-            onKeyDown = event => {
-              if (this.hasModifiers(event)) {
-                return // nothing to do
-              }
-              switch (event.key) {
-                case 'Spacebar':
-                case 'Enter':
-                  this.toggle()
-                  break
-                default:
-                  return // nothing to do
-              }
-              event.stopPropagation()
-              event.preventDefault()
+            function toggleState(button) {
+              const isPressed = button.getAttribute('aria-pressed') === 'true';
+              button.setAttribute('aria-pressed', String(!isPressed));
+              button.classList.toggle('pressed', !isPressed);
+              button.innerText = isPressed ? "Mute audio" : "Unmute audio";
             }
-
-            toggle() {
-              const flag = this.element.classList.toggle('pressed')
-              this.element.innerText = (flag) ? "Unmute audio" : "Mute audio"
-              this.element.classList.add('focus')
-              this.element.setAttribute('aria-pressed', flag.toString())
-              this.element.focus()
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle5')
+          });
         </script>
       </div>
     </div>
@@ -335,43 +197,15 @@
       <div class="container">
         <span id="toggle6" class="toggleButton" role="button" aria-pressed="false">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
-            }
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle6');
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
-
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
-              }
-            }
-
-            toggle() {
-              const flag = this.element.classList.toggle('pressed')
-              this.element.classList.add('focus')
-              this.element.setAttribute('aria-pressed', flag.toString())
-              this.element.focus()
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle6')
+            toggleButton.addEventListener('click', () => {
+              const isPressed = toggleButton.getAttribute('aria-pressed') === 'true';
+              toggleButton.classList.toggle('pressed', !isPressed);
+              toggleButton.setAttribute('aria-pressed', String(!isPressed));
+            });
+          });
         </script>
       </div>
     </div>
@@ -387,43 +221,35 @@
       <div class="container">
         <span id="toggle7" class="toggleButton">Mute audio</span>
         <script>
-          new class {
-            constructor(elementId) {
-              this.element = document.getElementById(elementId)
-              this.element.addEventListener('blur', this.onBlur)
-              this.element.addEventListener('focus', this.onFocus)
-              this.element.addEventListener('click', this.onClick)
+          document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('toggle7');
+
+            toggleButton.addEventListener('blur', (event) => {
+              event.target.classList.remove('focus');
+            });
+
+            toggleButton.addEventListener('focus', (event) => {
+              event.target.classList.add('focus');
+            });
+
+            toggleButton.addEventListener('click', () => {
+              const isPressed = toggleButton.getAttribute('aria-pressed') === 'true';
+              toggleButton.classList.toggle('pressed', !isPressed);
+              toggleButton.setAttribute('aria-pressed', String(!isPressed));
+              toggleButton.classList.add('focus');
+            });
+
+            function hasModifiers(event) {
+              return event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
             }
 
-            onBlur(event) {
-              event.target.classList.remove('focus')
-            }
-
-            onFocus(event) {
-              event.target.classList.add('focus')
-            }
-
-            onClick = event => {
-              if (!this.hasModifiers(event)) {
-                this.toggle()
+            toggleButton.addEventListener('keydown', (event) => {
+              if (event.key === ' ' || event.key === 'Enter' && !hasModifiers(event)) {
+                toggleButton.click();
+                event.preventDefault();
               }
-            }
-
-            toggle() {
-              const flag = this.element.classList.toggle('pressed')
-              this.element.classList.add('focus')
-              this.element.setAttribute('aria-pressed', flag.toString())
-              this.element.focus()
-            }
-
-            hasModifiers(event) {
-              return event.altKey
-                || event.ctrlKey
-                || event.metaKey
-                || event.shiftKey
-            }
-
-          }('toggle7')
+            });
+          });
         </script>
       </div>
     </div>
