@@ -1,156 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Alertdialog examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Alertdialog examples</title>
-  <link rel="stylesheet" href="../common/example.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
-</head>
+  <body>
+    <h1 class="saharian-debug-h1">Alertdialog examples</h1>
+    <p>
+      Here you can find different alertdialog examples with various
+      accessibility degrees, implemented both by using native HTML Elements and
+      attributes from the WAI-ARIA specification.
+    </p>
 
-<body>
-  <h1 class="saharian-debug-h1">Alertdialog examples</h1>
-  <p>Here you can find different alertdialog examples with various accessibility degrees, implemented both by using
-	native HTML Elements and attributes from the WAI-ARIA specification.</p>
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain Javascript & HTML</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct alertdialog implemented by taking advantage of
+        attributes from the WAI-ARIA specification. Note that the correct
+        keyboard support is provided by taking advantage of behaviors
+        implemented by native HTML elements.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <p>
+            You have entered step <span id="counter1">1</span> of the procedure.
+          </p>
+          <button onclick="continue1()">Continue to next step</button>
+          <script>
+            function continue1() {
+              if (confirm("Do you want to continue?")) {
+                let el = document.getElementById("counter1");
+                el.innerHTML = parseInt(el.innerHTML) + 1;
+              }
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
-  <section class="saharian-debug-correct">
-	<h2 class="saharian-debug-h2">Plain Javascript & HTML</h2>
-	<p class="help saharian-debug-explanation">
-	  This is a correct alertdialog implemented by taking advantage of attributes from the WAI-ARIA
-	  specification. Note that the correct keyboard support is provided by taking advantage of behaviors implemented by
-	  native HTML elements.
-	</p>
-	<div class="example saharian-debug-flex">
-	  <div class="container">
-	  	<p>You have entered step <span id="counter1">1</span> of the procedure.</p>
-		<button onclick="continue1()">Continue to next step</button>
-		<script>
-			function continue1() {
-				if (confirm("Do you want to continue?") ) {
-					let el = document.getElementById('counter1')
-					el.innerHTML = parseInt(el.innerHTML)+1
-				} 
-			}
-		</script>
-	  </div>
-	</div>
-  </section>
-
-  <section class="saharian-debug-correct">
-	<h2 class="saharian-debug-h2">Correct alertdialog</h2>
-	<p class="help saharian-debug-explanation">
-	  This is a correct alertdialog implemented by taking advantage of attributes from the WAI-ARIA
-	  specification. Note that the correct keyboard support is provided by taking advantage of behaviors implemented by
-	  native HTML elements.
-	</p>
-	<div class="example saharian-debug-flex">
-	  <div class="container">
-	  	<p>You have entered step <span id="counter2">1</span> of the procedure.</p>
-		<button onclick="continue2()" aria-controls="alertdialog2" >Continue to next step</button>
-		<div id="alertdialog2" class="alertdialog"
-			 role="alertdialog" aria-labelledby="alertdialog2title" aria-describedby="alertdialog2help">
-			<p id="alertdialog2title" class="alertdialog-title">Do you want to continue?</p>
-			<p id="alertdialog2help" class="alertdialog-help">
-				By clicking on 'Ok', the step counter will be incremented. 
-			</p>
-			<div class="buttonContainer">
-				<button onclick="refuse2()">Cancel</button>
-				<button onclick="confirm2()">Ok</button>
-			</div>
-		</div>
-		<script>
-			function continue2() {
-				document.getElementById('alertdialog2').style.display= 'initial'
-			}
-			function refuse2() {
-				document.getElementById('alertdialog2').style.display= 'none'
-			}
-			function confirm2() {
-				let el = document.getElementById('counter2')
-				el.innerHTML = parseInt(el.innerHTML)+1
-				document.getElementById('alertdialog2').style.display= 'none'
-			}
-		</script>
-	  </div>
-	</div>
-  </section>
-  
-    <section class="saharian-debug-wrong">
-	<h2 class="saharian-debug-h2">Incorrect alertdialog</h2>
-	<p class="help saharian-debug-explanation">
-		An incorrect alert dialog with no aria-controls specified. 
-	</p>
-	<div class="example saharian-debug-flex">
-	  <div class="container">
-	  	<p>You have entered step <span id="counter3">1</span> of the procedure.</p>
-		<button onclick="continue3()">Continue to next step</button>
-		<div id="alertdialog3" class="alertdialog"
-			 role="alertdialog" aria-labelledby="alertdialog3title" aria-describedby="alertdialog3help">
-			<p id="alertdialog3title" class="alertdialog-title">Do you want to continue?</p>
-			<p id="alertdialog3help" class="alertdialog-help">
-				By clicking on 'Ok', the step counter will be incremented. 
-			</p>
-			<div class="buttonContainer">
-				<button onclick="refuse3()">Cancel</button>
-				<button onclick="confirm3()">Ok</button>
-			</div>
-		</div>
-		<script>
-			function continue3() {
-				document.getElementById('alertdialog3').style.display= 'initial'
-			}
-			function refuse3() {
-				document.getElementById('alertdialog3').style.display= 'none'
-			}
-			function confirm3() {
-				let el = document.getElementById('counter3')
-				el.innerHTML = parseInt(el.innerHTML)+1
-				document.getElementById('alertdialog3').style.display= 'none'
-			}
-		</script>
-	  </div>
-	</div>
-  </section>
-
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct alertdialog</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct alertdialog implemented by taking advantage of
+        attributes from the WAI-ARIA specification. Note that the correct
+        keyboard support is provided by taking advantage of behaviors
+        implemented by native HTML elements.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <p>
+            You have entered step <span id="counter2">1</span> of the procedure.
+          </p>
+          <button onclick="continue2()" aria-controls="alertdialog2">
+            Continue to next step
+          </button>
+          <div
+            id="alertdialog2"
+            class="alertdialog"
+            role="alertdialog"
+            aria-labelledby="alertdialog2title"
+            aria-describedby="alertdialog2help"
+          >
+            <p id="alertdialog2title" class="alertdialog-title">
+              Do you want to continue?
+            </p>
+            <p id="alertdialog2help" class="alertdialog-help">
+              By clicking on 'Ok', the step counter will be incremented.
+            </p>
+            <div class="buttonContainer">
+              <button onclick="refuse2()">Cancel</button>
+              <button onclick="confirm2()">Ok</button>
+            </div>
+          </div>
+          <script>
+            function continue2() {
+              document.getElementById("alertdialog2").style.display = "initial";
+            }
+            function refuse2() {
+              document.getElementById("alertdialog2").style.display = "none";
+            }
+            function confirm2() {
+              let el = document.getElementById("counter2");
+              el.innerHTML = parseInt(el.innerHTML) + 1;
+              document.getElementById("alertdialog2").style.display = "none";
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
     <section class="saharian-debug-wrong">
-	<h2 class="saharian-debug-h2">Incorrect alertdialog</h2>
-	<p class="help saharian-debug-explanation">
-		An incorrect alert dialog with no ARIA specified. 
-	</p>
-	<div class="example saharian-debug-flex">
-	  <div class="container">
-	  	<p>You have entered step <span id="counter4">1</span> of the procedure.</p>
-		<button onclick="continue4()">Continue to next step</button>
-		<div id="alertdialog4" class="alertdialog">
-			<p id="alertdialog4title" class="alertdialog-title">Do you want to continue?</p>
-			<p id="alertdialog4help" class="alertdialog-help">
-				By clicking on 'Ok', the step counter will be incremented. 
-			</p>
-			<div class="buttonContainer">
-				<button onclick="refuse4()">Cancel</button>
-				<button onclick="confirm4()">Ok</button>
-			</div>
-		</div>
-		<script>
-			function continue4() {
-				document.getElementById('alertdialog4').style.display= 'initial'
-			}
-			function refuse4() {
-				document.getElementById('alertdialog4').style.display= 'none'
-			}
-			function confirm4() {
-				let el = document.getElementById('counter4')
-				el.innerHTML = parseInt(el.innerHTML)+1
-				document.getElementById('alertdialog4').style.display= 'none'
-			}
-		</script>
-	  </div>
-	</div>
-  </section>
-  
-<!--
+      <h2 class="saharian-debug-h2">Incorrect alertdialog</h2>
+      <p class="help saharian-debug-explanation">
+        An incorrect alert dialog with no aria-controls specified.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <p>
+            You have entered step <span id="counter3">1</span> of the procedure.
+          </p>
+          <button onclick="continue3()">Continue to next step</button>
+          <div
+            id="alertdialog3"
+            class="alertdialog"
+            role="alertdialog"
+            aria-labelledby="alertdialog3title"
+            aria-describedby="alertdialog3help"
+          >
+            <p id="alertdialog3title" class="alertdialog-title">
+              Do you want to continue?
+            </p>
+            <p id="alertdialog3help" class="alertdialog-help">
+              By clicking on 'Ok', the step counter will be incremented.
+            </p>
+            <div class="buttonContainer">
+              <button onclick="refuse3()">Cancel</button>
+              <button onclick="confirm3()">Ok</button>
+            </div>
+          </div>
+          <script>
+            function continue3() {
+              document.getElementById("alertdialog3").style.display = "initial";
+            }
+            function refuse3() {
+              document.getElementById("alertdialog3").style.display = "none";
+            }
+            function confirm3() {
+              let el = document.getElementById("counter3");
+              el.innerHTML = parseInt(el.innerHTML) + 1;
+              document.getElementById("alertdialog3").style.display = "none";
+            }
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Incorrect alertdialog</h2>
+      <p class="help saharian-debug-explanation">
+        An incorrect alert dialog with no ARIA specified.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <p>
+            You have entered step <span id="counter4">1</span> of the procedure.
+          </p>
+          <button onclick="continue4()">Continue to next step</button>
+          <div id="alertdialog4" class="alertdialog">
+            <p id="alertdialog4title" class="alertdialog-title">
+              Do you want to continue?
+            </p>
+            <p id="alertdialog4help" class="alertdialog-help">
+              By clicking on 'Ok', the step counter will be incremented.
+            </p>
+            <div class="buttonContainer">
+              <button onclick="refuse4()">Cancel</button>
+              <button onclick="confirm4()">Ok</button>
+            </div>
+          </div>
+          <script>
+            function continue4() {
+              document.getElementById("alertdialog4").style.display = "initial";
+            }
+            function refuse4() {
+              document.getElementById("alertdialog4").style.display = "none";
+            }
+            function confirm4() {
+              let el = document.getElementById("counter4");
+              el.innerHTML = parseInt(el.innerHTML) + 1;
+              document.getElementById("alertdialog4").style.display = "none";
+            }
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!--
   <section class="saharian-debug-correct">
 	<h2 class="saharian-debug-h2">Correct alertdialog</h2>
 	<p class="help saharian-debug-explanation">
@@ -265,7 +294,6 @@
   </section>
 -->
 
-  <script src="../common/example.js"></script>
-</body>
-
+    <script src="../common/example.js"></script>
+  </body>
 </html>
