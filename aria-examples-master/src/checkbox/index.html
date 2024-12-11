@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="utf-8" />
     <title>Checkbox examples</title>
     <link rel="stylesheet" href="../common/example.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="../common/desert-256.png" />
+    <script>
+      const run = (fn) => fn();
+    </script>
   </head>
 
   <body>
@@ -41,29 +43,36 @@
       </p>
       <div class="example saharian-debug-flex">
         <div class="container">
-          <span id="chk1" role="checkbox" aria-checked="false" tabindex="0" class="checkbox">
+          <span
+            id="chk1"
+            role="checkbox"
+            aria-checked="false"
+            tabindex="0"
+            class="checkbox"
+          >
             I am not a robot
           </span>
           <script>
-            const checkbox = document.getElementById("chk1");
+            run(() => {
+              const checkbox = document.getElementById("chk1");
 
-            checkbox.addEventListener("click", toggleCheckbox);
-            checkbox.addEventListener("keydown", keyDownHandler);
+              checkbox.addEventListener("click", toggleCheckbox);
+              checkbox.addEventListener("keydown", keyDownHandler);
 
-            function toggleCheckbox() {
-              console.log("toggleCheckbox");
-              const isChecked =
-                checkbox.getAttribute("aria-checked") === "true";
-              checkbox.setAttribute("aria-checked", !isChecked);
-              checkbox.classList.toggle("checked", !isChecked);
-            }
-
-            function keyDownHandler(event) {
-              if (event.key === " " || event.key === "Enter") {
-                event.preventDefault();
-                toggleCheckbox();
+              function toggleCheckbox() {
+                const isChecked =
+                  checkbox.getAttribute("aria-checked") === "true";
+                checkbox.setAttribute("aria-checked", !isChecked);
+                checkbox.classList.toggle("checked", !isChecked);
               }
-            }
+
+              function keyDownHandler(event) {
+                if (event.key === " " || event.key === "Enter") {
+                  event.preventDefault();
+                  toggleCheckbox();
+                }
+              }
+            });
           </script>
         </div>
       </div>
@@ -90,16 +99,18 @@
             I am not a robot
           </span>
           <script>
-            const checkbox2 = document.getElementById("chk2");
+            run(() => {
+              const checkbox2 = document.getElementById("chk2");
 
-            checkbox2.addEventListener("click", toggleCheckbox);
+              checkbox2.addEventListener("click", toggleCheckbox);
 
-            function toggleCheckbox() {
-              const isChecked =
-                checkbox2.getAttribute("aria-checked") === "true";
-              checkbox2.setAttribute("aria-checked", !isChecked);
-              checkbox2.classList.toggle("checked", !isChecked);
-            }
+              function toggleCheckbox() {
+                const isChecked =
+                  checkbox2.getAttribute("aria-checked") === "true";
+                checkbox2.setAttribute("aria-checked", !isChecked);
+                checkbox2.classList.toggle("checked", !isChecked);
+              }
+            });
           </script>
         </div>
       </div>
@@ -117,26 +128,35 @@
       </p>
       <div class="example saharian-debug-flex">
         <div class="container">
-          <span id="chk3" role="checkbox" aria-selected="false" tabindex="0" class="checkbox">I am not a robot</span>
+          <span
+            id="chk3"
+            role="checkbox"
+            aria-selected="false"
+            tabindex="0"
+            class="checkbox"
+            >I am not a robot</span
+          >
           <script>
-            const checkbox3 = document.getElementById("chk3");
+            run(() => {
+              const checkbox3 = document.getElementById("chk3");
 
-            checkbox3.addEventListener("click", toggleCheckbox);
-            checkbox3.addEventListener("keydown", keyDownHandler);
+              checkbox3.addEventListener("click", toggleCheckbox);
+              checkbox3.addEventListener("keydown", keyDownHandler);
 
-            function toggleCheckbox() {
-              const isSelected =
-                checkbox3.getAttribute("aria-selected") === "true";
-              checkbox3.setAttribute("aria-selected", String(!isSelected));
-              checkbox3.classList.toggle("checked", !isSelected);
-            }
-
-            function keyDownHandler(event) {
-              if (event.key === " " || event.key === "Enter") {
-                event.preventDefault();
-                toggleCheckbox();
+              function toggleCheckbox() {
+                const isSelected =
+                  checkbox3.getAttribute("aria-selected") === "true";
+                checkbox3.setAttribute("aria-selected", String(!isSelected));
+                checkbox3.classList.toggle("checked", !isSelected);
               }
-            }
+
+              function keyDownHandler(event) {
+                if (event.key === " " || event.key === "Enter") {
+                  event.preventDefault();
+                  toggleCheckbox();
+                }
+              }
+            });
           </script>
         </div>
       </div>
@@ -150,23 +170,27 @@
       </p>
       <div class="example saharian-debug-flex">
         <div class="container">
-          <span id="chk4" role="checkbox" tabindex="0" class="checkbox">I am not a robot</span>
+          <span id="chk4" role="checkbox" tabindex="0" class="checkbox"
+            >I am not a robot</span
+          >
           <script>
-            const checkbox4 = document.getElementById("chk4");
+            run(() => {
+              const checkbox4 = document.getElementById("chk4");
 
-            checkbox4.addEventListener("click", toggleCheckbox);
-            checkbox4.addEventListener("keydown", keyDownHandler);
+              checkbox4.addEventListener("click", toggleCheckbox);
+              checkbox4.addEventListener("keydown", keyDownHandler);
 
-            function toggleCheckbox() {
-              checkbox4.classList.toggle("checked");
-            }
-
-            function keyDownHandler(event) {
-              if (event.key === " " || event.key === "Enter") {
-                event.preventDefault();
-                toggleCheckbox();
+              function toggleCheckbox() {
+                checkbox4.classList.toggle("checked");
               }
-            }
+
+              function keyDownHandler(event) {
+                if (event.key === " " || event.key === "Enter") {
+                  event.preventDefault();
+                  toggleCheckbox();
+                }
+              }
+            });
           </script>
         </div>
       </div>
@@ -183,13 +207,15 @@
         <div class="container">
           <span id="chk5" class="checkbox">I am not a robot</span>
           <script>
-            const checkbox5 = document.getElementById("chk5");
+            run(() => {
+              const checkbox5 = document.getElementById("chk5");
 
-            checkbox5.addEventListener("click", toggleCheckbox);
+              checkbox5.addEventListener("click", toggleCheckbox);
 
-            function toggleCheckbox() {
-              checkbox5.classList.toggle("checked");
-            }
+              function toggleCheckbox() {
+                checkbox5.classList.toggle("checked");
+              }
+            });
           </script>
         </div>
       </div>
@@ -197,5 +223,4 @@
 
     <script src="../common/example.js"></script>
   </body>
-
 </html>

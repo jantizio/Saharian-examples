@@ -1,266 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>mixed state checkbox examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>mixed state checkbox examples</title>
-  <link rel="stylesheet" href="../common/example.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <h1 class="saharian-debug-h1">mixed state checkbox examples</h1>
-  <p>Here you can find different mixed state checkbox examples with various accessibility degrees, implemented both by
-    using native
-    HTML Elements and attributes from the WAI-ARIA specification.</p>
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Plain HTML</h2>
-    <p class="help saharian-debug-explanation">
-      This mixed state checkbox implementation uses native HTML elements.
+  <body>
+    <h1 class="saharian-debug-h1">mixed state checkbox examples</h1>
+    <p>
+      Here you can find different mixed state checkbox examples with various
+      accessibility degrees, implemented both by using native HTML Elements and
+      attributes from the WAI-ARIA specification.
     </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <fieldset id="ex1">
-          <legend>Condiments</legend>
-          <label>
-            <input type="checkbox" id="chk0ex1">
-            All Condiments
-          </label>
-          <ul>
-            <li role="presentation">
-              <label>
-                <input type="checkbox" id="chk1ex1">
-                Lettuce
-              </label>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        This mixed state checkbox implementation uses native HTML elements.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <fieldset id="ex1">
+            <legend>Condiments</legend>
+            <label>
+              <input type="checkbox" id="chk0ex1" />
+              All Condiments
+            </label>
+            <ul>
+              <li role="presentation">
+                <label>
+                  <input type="checkbox" id="chk1ex1" />
+                  Lettuce
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk2ex1" />
+                  Tomato
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk3ex1" />
+                  Onion
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk4ex1" />
+                  BBQ Sauce
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk5ex1" />
+                  Ketchup
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk6ex1" />
+                  Mustard
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" id="chk7ex1" />
+                  Mayonnaise
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const mainCheckbox = document.querySelector(
+                '#ex1 input[type="checkbox"]'
+              );
+              const checkboxes = document.querySelectorAll(
+                '#ex1 ul input[type="checkbox"]'
+              );
+
+              mainCheckbox.addEventListener("change", function () {
+                checkboxes.forEach(
+                  (checkbox) => (checkbox.checked = mainCheckbox.checked)
+                );
+                mainCheckbox.indeterminate = false;
+              });
+
+              checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener("change", function () {
+                  updateMainCheckbox();
+                });
+              });
+
+              function updateMainCheckbox() {
+                const allChecked = [...checkboxes].every(
+                  (checkbox) => checkbox.checked
+                );
+                const allUnchecked = [...checkboxes].every(
+                  (checkbox) => !checkbox.checked
+                );
+
+                mainCheckbox.checked = allChecked;
+                mainCheckbox.indeterminate = !allChecked && !allUnchecked;
+              }
+            });
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIX DEL SECONDO CHEKBOX MIXED E AGGIUNTA DEL CHECKBOX SBAGLIATO-->
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA mixed state checkbox</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct mixed state checkbox implemented by using attributes
+        from the WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <ul role="group" aria-labelledby="ex2-title" class="group" id="ex2">
+            <li>
+              <h3 id="ex2-title" class="title">Condiments</h3>
             </li>
             <li>
-              <label>
-                <input type="checkbox" id="chk2ex1">
-                Tomato
-              </label>
+              <span
+                role="checkbox"
+                aria-checked="false"
+                tabindex="0"
+                class="checkbox"
+                >All condiments
+              </span>
             </li>
             <li>
-              <label>
-                <input type="checkbox" id="chk3ex1">
-                Onion
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" id="chk4ex1">
-                BBQ Sauce
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" id="chk5ex1">
-                Ketchup
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" id="chk6ex1">
-                Mustard
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" id="chk7ex1">
-                Mayonnaise
-              </label>
+              <ul>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk0ex2"
+                    class="checkbox"
+                    >Lettuce</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk1ex2"
+                    class="checkbox"
+                    >Tomato</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk2ex2"
+                    class="checkbox"
+                    >Onion</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk3ex2"
+                    class="checkbox"
+                    >BBQ Sauce</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk4ex2"
+                    class="checkbox"
+                    >Ketchup</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk5ex2"
+                    class="checkbox"
+                    >Mustard</span
+                  >
+                </li>
+                <li>
+                  <span
+                    role="checkbox"
+                    aria-checked="false"
+                    tabindex="0"
+                    id="chk6ex2"
+                    class="checkbox"
+                    >Mayonnaise</span
+                  >
+                </li>
+              </ul>
             </li>
           </ul>
-        </fieldset>
-        <script>
-          document.addEventListener('DOMContentLoaded', function () {
-            const mainCheckbox = document.querySelector('#ex1 input[type="checkbox"]');
-            const checkboxes = document.querySelectorAll('#ex1 ul input[type="checkbox"]');
 
-            mainCheckbox.addEventListener('change', function () {
-              checkboxes.forEach(checkbox => checkbox.checked = mainCheckbox.checked);
-              mainCheckbox.indeterminate = false;
-            });
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const wrapper = document.getElementById("ex2");
+              const mainCheckbox = wrapper.querySelector("li > span.checkbox");
+              const childCheckboxes = wrapper.querySelectorAll(
+                "ul ul > li > span.checkbox"
+              ); // Selecting checkboxes inside the nested ul
 
-            checkboxes.forEach(checkbox => {
-              checkbox.addEventListener('change', function () {
-                updateMainCheckbox();
+              function setAriaChecked(element, state) {
+                if (typeof state === "boolean") {
+                  element.setAttribute(
+                    "aria-checked",
+                    state ? "true" : "false"
+                  );
+                } else {
+                  element.setAttribute("aria-checked", state);
+                }
+              }
+
+              function updateMainCheckboxState() {
+                const allChecked = [...childCheckboxes].every(
+                  (c) => c.getAttribute("aria-checked") === "true"
+                );
+                const anyChecked = [...childCheckboxes].some(
+                  (c) => c.getAttribute("aria-checked") === "true"
+                );
+
+                if (allChecked) {
+                  setAriaChecked(mainCheckbox, true);
+                } else if (anyChecked) {
+                  setAriaChecked(mainCheckbox, "mixed");
+                } else {
+                  setAriaChecked(mainCheckbox, false);
+                }
+              }
+
+              mainCheckbox.addEventListener("click", function () {
+                const newState =
+                  mainCheckbox.getAttribute("aria-checked") !== "true";
+                setAriaChecked(mainCheckbox, newState);
+                childCheckboxes.forEach((checkbox) =>
+                  setAriaChecked(checkbox, newState)
+                );
+              });
+
+              childCheckboxes.forEach((checkbox) => {
+                checkbox.addEventListener("click", function () {
+                  const newState =
+                    checkbox.getAttribute("aria-checked") !== "true";
+                  setAriaChecked(checkbox, newState);
+                  updateMainCheckboxState();
+                });
               });
             });
+          </script>
+        </div>
+      </div>
+    </section>
 
-            function updateMainCheckbox() {
-              const allChecked = [...checkboxes].every(checkbox => checkbox.checked);
-              const allUnchecked = [...checkboxes].every(checkbox => !checkbox.checked);
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Non-ARIA Checkbox</h2>
+      <p class="help saharian-debug-explanation">
+        This is a non-ARIA version of the mixed state checkbox.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <ul class="group" id="ex3">
+            <li>
+              <h3 class="title">Condiments</h3>
+            </li>
+            <li><span class="checkbox1">All condiments </span></li>
+            <li>
+              <ul>
+                <li><span id="chk0ex3" class="checkbox1">Lettuce</span></li>
+                <li><span id="chk1ex3" class="checkbox1">Tomato</span></li>
+                <li><span id="chk2ex3" class="checkbox1">Onion</span></li>
+                <li><span id="chk3ex3" class="checkbox1">BBQ Sauce</span></li>
+                <li><span id="chk4ex3" class="checkbox1">Ketchup</span></li>
+                <li><span id="chk5ex3" class="checkbox1">Mustard</span></li>
+                <li><span id="chk6ex3" class="checkbox1">Mayonnaise</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const wrapper = document.getElementById("ex3");
+            const mainCheckbox = wrapper.querySelector(
+              ".checkbox1:first-child"
+            );
+            // Selecting child checkboxes more specifically
+            const childCheckboxes = wrapper.querySelectorAll(
+              "ul > li > ul > li > span.checkbox1"
+            );
 
-              mainCheckbox.checked = allChecked;
-              mainCheckbox.indeterminate = !allChecked && !allUnchecked;
+            function setCheckboxState(checkbox, state) {
+              checkbox.setAttribute("data-checked", state ? "true" : "false");
             }
+
+            function toggleCheckboxState(checkbox) {
+              const currentState =
+                checkbox.getAttribute("data-checked") === "true";
+              setCheckboxState(checkbox, !currentState);
+            }
+
+            function updateMainCheckboxState() {
+              const allChecked = [...childCheckboxes].every(
+                (cb) => cb.getAttribute("data-checked") === "true"
+              );
+              const anyChecked = [...childCheckboxes].some(
+                (cb) => cb.getAttribute("data-checked") === "true"
+              );
+
+              if (allChecked) {
+                setCheckboxState(mainCheckbox, true);
+              } else if (anyChecked) {
+                mainCheckbox.setAttribute("data-checked", "mixed");
+              } else {
+                setCheckboxState(mainCheckbox, false);
+              }
+            }
+
+            mainCheckbox.addEventListener("click", function () {
+              toggleCheckboxState(mainCheckbox);
+              const newState =
+                mainCheckbox.getAttribute("data-checked") === "true";
+              childCheckboxes.forEach((cb) => setCheckboxState(cb, newState));
+            });
+
+            childCheckboxes.forEach((checkbox) => {
+              checkbox.addEventListener("click", function () {
+                toggleCheckboxState(checkbox);
+                updateMainCheckboxState();
+              });
+            });
           });
         </script>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FIX DEL SECONDO CHEKBOX MIXED E AGGIUNTA DEL CHECKBOX SBAGLIATO-->
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct ARIA mixed state checkbox</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct mixed state checkbox implemented by using attributes from the WAI-ARIA specification.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <ul role="group" aria-labelledby="ex2-title" class="group" id="ex2">
-          <li>
-            <h3 id="ex2-title" class="title">Condiments</h3>
-          </li>
-          <li><span role="checkbox" aria-checked="false" tabindex="0" class="checkbox">All
-              condiments </span></li>
-          <li>
-            <ul>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk0ex2" class="checkbox">Lettuce</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk1ex2" class="checkbox">Tomato</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk2ex2" class="checkbox">Onion</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk3ex2" class="checkbox">BBQ Sauce</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk4ex2" class="checkbox">Ketchup</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk5ex2" class="checkbox">Mustard</span>
-              </li>
-              <li><span role="checkbox" aria-checked="false" tabindex="0" id="chk6ex2"
-                  class="checkbox">Mayonnaise</span></li>
-            </ul>
-          </li>
-        </ul>
-        </li>
-      </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const wrapper = document.getElementById('ex2');
-          const mainCheckbox = wrapper.querySelector('li > span.checkbox');
-          const childCheckboxes = wrapper.querySelectorAll('ul ul > li > span.checkbox'); // Selecting checkboxes inside the nested ul
-
-          function setAriaChecked(element, state) {
-            if (typeof state === 'boolean') {
-              element.setAttribute('aria-checked', state ? 'true' : 'false');
-            } else {
-              element.setAttribute('aria-checked', state);
-            }
-          }
-
-          function updateMainCheckboxState() {
-            const allChecked = [...childCheckboxes].every(c => c.getAttribute('aria-checked') === 'true');
-            const anyChecked = [...childCheckboxes].some(c => c.getAttribute('aria-checked') === 'true');
-
-            if (allChecked) {
-              setAriaChecked(mainCheckbox, true);
-            } else if (anyChecked) {
-              setAriaChecked(mainCheckbox, 'mixed');
-            } else {
-              setAriaChecked(mainCheckbox, false);
-            }
-          }
-
-          mainCheckbox.addEventListener('click', function () {
-            const newState = mainCheckbox.getAttribute('aria-checked') !== 'true';
-            setAriaChecked(mainCheckbox, newState);
-            childCheckboxes.forEach(checkbox => setAriaChecked(checkbox, newState));
-          });
-
-          childCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('click', function () {
-              const newState = checkbox.getAttribute('aria-checked') !== 'true';
-              setAriaChecked(checkbox, newState);
-              updateMainCheckboxState();
-            });
-          });
-        });
-      </script>
-    </div>
-    </div>
-  </section>
-
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Non-ARIA Checkbox</h2>
-    <p class="help saharian-debug-explanation">
-      This is a non-ARIA version of the mixed state checkbox.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <ul class="group" id="ex3">
-          <li>
-            <h3 class="title">Condiments</h3>
-          </li>
-          <li><span class="checkbox1">All condiments </span></li>
-          <li>
-            <ul>
-              <li><span id="chk0ex3" class="checkbox1">Lettuce</span></li>
-              <li><span id="chk1ex3" class="checkbox1">Tomato</span></li>
-              <li><span id="chk2ex3" class="checkbox1">Onion</span></li>
-              <li><span id="chk3ex3" class="checkbox1">BBQ Sauce</span></li>
-              <li><span id="chk4ex3" class="checkbox1">Ketchup</span></li>
-              <li><span id="chk5ex3" class="checkbox1">Mustard</span></li>
-              <li><span id="chk6ex3" class="checkbox1">Mayonnaise</span></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const wrapper = document.getElementById('ex3');
-          const mainCheckbox = wrapper.querySelector('.checkbox1:first-child');
-          // Selecting child checkboxes more specifically
-          const childCheckboxes = wrapper.querySelectorAll('ul > li > ul > li > span.checkbox1');
-
-          function setCheckboxState(checkbox, state) {
-            checkbox.setAttribute('data-checked', state ? 'true' : 'false');
-          }
-
-          function toggleCheckboxState(checkbox) {
-            const currentState = checkbox.getAttribute('data-checked') === 'true';
-            setCheckboxState(checkbox, !currentState);
-          }
-
-          function updateMainCheckboxState() {
-            const allChecked = [...childCheckboxes].every(cb => cb.getAttribute('data-checked') === 'true');
-            const anyChecked = [...childCheckboxes].some(cb => cb.getAttribute('data-checked') === 'true');
-
-            if (allChecked) {
-              setCheckboxState(mainCheckbox, true);
-            } else if (anyChecked) {
-              mainCheckbox.setAttribute('data-checked', 'mixed');
-            } else {
-              setCheckboxState(mainCheckbox, false);
-            }
-          }
-
-          mainCheckbox.addEventListener('click', function () {
-            toggleCheckboxState(mainCheckbox);
-            const newState = mainCheckbox.getAttribute('data-checked') === 'true';
-            childCheckboxes.forEach(cb => setCheckboxState(cb, newState));
-          });
-
-          childCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('click', function () {
-              toggleCheckboxState(checkbox);
-              updateMainCheckboxState();
-            });
-          });
-        });
-      </script>
-
-
-    </div>
-  </section>
-
-
-
-
-  <script src="../common/example.js">
-  </script>
-</body>
-
+    <script src="../common/example.js"></script>
+  </body>
 </html>
