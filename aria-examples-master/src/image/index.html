@@ -1,111 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Image examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Image examples</title>
-  <link rel="stylesheet" href="../common/example.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <h1 class="saharian-debug-h1">Image examples</h1>
-  <p>Here you can find different image examples with various accessibility degrees, implemented both by using native
-    HTML elements and attributes from the WAI-ARIA specification.</p>
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct HTML image</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct image implementation that leverages the native "img" HTML element.
+  <body>
+    <h1 class="saharian-debug-h1">Image examples</h1>
+    <p>
+      Here you can find different image examples with various accessibility
+      degrees, implemented both by using native HTML elements and attributes
+      from the WAI-ARIA specification.
     </p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <img src="desert-90.png" alt="First image">
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct HTML image</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct image implementation that leverages the native "img"
+        HTML element.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container saharian-debug-dont-update">
+          <img src="desert-90.png" alt="First image" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct decorative images</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct decorative image implementation that leverages the native "img" HTML element.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <img src="desert-90.png" alt="">
-          <img src="desert-90.png" role="presentation">
-          <img src="desert-90.png" role="none">
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct decorative images</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct decorative image implementation that leverages the
+        native "img" HTML element.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container saharian-debug-dont-update">
+          <img src="desert-90.png" alt="" />
+          <img src="desert-90.png" role="presentation" />
+          <img src="desert-90.png" role="none" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct ARIA image</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct image implemented by using attributes from the WAI-ARIA specification.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <div class="img"  style="background-image: url(desert-90.png); width:90px; height:90px;" role="img" aria-label="Third image"></div>
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA image</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct image implemented by using attributes from the
+        WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container saharian-debug-dont-update">
+          <div
+            class="img"
+            style="
+              background-image: url(desert-90.png);
+              width: 90px;
+              height: 90px;
+            "
+            role="img"
+            aria-label="Third image"
+          ></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Image without alternative text</h2>
-    <p class="help saharian-debug-explanation">
-      This is an inaccessible image implementation that leverages the native "img" HTML element, as it does not provide
-      any alternative text.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <img src="desert-90.png" class="img">
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Image without alternative text</h2>
+      <p class="help saharian-debug-explanation">
+        This is an inaccessible image implementation that leverages the native
+        "img" HTML element, as it does not provide any alternative text.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container saharian-debug-dont-update">
+          <img src="desert-90.png" class="img" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Inaccessible image</h2>
-    <p class="help saharian-debug-explanation">
-      This is an inaccessible image implementation, as it does not expose any
-      "image" semantics to assistive technologies.</p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <div class="img"  style="background-image: url(desert-90.png); width:90px; height:90px;"></div></span>
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Inaccessible image</h2>
+      <p class="help saharian-debug-explanation">
+        This is an inaccessible image implementation, as it does not expose any
+        "image" semantics to assistive technologies.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container saharian-debug-dont-update">
+          <div
+            class="img"
+            style="
+              background-image: url(desert-90.png);
+              width: 90px;
+              height: 90px;
+            "
+          ></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-<section>
+    <section>
+      <h1 class="saharian-debug-h1">Interactive images</h1>
 
-    <h1 class="saharian-debug-h1">Interactive images</h1>
+      <section class="saharian-debug-correct">
+        <h2 class="saharian-debug-h2">Correct interactive image</h2>
+        <p class="help saharian-debug-explanation">
+          This is a image implemented using the native "img" HTML element that
+          invokes a JavaScript function when clicked.
+        </p>
+        <div class="example saharian-debug-flex">
+          <div class="container saharian-debug-dont-update">
+            <img
+            id="interactive-img"
+              src="desert-90.png"
+              alt="Fifth image"
+              role="button"
+              tabindex="0"
+              onclick="alert('Image clicked!')" 
+            />
+          </div>
+        </div>
+        <script>
+          const img = document.querySelector('#interactive-img');
+          img.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              alert('Image clicked!');
+            }
+          });
+        </script>
+      </section>
 
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct interactive image</h2>
-    <p class="help saharian-debug-explanation">This is a image implemented using the native "img" HTML element that
-      invokes a JavaScript function when clicked.</p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <img src="desert-90.png" alt="Fifth image" role="button" 
-        	tabindex="0" onclick="alert('Image clicked!')" >
-      </div>
-    </div>
-  </section>
+      <section class="saharian-debug-wrong">
+        <h2 class="saharian-debug-h2">Incorrect interactive image</h2>
+        <p class="help saharian-debug-explanation">
+          This is a image implemented using the native "img" HTML element that
+          invokes a JavaScript function when clicked.
+        </p>
+        <div class="example saharian-debug-flex">
+          <div class="container saharian-debug-dont-update">
+            <img
+              src="desert-90.png"
+              alt="Sixth image"
+              onclick="alert('Image clicked!')"
+            />
+          </div>
+        </div>
+      </section>
+    </section>
 
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Incorrect interactive image</h2>
-    <p class="help saharian-debug-explanation">This is a image implemented using the native "img" HTML element that
-      invokes a JavaScript function when clicked.</p>
-    <div class="example saharian-debug-flex">
-      <div class="container saharian-debug-dont-update">
-        <img src="desert-90.png" alt="Sixth image" onclick="alert('Image clicked!')">
-      </div>
-    </div>
-  </section>
-
-</section>
-
-  <script src="../common/example.js"></script>
-</body>
-
+    <script src="../common/example.js"></script>
+  </body>
 </html>
