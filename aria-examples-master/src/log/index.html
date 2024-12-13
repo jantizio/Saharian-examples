@@ -1,101 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>log examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>log examples</title>
-  <link rel="stylesheet" href="../common/example.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <h1 class="saharian-debug-h1">log examples</h1>
-  <p>Here you can find different log examples with various accessibility degrees, implemented both by using native
-    HTML Elements and attributes from the WAI-ARIA specification.</p>
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Plain HTML</h2>
-    <p class="help saharian-debug-explanation">
-      O well... HTML does not provide any native element that matches exactly log semantics.
+  <body>
+    <h1 class="saharian-debug-h1">log examples</h1>
+    <p>
+      Here you can find different log examples with various accessibility
+      degrees, implemented both by using native HTML Elements and attributes
+      from the WAI-ARIA specification.
     </p>
-  </section>
 
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        O well... HTML does not provide any native element that matches exactly
+        log semantics.
+      </p>
+    </section>
 
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Correct ARIA log</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct log implemented by using attributes from the WAI-ARIA specification.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <ul id="log1" class="log" role="log" aria-label="messages 1"></ul>
-        <form onsubmit="addMessage1(event)">
-          <label>Message:
-            <input type="text" maxlength="50">
-          </label>
-          <button type="submit">Add message</button>
-        </form>
-        <script>
-          function addMessage1(event) {
-            event.preventDefault()
-            const form = event.target
-            const msg = form.elements[0].value
-            appendMessage1('user', msg)
-            form.reset()
-          }
-          function appendMessage1(author, text) {
-            const log = document.getElementById('log1')
-            const message = document.createElement('li')
-            message.classList.add('msg')
-            // interestingly, not setting a significant role on each item screen reader support for log breaks on windows
-            message.setAttribute('role', 'group')
-            // let's take the chance to leverage aria-roledescription, don't do it if you aren't 100% sure about what you're doing!
-            message.setAttribute('aria-roledescription', 'message')
-            message.innerHTML = `<span class="author">${author}</span> said: <span class="text">${text}</span>`
-            log.appendChild(message)
-          }
-        </script>
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA log</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct log implemented by using attributes from the WAI-ARIA
+        specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <ul id="log1" class="log" role="log" aria-label="messages 1"></ul>
+          <form onsubmit="addMessage1(event)">
+            <label>
+              Message:
+              <input type="text" maxlength="50" />
+            </label>
+            <button type="submit">Add message</button>
+          </form>
+          <script>
+            function addMessage1(event) {
+              event.preventDefault();
+              const form = event.target;
+              const msg = form.elements[0].value;
+              appendMessage1("user", msg);
+              form.reset();
+            }
+            function appendMessage1(author, text) {
+              const log = document.getElementById("log1");
+              const message = document.createElement("li");
+              message.classList.add("msg");
+              // interestingly, not setting a significant role on each item screen reader support for log breaks on windows
+              message.setAttribute("role", "group");
+              // let's take the chance to leverage aria-roledescription, don't do it if you aren't 100% sure about what you're doing!
+              message.setAttribute("aria-roledescription", "message");
+              message.innerHTML = `<span class="author">${author}</span> said: <span class="text">${text}</span>`;
+              log.appendChild(message);
+            }
+          </script>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Wrong JavaScript Log</h2>
-    <p class="help saharian-debug-explanation">
-      This is a custom log implemented using JavaScript without ARIA attributes or other accessibility features.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <ul id="log2" class="log"></ul>
-        <form onsubmit="addMessage2(event)">
-          <label>Message:
-            <input type="text" maxlength="50">
-          </label>
-          <button type="submit">Add message</button>
-        </form>
-        <script>
-          function addMessage2(event) {
-            event.preventDefault();
-            const form = event.target;
-            const msg = form.elements[0].value;
-            appendMessage2('user', msg);
-            form.reset();
-          }
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Wrong JavaScript Log</h2>
+      <p class="help saharian-debug-explanation">
+        This is a custom log implemented using JavaScript without ARIA
+        attributes or other accessibility features.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <ul id="log2" class="log"></ul>
+          <form onsubmit="addMessage2(event)">
+            <label
+              >Message:
+              <input type="text" maxlength="50" />
+            </label>
+            <button type="submit">Add message</button>
+          </form>
+          <script>
+            function addMessage2(event) {
+              event.preventDefault();
+              const form = event.target;
+              const msg = form.elements[0].value;
+              appendMessage2("user", msg);
+              form.reset();
+            }
 
-          function appendMessage2(author, text) {
-            const log = document.getElementById('log2');
-            const message = document.createElement('li');
-            message.innerHTML = `<span class="author">${author}</span> said: <span class="text">${text}</span>`;
-            log.appendChild(message);
-          }
-        </script>
+            function appendMessage2(author, text) {
+              const log = document.getElementById("log2");
+              const message = document.createElement("li");
+              message.innerHTML = `<span class="author">${author}</span> said: <span class="text">${text}</span>`;
+              log.appendChild(message);
+            }
+          </script>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-
-
-  <script src="../common/example.js"></script>
-</body>
-
+    <script src="../common/example.js"></script>
+  </body>
 </html>
