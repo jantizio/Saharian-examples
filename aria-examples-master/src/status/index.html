@@ -16,6 +16,44 @@
     </p>
 
     <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        This is an accessible status example that leverages the native HTML
+        Output element.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <output id="status0" class="status"></output>
+          <script>
+            function message0() {
+              const twoDigits = (i) => ("0" + i).substr(-2);
+
+              let today = new Date();
+              let time =
+                twoDigits(today.getHours()) +
+                ":" +
+                twoDigits(today.getMinutes()) +
+                ":" +
+                twoDigits(today.getSeconds());
+              let m =
+                today.getSeconds() % 2 == 0
+                  ? " - Seconds are even."
+                  : " - Seconds are odd.";
+              document.getElementById("status0").innerHTML = time + m;
+              let next = Math.random() * 4000;
+              setTimeout(empty1, next - 100);
+              setTimeout(message0, next);
+            }
+            function empty1() {
+              document.getElementById("status0").innerHTML = "";
+            }
+            message0();
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-correct">
       <h2 class="saharian-debug-h2">Correct ARIA status</h2>
       <p class="help saharian-debug-explanation">
         This is a correct status update implemented by using attributes from the
@@ -26,7 +64,7 @@
           <div role="status" id="status1" class="status"></div>
           <script>
             function message1() {
-              twoDigits = (i) => ("0" + i).substr(-2);
+              const twoDigits = (i) => ("0" + i).substr(-2);
 
               let today = new Date();
               let time =
@@ -63,7 +101,7 @@
           <div id="status2" class="status"></div>
           <script>
             function message2() {
-              twoDigits = (i) => ("0" + i).substr(-2);
+              const twoDigits = (i) => ("0" + i).substr(-2);
               let today = new Date();
               let time =
                 twoDigits(today.getHours()) +
