@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tabs examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../common/desert-256.png" />
 
-<head>
-	<meta charset="utf-8">
-	<title>Tabs examples</title>
-	<link rel="stylesheet" href="../common/example.css">
-	<link rel="stylesheet" href="style.css">
-	<link rel='icon' href='../common/desert-256.png' />
+    <script src="../js/ariaservices.js"></script>
+  </head>
 
-	<script src="../js/ariaservices.js"></script>
-</head>
+  <body>
+    <h1 class="saharian-debug-h1">Tabs examples</h1>
+    <p>
+      Here you can find different tabs examples with various accessibility
+      degrees, implemented both by using native HTML Elements and attributes
+      from the WAI-ARIA specification.
+    </p>
 
-<body>
-	<h1 class="saharian-debug-h1">Tabs examples</h1>
-	<p>Here you can find different tabs examples with various accessibility degrees, implemented both by using native
-		HTML
-		Elements and attributes from the WAI-ARIA specification.</p>
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        Or well... HTML does not offer native elements to represent tablists,
+        tabs, and tab panels.
+      </p>
+    </section>
 
-
-	<section class="saharian-debug-correct">
-		<h2 class="saharian-debug-h2">Plain HTML</h2>
-		<p class="help saharian-debug-explanation">
-			Or well... HTML does not offer native elements to represent tablists, tabs, and tab panels.
-		</p>
-	</section>
-
-
-	<section class="saharian-debug-correct">
-		<!--
+    <section class="saharian-debug-correct">
+      <!--
 	<h2 class="saharian-debug-h2">Tabs with manual activation</h2>
 	<p class="help saharian-debug-explanation">
 	  This is a correct implementation of a tabbed interface that uses attributes from the WAI-ARIA specification and
@@ -36,57 +36,99 @@
 	  display the corresponding tab panel.
 	</p>
 	-->
-		<h2 class="saharian-debug-h2">Correct ARIA tabs</h2>
-		<p class="help saharian-debug-explanation">
-			This is a correct implementation of a tabbed interface that uses attributes from the WAI-ARIA specification.
-		</p>
-		<div class="example saharian-debug-flex">
-			<div class="container">
-				<div id="tabs1" class="tablist" role="tablist" aria-label="cities">
-					<span class="tab selected" role="tab" onclick="doTab1(this)" aria-controls="tabs1panel1"
-						aria-selected="true" tabindex="0">Rome</span>
-					<span class="tab" role="tab" onclick="doTab1(this)" aria-controls="tabs1panel2"
-						aria-selected="false" tabindex="-1">London</span>
-					<span class="tab" role="tab" onclick="doTab1(this)" aria-controls="tabs1panel3"
-						aria-selected="false" tabindex="-1">Tokyo</span>
-				</div>
-				<div id="tabs1panel1" class="tabpanel show" role="tabpanel" aria-label="rome" tabindex="0">
-					<h3>Rome</h3>
-					<p>Rome is the capital city of Italy.</p>
-				</div>
-				<div id="tabs1panel2" class="tabpanel" role="tabpanel" aria-label="London" tabindex="-1">
-					<h3>London</h3>
-					<p>London is the capital city of the United Kingdom.</p>
-				</div>
-				<div id="tabs1panel3" class="tabpanel" role="tabpanel" aria-label="tokyo" tabindex="-1">
-					<h3>Tokyo</h3>
-					<p>Tokyo is the capital city of Japan.</p>
-				</div>
-				<script>
-					function doTab1(el) {
-						let p = null
-						Array.from(el.parentElement.children).forEach((c, i) => {
-							c.ariaSelected = false
-							c.tabIndex = -1
-							c.classList.remove('selected')
-							p = document.getElementById(c.attributes['aria-controls'].value)
-							p.classList.remove('show')
-							p.tabIndex = -1
-						})
-						el.ariaSelected = true
-						el.tabIndex = 0
-						el.classList.add('selected')
-						p = document.getElementById(el.attributes['aria-controls'].value)
-						p.tabIndex = 0
-						p.classList.add('show')
-					}
-				</script>
-			</div>
-		</div>
-	</section>
+      <h2 class="saharian-debug-h2">Correct ARIA tabs</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct implementation of a tabbed interface that uses
+        attributes from the WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="tabs1" class="tablist" role="tablist" aria-label="cities">
+            <span
+              class="tab selected"
+              role="tab"
+              onclick="doTab1(this)"
+              aria-controls="tabs1panel1"
+              aria-selected="true"
+              tabindex="0"
+              >Rome</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab1(this)"
+              aria-controls="tabs1panel2"
+              aria-selected="false"
+              tabindex="-1"
+              >London</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab1(this)"
+              aria-controls="tabs1panel3"
+              aria-selected="false"
+              tabindex="-1"
+              >Tokyo</span
+            >
+          </div>
+          <div
+            id="tabs1panel1"
+            class="tabpanel show"
+            role="tabpanel"
+            aria-label="rome"
+            tabindex="-1"
+          >
+            <h3>Rome</h3>
+            <p>Rome is the capital city of Italy.</p>
+          </div>
+          <div
+            id="tabs1panel2"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="London"
+            tabindex="-1"
+          >
+            <h3>London</h3>
+            <p>London is the capital city of the United Kingdom.</p>
+          </div>
+          <div
+            id="tabs1panel3"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="tokyo"
+            tabindex="-1"
+          >
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital city of Japan.</p>
+          </div>
+          <script>
+            function doTab1(el) {
+              let p = null;
+              Array.from(el.parentElement.children).forEach((c, i) => {
+                c.ariaSelected = false;
+                c.tabIndex = -1;
+                c.classList.remove("selected");
+                p = document.getElementById(
+                  c.attributes["aria-controls"].value
+                );
+                p.classList.remove("show");
+                p.tabIndex = -1;
+              });
+              el.ariaSelected = true;
+              el.tabIndex = 0;
+              el.classList.add("selected");
+              p = document.getElementById(el.attributes["aria-controls"].value);
+              p.tabIndex = 0;
+              p.classList.add("show");
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
-	<section class="saharian-debug-correct">
-		<!--
+    <section class="saharian-debug-correct">
+      <!--
 	<h2 class="saharian-debug-h2">Tabs with manual activation</h2>
 	<p class="help saharian-debug-explanation">
 	  This is a correct implementation of a tabbed interface that uses attributes from the WAI-ARIA specification and
@@ -96,131 +138,216 @@
 	</p>
 	-->
 
-		<!-- FIX DEL SECONDO TAB CHE APPRIVA LE PAGINE IN MODO ERRATO-->
-		<h2 class="saharian-debug-h2">Correct ARIA tabs using ARIAservices.js</h2>
-		<p class="help saharian-debug-explanation">
-			This is a correct implementation of a tabbed interface that uses attributes from the WAI-ARIA specification.
-		</p>
-		<div class="example saharian-debug-flex">
-			<div class="container">
-				<div id="tabs1" class="tablist" role="tablist" aria-label="cities">
-					<span class="tab selected" role="tab" onclick="doTab2('tabs2panel',1)" aria-controls="tabs2panel1"
-						aria-selected="true" tabindex="0">Rome</span>
-					<span class="tab" role="tab" onclick="doTab2('tabs2panel',2)" aria-controls="tabs2panel2"
-						aria-selected="false" tabindex="-1">London</span>
-					<span class="tab" role="tab" onclick="doTab2('tabs2panel',3)" aria-controls="tabs2panel3"
-						aria-selected="false" tabindex="-1">Tokyo</span>
-				</div>
-				<div id="tabs2panel1" class="tabpanel show" role="tabpanel" aria-label="rome" tabindex="0">
-					<h3>Rome</h3>
-					<p>Rome is the capital city of Italy.</p>
-				</div>
-				<div id="tabs2panel2" class="tabpanel" role="tabpanel" aria-label="London" tabindex="-1">
-					<h3>London</h3>
-					<p>London is the capital city of the United Kingdom.</p>
-				</div>
-				<div id="tabs2panel3" class="tabpanel" role="tabpanel" aria-label="tokyo" tabindex="-1">
-					<h3>Tokyo</h3>
-					<p>Tokyo is the capital city of Japan.</p>
-				</div>
-				<script>
-					function doTab2(prefix, index) {
-						Array.from(event.target.parentElement.children).forEach((c, i) => {
-							//		ARIAservices.deselect(c)
-							c.classList.remove('selected')
-							document.getElementById(prefix + (i + 1)).classList.remove('show')
-						})
-						//	ARIAservices.select(event.target)
-						event.target.classList.add('selected')
-						document.getElementById(prefix + index).classList.add('show')
-					}
-				</script>
-			</div>
-		</div>
-	</section>
+      <!-- FIX DEL SECONDO TAB CHE APPRIVA LE PAGINE IN MODO ERRATO-->
+      <h2 class="saharian-debug-h2">Correct ARIA tabs using ARIAservices.js</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct implementation of a tabbed interface that uses
+        attributes from the WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="tabs1" class="tablist" role="tablist" aria-label="cities">
+            <span
+              class="tab selected"
+              role="tab"
+              onclick="doTab2('tabs2panel',1)"
+              aria-controls="tabs2panel1"
+              aria-selected="true"
+              tabindex="0"
+              >Rome</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab2('tabs2panel',2)"
+              aria-controls="tabs2panel2"
+              aria-selected="false"
+              tabindex="-1"
+              >London</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab2('tabs2panel',3)"
+              aria-controls="tabs2panel3"
+              aria-selected="false"
+              tabindex="-1"
+              >Tokyo</span
+            >
+          </div>
+          <div
+            id="tabs2panel1"
+            class="tabpanel show"
+            role="tabpanel"
+            aria-label="rome"
+            tabindex="-1"
+          >
+            <h3>Rome</h3>
+            <p>Rome is the capital city of Italy.</p>
+          </div>
+          <div
+            id="tabs2panel2"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="London"
+            tabindex="-1"
+          >
+            <h3>London</h3>
+            <p>London is the capital city of the United Kingdom.</p>
+          </div>
+          <div
+            id="tabs2panel3"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="tokyo"
+            tabindex="-1"
+          >
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital city of Japan.</p>
+          </div>
+          <script>
+            function doTab2(prefix, index) {
+              Array.from(event.target.parentElement.children).forEach(
+                (c, i) => {
+                  //		ARIAservices.deselect(c)
+                  c.classList.remove("selected");
+                  document
+                    .getElementById(prefix + (i + 1))
+                    .classList.remove("show");
+                }
+              );
+              //	ARIAservices.select(event.target)
+              event.target.classList.add("selected");
+              document.getElementById(prefix + index).classList.add("show");
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
-	<section class="saharian-debug-wrong">
-		<h2 class="saharian-debug-h2">Tabs without roles</h2>
-		<p class="help saharian-debug-explanation">
-			This is an inaccessible tabbed interface implementation, as it does neither expose any "tabbed interface"
-			semantics to assistive technologies nor provide the expected keyboard support.
-		</p>
-		<div class="example saharian-debug-flex">
-			<div class="container">
-				<div id="tabs4" class="tablist">
-					<span class="tab selected" onclick="doTab3('tabs3panel',1)">Rome</span>
-					<span class="tab" onclick="doTab3('tabs3panel',2)">London</span>
-					<span class="tab" onclick="doTab3('tabs3panel',3)">Tokyo</span>
-				</div>
-				<div id="tabs3panel1" class="tabpanel show">
-					<h3>Rome</h3>
-					<p>Rome is the capital city of Italy.</p>
-				</div>
-				<div id="tabs3panel2" class="tabpanel">
-					<h3>London</h3>
-					<p>London is the capital city of the United Kingdom.</p>
-				</div>
-				<div id="tabs3panel3" class="tabpanel">
-					<h3>Tokyo</h3>
-					<p>Tokyo is the capital city of Japan.</p>
-				</div>
-				<script>
-					function doTab3(prefix, index) {
-						Array.from(event.target.parentElement.children).forEach((c, i) => {
-							c.classList.remove('selected')
-							document.getElementById(prefix + (i + 1)).classList.remove('show')
-						})
-						event.target.classList.add('selected')
-						console.log("caiooo2:" + prefix + index)
-						document.getElementById(prefix + index).classList.add('show')
-					}
-				</script>
-			</div>
-		</div>
-	</section>
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Tabs without roles</h2>
+      <p class="help saharian-debug-explanation">
+        This is an inaccessible tabbed interface implementation, as it does
+        neither expose any "tabbed interface" semantics to assistive
+        technologies nor provide the expected keyboard support.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="tabs4" class="tablist">
+            <span class="tab selected" onclick="doTab3('tabs3panel',1)">Rome</span>
+            <span class="tab" onclick="doTab3('tabs3panel',2)">London</span>
+            <span class="tab" onclick="doTab3('tabs3panel',3)">Tokyo</span>
+          </div>
+          <div id="tabs3panel1" class="tabpanel show">
+            <h3>Rome</h3>
+            <p>Rome is the capital city of Italy.</p>
+          </div>
+          <div id="tabs3panel2" class="tabpanel">
+            <h3>London</h3>
+            <p>London is the capital city of the United Kingdom.</p>
+          </div>
+          <div id="tabs3panel3" class="tabpanel">
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital city of Japan.</p>
+          </div>
+          <script>
+            function doTab3(prefix, index) {
+              Array.from(event.target.parentElement.children).forEach(
+                (c, i) => {
+                  c.classList.remove("selected");
+                  document
+                    .getElementById(prefix + (i + 1))
+                    .classList.remove("show");
+                }
+              );
+              event.target.classList.add("selected");
+              console.log("caiooo2:" + prefix + index);
+              document.getElementById(prefix + index).classList.add("show");
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
-	<section class="saharian-debug-wrong">
-		<h2 class="saharian-debug-h2">Tabs with no ARIAservice</h2>
-		<p class="help saharian-debug-explanation">
-			This is a tabbed interface implementation that uses attributes from the WAI-ARIA specification, but it does
-			not
-			provide the expected keyboard support.
-		</p>
-		<div class="example saharian-debug-flex">
-			<div class="container">
-				<div id="tabs3" class="tablist" role="tablist" aria-label="cities">
-					<span class="tab selected" role="tab" onclick="doTab4('tabs4panel',1)"
-						aria-selected="true">Rome</span>
-					<span class="tab" role="tab" onclick="doTab4('tabs4panel',2)" aria-selected="false">London</span>
-					<span class="tab" role="tab" onclick="doTab4('tabs4panel',3)" aria-selected="false">Tokyo</span>
-				</div>
-				<div id="tabs4panel1" class="tabpanel show" role="tabpanel" aria-label="rome">
-					<h3>Rome</h3>
-					<p>Rome is the capital city of Italy.</p>
-				</div>
-				<div id="tabs4panel2" class="tabpanel" role="tabpanel" aria-label="London">
-					<h3>London</h3>
-					<p>London is the capital city of the United Kingdom.</p>
-				</div>
-				<div id="tabs4panel3" class="tabpanel" role="tabpanel" aria-label="tokyo">
-					<h3>Tokyo</h3>
-					<p>Tokyo is the capital city of Japan.</p>
-				</div>
-				<script>
-					function doTab4(prefix, index) {
-						Array.from(event.target.parentElement.children).forEach((c, i) => {
-							c.classList.remove('selected')
-							document.getElementById(prefix + (i + 1)).classList.remove('show')
-						})
-						event.target.classList.add('selected')
-						document.getElementById(prefix + index).classList.add('show')
-					}
-				</script>
-			</div>
-		</div>
-	</section>
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Tabs with no ARIAservice</h2>
+      <p class="help saharian-debug-explanation">
+        This is a tabbed interface implementation that uses attributes from the
+        WAI-ARIA specification, but it does not provide the expected keyboard
+        support.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="tabs3" class="tablist" role="tablist" aria-label="cities">
+            <span
+              class="tab selected"
+              role="tab"
+              onclick="doTab4('tabs4panel',1)"
+              aria-selected="true"
+              >Rome</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab4('tabs4panel',2)"
+              aria-selected="false"
+              >London</span
+            >
+            <span
+              class="tab"
+              role="tab"
+              onclick="doTab4('tabs4panel',3)"
+              aria-selected="false"
+              >Tokyo</span
+            >
+          </div>
+          <div
+            id="tabs4panel1"
+            class="tabpanel show"
+            role="tabpanel"
+            aria-label="rome"
+          >
+            <h3>Rome</h3>
+            <p>Rome is the capital city of Italy.</p>
+          </div>
+          <div
+            id="tabs4panel2"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="London"
+          >
+            <h3>London</h3>
+            <p>London is the capital city of the United Kingdom.</p>
+          </div>
+          <div
+            id="tabs4panel3"
+            class="tabpanel"
+            role="tabpanel"
+            aria-label="tokyo"
+          >
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital city of Japan.</p>
+          </div>
+          <script>
+            function doTab4(prefix, index) {
+              Array.from(event.target.parentElement.children).forEach(
+                (c, i) => {
+                  c.classList.remove("selected");
+                  document
+                    .getElementById(prefix + (i + 1))
+                    .classList.remove("show");
+                }
+              );
+              event.target.classList.add("selected");
+              document.getElementById(prefix + index).classList.add("show");
+            }
+          </script>
+        </div>
+      </div>
+    </section>
 
-	<!--
+    <!--
   <section class="saharian-debug-correct">
 	<h2 class="saharian-debug-h2">Correct ARIA tabs</h2>
 	<p class="help saharian-debug-explanation">
@@ -359,8 +486,6 @@
   </section>
 -->
 
-
-	<script src="../common/example.js"></script>
-</body>
-
+    <script src="../common/example.js"></script>
+  </body>
 </html>
