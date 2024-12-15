@@ -1,168 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>collapsible link examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>collapsible link examples</title>
-  <link rel="stylesheet" href="../common/example.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <h1 class="saharian-debug-h1">collapsible link examples</h1>
-  <p>Here you can find different collapsible link examples with various accessibility degrees, implemented both by using
-    native HTML Elements and attributes from the WAI-ARIA specification.</p>
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Plain HTML</h2>
-    <p class="help saharian-debug-explanation">
-      There is no way to implement this pattern by using only HTML elements.
+  <body>
+    <h1 class="saharian-debug-h1">collapsible link examples</h1>
+    <p>
+      Here you can find different collapsible link examples with various
+      accessibility degrees, implemented both by using native HTML Elements and
+      attributes from the WAI-ARIA specification.
     </p>
-  </section>
 
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        There is no way to implement this pattern by using only HTML elements.
+      </p>
+    </section>
 
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Hybrid collapsible link</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct collapsible link implemented by using native HTML elements combined with attributes from the
-      WAI-ARIA specification.
-    </p>
-    <div class="container">
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Hybrid collapsible link</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct collapsible link implemented by using native HTML
+        elements combined with attributes from the WAI-ARIA specification.
+      </p>
       <div class="example saharian-debug-flex">
-        <a href="https://www.w3.org" id="lnk2" class="link collapsible" rel="nofollow noopener" target="_blank"
-          aria-controls="lnkgr2" aria-expanded="false" onclick="toggleLink1(event)">Some W3C accessibility resources</a>
-        <ul id="lnkgr2" aria-labelledby="lnk2" class="group">
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG21/quickref/" rel="nofollow noopener" target="_blank">How to meet
-              WCAG</a>
-          </li>
-          <li>
-            <a href="http://www.w3.org/TR/WCAG21/" rel="nofollow noopener" target="_blank">Web Content Accessibility
-              Guidelines (WCAG) 2.1</a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/wai-aria-1.1/" rel="nofollow noopener" target="_blank">WAI-ARIA 1.1</a>
-          </li>
-        </ul>
-        <script>
-          function toggleLink1(event) {
-            const expanded = event.target.classList.contains('expanded')
-            if (expanded) { // collapse
-              event.target.classList.remove('expanded')
-              event.target.setAttribute('aria-expanded', 'false')
-            }
-            else { // expand
-              event.target.classList.add('expanded')
-              event.target.setAttribute('aria-expanded', 'true')
-            }
-            // should happen in both cases
-            event.preventDefault()
-            event.target.focus()
-          }
-        </script>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="saharian-debug-correct">
-    <h2 class="saharian-debug-h2">Aria collapsible link</h2>
-    <p class="help saharian-debug-explanation">
-      This is a correct collapsible link implemented by using only attributes from the WAI-ARIA specification.
-    </p>
-    <div class="container">
-      <div class="example saharian-debug-flex">
-        <span id="lnk3" class="link collapsible" role="link" aria-controls="lnkgr3" aria-expanded="false"
-          tabindex="0">Some W3C accessibility resources</span>
-        <ul id="lnkgr3" aria-labelledby="lnk3" class="group">
-          <li>
-            <span class="link" role="link" tabindex="0" data-url="https://www.w3.org/WAI/WCAG21/quickref/">How to meet
-              WCAG</span>
-          </li>
-          <li>
-            <span class="link" role="link" tabindex="0" data-url="http://www.w3.org/TR/WCAG21/">Web Content
-              Accessibility
-              Guidelines (WCAG) 2.1</span>
-          </li>
-          <li>
-            <span class="link" role="link" tabindex="0" data-url="https://www.w3.org/TR/wai-aria-1.1/">WAI-ARIA
-              1.1</span>
-          </li>
-        </ul>
-        <script>
-          document.getElementById('lnk3').addEventListener('click', function (event) {
-            toggleCollapsible(event.target);
-          });
-
-          document.getElementById('lnk3').addEventListener('keydown', function (event) {
-            if (event.key === 'Spacebar' || event.key === 'Enter') {
-              event.preventDefault();
-              toggleCollapsible(event.target);
-            }
-          });
-
-          function toggleCollapsible(link) {
-            if (link.hasAttribute('aria-expanded')) {
-              const expanded = link.getAttribute('aria-expanded') === 'true';
-              link.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-              link.classList.toggle('expanded');
-            } else {
-              window.open(link.dataset.url);
-            }
-          }
-
-        </script>
-      </div>
-    </div>
-  </section>
-
-  <!-- AGGIUNTO E SISTEMATO IL LINK COLLAPSIBLE ERRATO-->
-
-  <section class="saharian-debug-wrong">
-    <h2 class="saharian-debug-h2">Wrong JavaScript Collapsible Link</h2>
-    <p class="help saharian-debug-explanation">
-      This is a collapsible link implemented using custom JavaScript without ARIA attributes and without an href.
-    </p>
-    <div class="example saharian-debug-flex">
-      <div class="container">
-        <span id="lnk4" class="link collapsible" data-expanded="false" onclick="toggleLink4(event)">Some W3C
-          accessibility resources</span>
-        <ul id="lnkgr4" class="group" style="display: none;">
-          <li><span class="link" data-url="https://www.w3.org/WAI/WCAG21/quickref/">Item 1</span></li>
-          <li><span class="link" data-url="http://www.w3.org/TR/WCAG21/">Item 2</span></li>
-          <li><span class="link" data-url="https://www.w3.org/TR/wai-aria-1.1/">Item 3</span></li>
-        </ul>
-        <script>
-          function toggleLink4(event) {
-            const expanded = event.target.getAttribute('data-expanded') === 'true';
-            const group = document.getElementById('lnkgr4');
-
-            if (expanded) {
-              event.target.setAttribute('data-expanded', 'false');
-              group.style.display = 'none';
-            } else {
-              event.target.setAttribute('data-expanded', 'true');
-              group.style.display = 'block';
-            }
-          }
-
-          const linkElements = document.querySelectorAll('.link[data-url]');
-          linkElements.forEach(function (linkElement) {
-            linkElement.addEventListener('click', function () {
-              const url = linkElement.getAttribute('data-url');
-              if (url && url !== '#') {
-                window.location.href = url;
+        <div class="container">
+          <div class="example saharian-debug-flex">
+            <a
+              href="https://www.w3.org"
+              id="lnk2"
+              class="link collapsible"
+              rel="nofollow noopener"
+              target="_blank"
+              aria-controls="lnkgr2"
+              aria-expanded="false"
+              onclick="toggleLink1(event)"
+              >Some W3C accessibility resources</a
+            >
+            <ul id="lnkgr2" aria-labelledby="lnk2" class="group">
+              <li>
+                <a
+                  href="https://www.w3.org/WAI/WCAG21/quickref/"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >How to meet WCAG</a
+                >
+              </li>
+              <li>
+                <a
+                  href="http://www.w3.org/TR/WCAG21/"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >Web Content Accessibility Guidelines (WCAG) 2.1</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.w3.org/TR/wai-aria-1.1/"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >WAI-ARIA 1.1</a
+                >
+              </li>
+            </ul>
+            <script>
+              function toggleLink1(event) {
+                const expanded = event.target.classList.contains("expanded");
+                if (expanded) {
+                  // collapse
+                  event.target.classList.remove("expanded");
+                  event.target.setAttribute("aria-expanded", "false");
+                } else {
+                  // expand
+                  event.target.classList.add("expanded");
+                  event.target.setAttribute("aria-expanded", "true");
+                }
+                // should happen in both cases
+                event.preventDefault();
+                event.target.focus();
               }
-            });
-          });
-        </script>
+            </script>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Aria collapsible link</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct collapsible link implemented by using only attributes
+        from the WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div class="example saharian-debug-flex">
+            <span
+              id="lnk3"
+              class="link collapsible"
+              role="link"
+              aria-controls="lnkgr3"
+              aria-expanded="false"
+              tabindex="0"
+              >Some W3C accessibility resources</span
+            >
+            <ul id="lnkgr3" aria-labelledby="lnk3" class="group">
+              <li>
+                <span
+                  class="link"
+                  role="link"
+                  tabindex="0"
+                  data-url="https://www.w3.org/WAI/WCAG21/quickref/"
+                  >How to meet WCAG</span
+                >
+              </li>
+              <li>
+                <span
+                  class="link"
+                  role="link"
+                  tabindex="0"
+                  data-url="http://www.w3.org/TR/WCAG21/"
+                  >Web Content Accessibility Guidelines (WCAG) 2.1</span
+                >
+              </li>
+              <li>
+                <span
+                  class="link"
+                  role="link"
+                  tabindex="0"
+                  data-url="https://www.w3.org/TR/wai-aria-1.1/"
+                  >WAI-ARIA 1.1</span
+                >
+              </li>
+            </ul>
+            <script>
+              document
+                .getElementById("lnk3")
+                .addEventListener("click", function (event) {
+                  toggleCollapsible(event.target);
+                });
 
+              document
+                .getElementById("lnk3")
+                .addEventListener("keydown", function (event) {
+                  if (event.key === "Spacebar" || event.key === "Enter") {
+                    event.preventDefault();
+                    toggleCollapsible(event.target);
+                  }
+                });
 
-  <script src="../common/example.js"></script>
-</body>
+              function toggleCollapsible(link) {
+                if (link.hasAttribute("aria-expanded")) {
+                  const expanded =
+                    link.getAttribute("aria-expanded") === "true";
+                  link.setAttribute(
+                    "aria-expanded",
+                    expanded ? "false" : "true"
+                  );
+                  link.classList.toggle("expanded");
+                } else {
+                  window.open(link.dataset.url);
+                }
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- AGGIUNTO E SISTEMATO IL LINK COLLAPSIBLE ERRATO-->
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Wrong JavaScript Collapsible Link</h2>
+      <p class="help saharian-debug-explanation">
+        This is a collapsible link implemented using custom JavaScript without
+        ARIA attributes and without an href.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <span
+            id="lnk4"
+            class="link collapsible"
+            data-expanded="false"
+            onclick="toggleLink4(event)"
+            >Some W3C accessibility resources</span
+          >
+          <ul id="lnkgr4" class="group" style="display: none">
+            <li>
+              <span
+                class="link"
+                data-url="https://www.w3.org/WAI/WCAG21/quickref/"
+                >Item 1</span
+              >
+            </li>
+            <li>
+              <span class="link" data-url="http://www.w3.org/TR/WCAG21/"
+                >Item 2</span
+              >
+            </li>
+            <li>
+              <span class="link" data-url="https://www.w3.org/TR/wai-aria-1.1/"
+                >Item 3</span
+              >
+            </li>
+          </ul>
+          <script>
+            function toggleLink4(event) {
+              const expanded =
+                event.target.getAttribute("data-expanded") === "true";
+              const group = document.getElementById("lnkgr4");
+
+              if (expanded) {
+                event.target.setAttribute("data-expanded", "false");
+                group.style.display = "none";
+              } else {
+                event.target.setAttribute("data-expanded", "true");
+                group.style.display = "block";
+              }
+            }
+
+            const linkElements = document.querySelectorAll(".link[data-url]");
+            linkElements.forEach(function (linkElement) {
+              linkElement.addEventListener("click", function () {
+                const url = linkElement.getAttribute("data-url");
+                if (url && url !== "#") {
+                  window.location.href = url;
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <script src="../common/example.js"></script>
+  </body>
 </html>
