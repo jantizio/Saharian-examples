@@ -20,6 +20,7 @@
       <h2 class="saharian-debug-h2">Plain HTML</h2>
       <p class="help saharian-debug-explanation">
         This term definition implementation uses native HTML elements.
+        Specifically using the <code>&lt;dl&gt;</code> element.
       </p>
       <div class="example saharian-debug-flex">
         <div class="container">
@@ -31,9 +32,29 @@
               Its flavor depends on the type and quality of the grapes used, as
               well as the specifics of the distillation process. It is made by
               distilling the skins, pulp, seeds, and stems (i.e. the pomace
-              leftover from winemaking after pressing the grapes.
+              leftover from winemaking after pressing the grapes.)
             </dd>
           </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        This term definition implementation uses native HTML elements.
+        Specifically using the <code>&lt;dfn&gt;</code> element.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <p class="definitionlist">
+            <dfn>Grappa</dfn>, a fragrant, grape-based pomace brandy of Italian
+            origin that contains 35 to 60 percent Alcohol by volume (70 to 120
+            US proof). Its flavor depends on the type and quality of the grapes
+            used, as well as the specifics of the distillation process. It is
+            made by distilling the skins, pulp, seeds, and stems (i.e. the
+            pomace leftover from winemaking after pressing the grapes.)
+          </p>
         </div>
       </div>
     </section>
@@ -47,15 +68,15 @@
       <div class="example saharian-debug-flex">
         <div class="container">
           <!-- WAI-ARIA does not provide a role that is the equivalent of <dl> !-->
-          <p>
+          <p class="definitionlist">
             <span id="e1t1" role="term" class="term">Grappa</span>
-            <span role="definition" aria-labelledby="e1t1" class="definition"
-              >A fragrant, grape-based pomace brandy of Italian origin that
+            <span role="definition" aria-labelledby="e1t1" class="definition">
+              A fragrant, grape-based pomace brandy of Italian origin that
               contains 35 to 60 percent Alcohol by volume (70 to 120 US proof).
               Its flavor depends on the type and quality of the grapes used, as
               well as the specifics of the distillation process. It is made by
               distilling the skins, pulp, seeds, and stems (i.e. the pomace
-              leftover from winemaking after pressing the grapes.</span
+              leftover from winemaking after pressing the grapes.)</span
             >
           </p>
         </div>
@@ -70,17 +91,17 @@
       </p>
       <div class="example saharian-debug-flex">
         <div class="container">
-          <dl>
-            <dt>Grappa</dt>
-            <dd>
+          <p class="definitionlist">
+            <span id="e1t1" class="term">Grappa</span>
+            <span class="definition">
               A fragrant, grape-based pomace brandy of Italian origin that
               contains 35 to 60 percent Alcohol by volume (70 to 120 US proof).
               Its flavor depends on the type and quality of the grapes used, as
               well as the specifics of the distillation process. It is made by
               distilling the skins, pulp, seeds, and stems (i.e. the pomace
-              leftover from winemaking after pressing the grapes.
-            </dd>
-          </dl>
+              leftover from winemaking after pressing the grapes.)</span
+            >
+          </p>
         </div>
       </div>
     </section>

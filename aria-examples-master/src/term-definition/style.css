@@ -1,11 +1,19 @@
-dl, p {
-  
+dl,
+.definitionlist {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-dt, .term {
-
+dt,
+.term {
+  display: block;
 }
 
-dd, .definition {
-  
+dd,
+.definition {
+  display: block;
+  margin-left: 40px;
 }
