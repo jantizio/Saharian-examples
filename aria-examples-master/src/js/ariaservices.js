@@ -77,19 +77,19 @@ function doClick(event) {
 	if (container) {
 		const siblings = [...container.querySelectorAll(`[role="${role}"]`)]
 		for (const sibling of siblings) {
-			const panel = document.getElementById(sibling.getAttribute('aria-controls'))
+			const controlledElement = document.getElementById(sibling.getAttribute('aria-controls'))
 			sibling.ariaSelected = false
 			sibling.ariaChecked = false
 			sibling.tabIndex = -1
 			sibling.classList.remove('checked')
-			panel.tabIndex = -1
+			if(controlledElement) controlledElement.tabIndex = -1
 		}
 	}
-	const panel = document.getElementById(event.target.getAttribute('aria-controls'))
+	const controlledElement = document.getElementById(event.target.getAttribute('aria-controls'))
 	event.target.ariaSelected = true
 	event.target.ariaChecked = true
 	event.target.tabIndex = 0
-	panel.tabIndex = 0
+	if(controlledElement) controlledElement.tabIndex = 0
 
 	if (!event.target.classList.contains('checked')) {
 		event.target.classList.add('checked')
