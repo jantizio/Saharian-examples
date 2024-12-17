@@ -1,23 +1,28 @@
-h3 {margin-top: 0;}
+h3 {
+  margin-top: 0;
+}
 
-label {display: block;}
+label {
+  display: block;
+}
 
-.radiogroup, fieldset {   
-    padding: 1em 1em 1em 1em;
-    display: block;
-    white-space: nowrap;   
-	border: none;
+.radiogroup,
+fieldset {
+  padding: 1em 1em 1em 1em;
+  display: block;
+  white-space: nowrap;
+  border: none;
 }
 
 legend {
-    display: block;
-    font-size: 1.17em;
-    margin-block-start: 1em;    
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;	
-	margin-top: 0;
-	padding-top: 1em;
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  margin-top: 0;
+  padding-top: 1em;
 }
 
 .radio,
@@ -26,26 +31,35 @@ input[type="radio"] {
   border-radius: 0.3125em;
   position: relative;
   padding: 0.125em;
-  padding-left: 1.5em;				
+  padding-left: 1.5em;
   padding-right: 0.5em;
   cursor: default;
-  outline: none;  
+  outline: none;
 }
 
-.radio { display: block;}
-input[type="radio"] { margin-left: 0.4375em;  margin: 0.53em;  } 
+.radio {
+  display: block;
+}
+
+input[type="radio"] {
+  margin: 0.53em;
+  margin-left: 0.4375em;
+}
 
 .radio::before,
 .radio::after,
 input[type="radio"]::before,
-input[type="radio"]::after {				
+input[type="radio"]::after {
   position: absolute;
   top: 50%;
   transform: translate(-20%, -50%);
-  content: '';
+  content: "";
 }
 
-.radio::before, .radio::after {	left: 0.3125em; }
+.radio::before,
+.radio::after {
+  left: 0.3125em;
+}
 
 .radio::before,
 input[type="radio"]::before {
@@ -54,11 +68,11 @@ input[type="radio"]::before {
   background-image: linear-gradient(to bottom, hsl(0, 0%, 93%), #fff 60%);
 }
 .radio::before {
-  width: 0.875em; 
-  height: 0.875em; 
+  width: 0.875em;
+  height: 0.875em;
 }
 input[type="radio"]::before {
-  width: 1.1em; 
+  width: 1.1em;
   height: 1.1em;
   border: 1px solid hsl(0, 0%, 66%);
   border-radius: 100%;
@@ -72,7 +86,7 @@ input[type="radio"]:active::before {
 
 .checked::before,
 input[type="radio"]:checked::before {
-  border-color: #DDA374;
+  border-color: #dda374;
   background-image: linear-gradient(to bottom, #f6b681, #f18d3a);
 }
 
@@ -89,12 +103,11 @@ input[type="radio"]:checked::after {
   border: 0.23em solid #fff !important;
 }
 
-
 .radio:hover::before,
 .radio:focus::before,
 input[type="radio"]:hover::before,
 input[type="radio"]:focus::before {
-  border-color: #f6b681;	
+  border-color: #f6b681;
   border-width: 2px;
   box-shadow: 0 0 5px #f6b681;
 }
