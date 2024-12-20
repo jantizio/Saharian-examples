@@ -81,6 +81,46 @@
       </div>
     </section>
 
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">
+        Correct ARIA progressbar with dynamic value
+      </h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct progressbar implemented by using attributes from the
+        WAI-ARIA specification. It updates its value using javascript
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div
+            role="progressbar"
+            aria-label="Upload progress"
+            aria-valuemin="0"
+            aria-valuenow="0"
+            aria-valuemax="100"
+            class="progressbar-aria"
+            id="dynamic-progressbar"
+          >
+            <div class="filled" style="width: 0%" id="dynamic-filled"></div>
+            <div class="unfilled" style="width: 100%" id="dynamic-unfilled"></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        const progressbar = document.getElementById("dynamic-progressbar");
+        let progress = 0;
+        setInterval(() => {
+          if (progress >= 100) {
+            progress = 0;
+          }
+          progress = progress + 1;
+          progressbar.setAttribute("aria-valuenow", progress);
+          progressbar.querySelector("#dynamic-filled").style.width = `${progress}%`;
+        }, 1000);
+      </script>
+    </section>
+
     <section class="saharian-debug-wrong">
       <h2 class="saharian-debug-h2">Wrong JavaScript Progressbar</h2>
       <p class="help saharian-debug-explanation">
