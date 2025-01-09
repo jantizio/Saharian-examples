@@ -37,11 +37,12 @@
         $examples = glob('*/index.html');
         foreach ($examples as $example) {
           $name = substr($example, 0, strpos($example, '/'));
-          echo <<<example
-<li>
-<a href="$name/">$name</a>
-</li>\n
-example;
+          echo
+          <<<example
+          <li>
+            <a href="$name/">$name</a>
+          </li>\n
+          example;
         }
         ?></ul>
   </main>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>textbox examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <h1 class="saharian-debug-h1">textbox examples</h1>
+    <p>
+      Here you can find different textbox examples. The textbox role is used to
+      identify an element that allows the input of free-form text.
+    </p>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        This implementation uses plain HTML.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <label for="txtbox">Message:</label>
+          <input type="text" placeholder="message" id="txtbox" />
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA textbox</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct textbox implemented by using attributes from the
+        WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="txtboxLabel">Message:</div>
+          <div
+            role="textbox"
+            contenteditable="true"
+            aria-placeholder="message"
+            aria-labelledby="txtboxLabel"
+            aria-describedby="fieldhelp"
+            class="textbox"
+          ></div>
+          <p id="fieldhelp" class="help">
+            Enter your message to do nothing with.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Wrong ARIA textbox</h2>
+      <p class="help saharian-debug-explanation">No role attribute.</p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="txtboxLabel">Message:</div>
+          <div
+            contenteditable="true"
+            aria-placeholder="message"
+            aria-labelledby="txtboxLabel"
+            aria-describedby="fieldhelp"
+            class="textbox"
+          ></div>
+          <p id="fieldhelp" class="help">
+            Enter your message to do nothing with.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Messy ARIA textbox</h2>
+      <p class="help saharian-debug-explanation">
+        Messy single line textbox with no keyboard support and aria attributes
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div id="txtboxLabel">Message:</div>
+          <div
+            role="textbox"
+            contenteditable="true"
+            tabindex="-1"
+            aria-labelledby="nulllabel"
+            aria-describedby="nullhelp"
+            class="textbox"
+          ></div>
+          <p id="fieldhelp" class="help">
+            Enter your message to do nothing with.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script src="../common/example.js"></script>
+  </body>
+</html>
