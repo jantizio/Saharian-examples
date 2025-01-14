@@ -31,12 +31,21 @@
 
 <body>
   <main>
-    <h1 class="saharian-debug-h1">Accessibility examples</h1>
+    <h1 class="saharian-debug-h1">SahARIAn</h1>
+    <p>The Sighted Architect's Helper for ARIA Notation. Download at <a href="saharian.zip">here</a>.</p>
+
+    <h2 class="saharian-debug-h2">Accessibility examples</h2>
     <p>The good, the bad and the ugly of web accessibility.</p>
     <ul><?php
+        $ignored = ["useful TO-DO list"];
         $examples = glob('*/index.html');
         foreach ($examples as $example) {
           $name = substr($example, 0, strpos($example, '/'));
+
+          if (in_array($name, $ignored)) {
+            continue;
+          }
+
           echo
           <<<example
           <li>
