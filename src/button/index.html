@@ -44,6 +44,12 @@
           <script>
             document.getElementById("btn2").onclick = () =>
               alert("Button pressed");
+
+            document.getElementById("btn2").onkeydown = (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                alert("Button pressed");
+              }
+            };
           </script>
         </div>
       </div>
