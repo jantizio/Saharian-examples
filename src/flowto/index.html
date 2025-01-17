@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>aria-flowto examples</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../common/example.css" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="../common/desert-256.png" />
+    </head>
+    <body>
+        <h1 class="saharian-debug-h1">Aria-flowto examples</h1>
+        <p>
+            Here you can find an example of how to use the `aria-flowto`
+            attribute to define the reading order of elements for assistive
+            technologies.
+        </p>
+
+        <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">Aria flowto</h2>
+            <p class="help saharian-debug-explanation">
+                Here the first div element has the `aria-flowto` attribute set
+                to a list of ids. As you can see the readin order doesn't follow
+                the DOM order.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div
+                        id="element1"
+                        class="element"
+                        aria-flowto="element2 element3">
+                        Element 1<br />(Flowto: Element 2, 3)
+                    </div>
+                    <div id="element4" class="element">Element 4</div>
+                    <div id="element2" class="element">Element 2</div>
+                    <div id="element3" class="element" aria-flowto="element4">
+                        Element 3<br />(Flowto: Element 4)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script src="../common/example.js"></script>
+    </body>
+</html>
