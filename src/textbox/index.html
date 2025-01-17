@@ -28,6 +28,65 @@
         </section>
 
         <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">
+                Correct ARIA textbox with validation
+            </h2>
+            <p class="help saharian-debug-explanation">
+                This is a correct textbox implemented by using plain HTML, with
+                added input validation.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <form id="example-form" novalidate>
+                        <label for="username">Username:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            aria-describedby="username-instructions"
+                            aria-invalid="false"
+                            aria-errormessage="username-error" />
+                        <div id="username-instructions">
+                            Enter a username with at least 5 characters.
+                        </div>
+                        <div id="username-error" class="error" hidden>
+                            Username must be at least 5 characters long.
+                        </div>
+
+                        <button type="submit">Submit</button>
+                    </form>
+
+                    <script>
+                        document
+                            .getElementById("example-form")
+                            .addEventListener("submit", function (event) {
+                                event.preventDefault();
+
+                                // Validate the username field
+                                const usernameInput =
+                                    document.getElementById("username");
+                                const usernameError =
+                                    document.getElementById("username-error");
+                                if (usernameInput.value.length < 5) {
+                                    usernameInput.setAttribute(
+                                        "aria-invalid",
+                                        "true"
+                                    );
+                                    usernameError.hidden = false;
+                                } else {
+                                    usernameInput.setAttribute(
+                                        "aria-invalid",
+                                        "false"
+                                    );
+                                    usernameError.hidden = true;
+                                }
+                            });
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <section class="saharian-debug-correct">
             <h2 class="saharian-debug-h2">Correct ARIA textbox</h2>
             <p class="help saharian-debug-explanation">
                 This is a correct textbox implemented by using attributes from
