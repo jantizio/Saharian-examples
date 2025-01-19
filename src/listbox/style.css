@@ -1,17 +1,46 @@
 label,
-.label {}
+.label {
+}
 
 select,
-.listbox {}
+.listbox {
+}
 
 option,
-.option {}
+.option {
+}
 
-.selected {}
+.selected {
+}
 
 .custom-select {
     position: relative;
     width: 200px;
+}
+
+.multi-listbox {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 300px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.multi-option {
+    list-style: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.multi-option[aria-selected="true"] {
+    background-color: #0078d4;
+    color: white;
+}
+
+.multi-option[aria-selected="false"]:hover {
+    background-color: #f0f0f0;
 }
 
 .select-input,

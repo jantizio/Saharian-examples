@@ -6,7 +6,6 @@
   <title>listbox examples</title>
   <link rel="stylesheet" href="../common/example.css">
   <link rel="stylesheet" href="style.css">
-  <script src="../js/ariaservices.js"></script>
 </head>
 
 <body>
@@ -40,7 +39,6 @@
     </div>
   </section>
 
-  <!-- DA REDIREZIONARE IL CLICK DEL MOUSE-->
   <section class="saharian-debug-correct">
     <h2 class="saharian-debug-h2">Correct ARIA listbox</h2>
     <p class="help saharian-debug-explanation">
@@ -142,6 +140,93 @@
     </div>
   </section>
 
+  <section class="saharian-debug-correct">
+    <h2 class="saharian-debug-h2">Correct ARIA listbox</h2>
+    <p class="help saharian-debug-explanation">
+      This is a correct listbox implemented by using attributes from the WAI-ARIA specification.
+    </p>
+    <div class="example saharian-debug-flex">
+      <div class="container">
+        <div>
+          <label for="multi-listbox" id="listbox-label">Choose your options:</label>
+          <ul
+            id="multi-listbox"
+            role="listbox"
+            aria-multiselectable="true"
+            tabindex="0"
+            class="listbox"
+          >
+            <li role="option" aria-selected="false" tabindex="-1" class="multi-option">Option 1</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="multi-option">Option 2</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="multi-option">Option 3</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="multi-option">Option 4</li>
+            <li role="option" aria-selected="false" tabindex="-1" class="multi-option">Option 5</li>
+          </ul>
+        </div>
+      
+        <script>
+          const listbox = document.getElementById("multi-listbox");
+          const options = Array.from(listbox.querySelectorAll('.multi-option'));
+      
+          listbox.addEventListener("keydown", (event) => {
+            const currentIndex = options.findIndex(
+              (option) => option.tabIndex === 0
+            );
+      
+            switch (event.key) {
+              case "ArrowUp":
+                event.preventDefault();
+                if (currentIndex > 0) {
+                  moveFocus(currentIndex - 1);
+                }
+                break;
+              case "ArrowDown":
+                event.preventDefault();
+                if (currentIndex < options.length - 1) {
+                  moveFocus(currentIndex + 1);
+                }
+                break;
+              case " ":
+              case "Enter":
+                event.preventDefault();
+                toggleSelection(currentIndex);
+                break;
+              case "Home":
+                event.preventDefault();
+                moveFocus(0);
+                break;
+              case "End":
+                event.preventDefault();
+                moveFocus(options.length - 1);
+                break;
+            }
+          });
+      
+          listbox.addEventListener("click", (event) => {
+            const clickedOption = options.find((option) => option === event.target);
+            if (clickedOption) {
+              toggleSelection(options.indexOf(clickedOption));
+            }
+          });
+      
+          function moveFocus(newIndex) {
+            options.forEach((option, index) => {
+              option.tabIndex = index === newIndex ? 0 : -1;
+            });
+            options[newIndex].focus();
+          }
+      
+          function toggleSelection(index) {
+            const option = options[index];
+            const isSelected = option.getAttribute("aria-selected") === "true";
+            option.setAttribute("aria-selected", !isSelected);
+          }
+      
+          moveFocus(0);
+        </script>
+      </div>
+    </div>
+  </section>
 
 
   <section class="saharian-debug-wrong">

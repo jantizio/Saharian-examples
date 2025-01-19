@@ -98,7 +98,7 @@
                     <div
                         role="textbox"
                         contenteditable="true"
-                        aria-placeholder="message"
+                        aria-placeholder="write your message here"
                         aria-labelledby="txtboxLabel"
                         aria-describedby="fieldhelp"
                         class="textbox"></div>
@@ -117,7 +117,7 @@
                     <div id="txtboxLabel">Message:</div>
                     <div
                         contenteditable="true"
-                        aria-placeholder="message"
+                        aria-placeholder="write your message here"
                         aria-labelledby="txtboxLabel"
                         aria-describedby="fieldhelp"
                         class="textbox"></div>
@@ -143,6 +143,29 @@
                         tabindex="-1"
                         aria-labelledby="nulllabel"
                         aria-describedby="nullhelp"
+                        class="textbox"></div>
+                    <p id="fieldhelp" class="help">
+                        Enter your message to do nothing with.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">Mutiline textbox</h2>
+            <p class="help saharian-debug-explanation">
+                Correct multiline textbox simulating a textarea.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div id="txtboxLabel">Message:</div>
+                    <div
+                        role="textbox"
+                        contenteditable="true"
+                        aria-placeholder="you can enter multiple lines of text"
+                        aria-labelledby="txtboxLabel"
+                        aria-describedby="fieldhelp"
+                        aria-multiline="true"
                         class="textbox"></div>
                     <p id="fieldhelp" class="help">
                         Enter your message to do nothing with.
