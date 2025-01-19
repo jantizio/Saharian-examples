@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>menu examples</title>
+        <link rel="stylesheet" href="../common/example.css" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body>
+        <h1 class="saharian-debug-h1">menu examples</h1>
+        <p>
+            Here you can find different menu examples with various accessibility
+            degrees, implemented both by using native HTML Elements and
+            attributes from the WAI-ARIA specification.
+        </p>
+
+        <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">Plain HTML</h2>
+            <p class="help saharian-debug-explanation">
+                Or well... HTML does not offer native elements to represent
+                menus.
+            </p>
+        </section>
+
+        <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">Correct ARIA menu</h2>
+            <p class="help saharian-debug-explanation">
+                This is a correct menu implemented by using attributes from the
+                WAI-ARIA specification.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div id="context-menu-wrapper" style="position: relative">
+                        <button
+                            id="menu-trigger"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="context-menu">
+                            Open Menu
+                        </button>
+                        <ul
+                            id="context-menu"
+                            role="menu"
+                            aria-labelledby="menu-trigger"
+                            hidden>
+                            <li role="menuitem" tabindex="-1">Option 1</li>
+                            <li role="menuitem" tabindex="-1">Option 2</li>
+                            <li role="menuitem" tabindex="-1">Option 3</li>
+                            <div role="separator"></div>
+                            <li role="menuitem" tabindex="-1">Option 4</li>
+                        </ul>
+                    </div>
+
+                    <script>
+                        const menuTrigger =
+                            document.getElementById("menu-trigger");
+                        const contextMenu =
+                            document.getElementById("context-menu");
+                        let focusedIndex = -1;
+
+                        function openMenu() {
+                            contextMenu.hidden = false;
+                            menuTrigger.setAttribute("aria-expanded", "true");
+                            contextMenu
+                                .querySelectorAll('[role="menuitem"]')[0]
+                                .focus();
+                            focusedIndex = 0;
+                        }
+
+                        function closeMenu() {
+                            if (focusedIndex !== -1) {
+                                contextMenu.hidden = true;
+                                menuTrigger.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+                                focusedIndex = -1;
+                                menuTrigger.focus();
+                            }
+                        }
+
+                        function handleKeyDown(event) {
+                            event.preventDefault();
+                            const items =
+                                contextMenu.querySelectorAll(
+                                    '[role="menuitem"]'
+                                );
+                            switch (event.key) {
+                                case "ArrowDown":
+                                    focusedIndex =
+                                        (focusedIndex + 1) % items.length;
+                                    items[focusedIndex].focus();
+                                    break;
+                                case "ArrowUp":
+                                    focusedIndex =
+                                        (focusedIndex - 1 + items.length) %
+                                        items.length;
+                                    items[focusedIndex].focus();
+                                    break;
+                                case "Home":
+                                    focusedIndex = 0;
+                                    items[focusedIndex].focus();
+                                    break;
+                                case "End":
+                                    focusedIndex = items.length - 1;
+                                    items[focusedIndex].focus();
+                                    break;
+                                case "Escape":
+                                    closeMenu();
+                                    break;
+                                case "Enter":
+                                case " ":
+                                    closeMenu();
+                                    break;
+                            }
+                        }
+
+                        menuTrigger.addEventListener("click", () => {
+                            if (contextMenu.hidden) {
+                                openMenu();
+                            } else {
+                                closeMenu();
+                            }
+                        });
+
+                        menuTrigger.addEventListener("keydown", (event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                openMenu();
+                            }
+                        });
+
+                        contextMenu.addEventListener("keydown", handleKeyDown);
+
+                        contextMenu
+                            .querySelectorAll('[role="menuitem"]')
+                            .forEach((item) => {
+                                item.addEventListener("click", () => {
+                                    closeMenu();
+                                });
+                            });
+
+                        document.addEventListener("click", (event) => {
+                            if (
+                                !event.target.closest("#context-menu-wrapper")
+                            ) {
+                                closeMenu();
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <!-- <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">Correct ARIA menu with submenu</h2>
+            <p class="help saharian-debug-explanation">
+                This is a correct menu with a submenu implemented by using
+                attributes from the WAI-ARIA specification.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div id="context-menu-wrapper1" style="position: relative">
+                        <button
+                            id="menu-trigger1"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="context-menu1">
+                            Open Menu
+                        </button>
+                        <ul
+                            id="context-menu1"
+                            role="menu"
+                            aria-labelledby="menu-trigger1"
+                            hidden>
+                            <li role="menuitem" tabindex="-1">Option 1</li>
+                            <li
+                                role="menuitem"
+                                tabindex="-1"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                                Option 2
+                                <ul role="menu" hidden>
+                                    <li role="menuitem" tabindex="-1">
+                                        Sub Option 1
+                                    </li>
+                                    <li role="menuitem" tabindex="-1">
+                                        Sub Option 2
+                                    </li>
+                                </ul>
+                            </li>
+                            <li role="menuitem" tabindex="-1">Option 3</li>
+                        </ul>
+                    </div>
+
+                    <script>
+                        const menuTrigger1 =
+                            document.getElementById("menu-trigger1");
+                        const contextMenu1 =
+                            document.getElementById("context-menu1");
+
+                        let focusedIndex1 = -1;
+                        let submenuVisible = false;
+
+                        function openMenu1(menu) {
+                            menu.hidden = false;
+                            menu.parentNode.setAttribute(
+                                "aria-expanded",
+                                "true"
+                            );
+                            menu.querySelector('[role="menuitem"]').focus();
+                            focusedIndex1 = 0;
+                        }
+
+                        function closeMenu1(menu) {
+                            menu.hidden = true;
+                            menu.parentNode.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+                            focusedIndex1 = -1;
+                        }
+
+                        function closeAllMenus() {
+                            document
+                                .querySelectorAll('[role="menu"]')
+                                .forEach((menu) => {
+                                    menu.hidden = true;
+                                    menu.parentNode.setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+                                });
+                        }
+
+                        function handleKeyDown1(event, parentMenu) {
+                            event.preventDefault();
+                            const items = parentMenu.querySelectorAll(
+                                ':scope > [role="menuitem"]'
+                            );
+                            switch (event.key) {
+                                case "ArrowDown":
+                                    focusedIndex1 =
+                                        (focusedIndex1 + 1) % items.length;
+                                    items[focusedIndex1].focus();
+                                    break;
+                                case "ArrowUp":
+                                    focusedIndex1 =
+                                        (focusedIndex1 - 1 + items.length) %
+                                        items.length;
+                                    items[focusedIndex1].focus();
+                                    break;
+                                case "ArrowRight": {
+                                    const submenu =
+                                        items[focusedIndex1].querySelector(
+                                            '[role="menu"]'
+                                        );
+                                    if (submenu) {
+                                        openMenu1(submenu);
+                                    }
+                                    break;
+                                }
+                                case "ArrowLeft": {
+                                    const parentSubmenu =
+                                        parentMenu.parentNode.closest(
+                                            '[role="menu"]'
+                                        );
+                                    if (parentSubmenu) {
+                                        closeMenu1(parentMenu);
+                                        parentSubmenu.focus();
+                                    }
+                                    break;
+                                }
+                                case "Enter":
+                                case " ":
+                                    console.log(items[focusedIndex1]);
+                                    if (
+                                        items[focusedIndex1].querySelector(
+                                            '[role="menu"]'
+                                        )
+                                    ) {
+                                        openMenu1(
+                                            items[focusedIndex1].querySelector(
+                                                '[role="menu"]'
+                                            )
+                                        );
+                                    } else {
+                                        alert(
+                                            `Selected: ${items[focusedIndex1].textContent}`
+                                        );
+                                        closeAllMenus();
+                                    }
+                                    break;
+                                case "Escape":
+                                    closeMenu1(parentMenu);
+                                    break;
+                            }
+                        }
+
+                        menuTrigger1.addEventListener("click", () => {
+                            if (contextMenu1.hidden) {
+                                openMenu1(contextMenu1);
+                            } else {
+                                closeAllMenus();
+                            }
+                        });
+
+                        menuTrigger1.addEventListener("keydown", (event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                openMenu1(contextMenu1);
+                            }
+                        });
+
+                        contextMenu1.addEventListener("keydown", (event) => {
+                            handleKeyDown1(event, contextMenu1);
+                        });
+
+                        document.addEventListener("click", (event) => {
+                            if (
+                                !event.target.closest("#context-menu-wrapper1")
+                            ) {
+                                closeAllMenus();
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </section> -->
+
+        <section class="saharian-debug-correct">
+            <h2 class="saharian-debug-h2">
+                Correct ARIA menu with radio buttons
+            </h2>
+            <p class="help saharian-debug-explanation">
+                This is a correct menu with radiobuttons implemented by using
+                attributes from the WAI-ARIA specification.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div>
+                        <button
+                            id="radiobutton-menu-trigger"
+                            type="button"
+                            aria-haspopup="menu"
+                            aria-controls="colormenu"
+                            tabindex="0"
+                            aria-label="Text Color: purple">
+                            Purple
+                            <span></span>
+                        </button>
+                        <ul
+                            role="menu"
+                            id="colormenu"
+                            aria-label="Color Options"
+                            tabindex="-1">
+                            <li
+                                role="menuitemradio"
+                                aria-checked="true"
+                                style="color: purple"
+                                tabindex="-1">
+                                Purple
+                            </li>
+                            <li
+                                role="menuitemradio"
+                                aria-checked="false"
+                                style="color: magenta"
+                                tabindex="-1">
+                                Magenta
+                            </li>
+                            <li
+                                role="menuitemradio"
+                                aria-checked="false"
+                                style="color: black"
+                                tabindex="-1">
+                                Black
+                            </li>
+                        </ul>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const button = document.querySelector(
+                                "#radiobutton-menu-trigger"
+                            );
+                            const menu = document.getElementById("colormenu");
+                            const menuItems = menu.querySelectorAll(
+                                '[role="menuitemradio"]'
+                            );
+                            console.log(button, menu, menuItems);
+                            let menuOpen = false;
+
+                            function openColorMenu() {
+                                menu.setAttribute("aria-hidden", "false");
+                                button.setAttribute("aria-expanded", "true");
+                                menuItems[0].focus();
+                                menuOpen = true;
+                            }
+
+                            function closeColorMenu() {
+                                menu.setAttribute("aria-hidden", "true");
+                                button.setAttribute("aria-expanded", "false");
+                                button.focus();
+                                menuOpen = false;
+                            }
+
+                            function toggleColorMenu() {
+                                if (menuOpen) {
+                                    closeColorMenu();
+                                } else {
+                                    openColorMenu();
+                                }
+                            }
+
+                            function handleMenuKeydown(event) {
+                                const key = event.key;
+                                const currentIndex = Array.from(
+                                    menuItems
+                                ).indexOf(document.activeElement);
+                                let nextIndex;
+
+                                switch (key) {
+                                    case "ArrowDown":
+                                        nextIndex =
+                                            (currentIndex + 1) %
+                                            menuItems.length;
+                                        menuItems[nextIndex].focus();
+                                        break;
+                                    case "ArrowUp":
+                                        nextIndex =
+                                            (currentIndex -
+                                                1 +
+                                                menuItems.length) %
+                                            menuItems.length;
+                                        menuItems[nextIndex].focus();
+                                        break;
+                                    case "Enter":
+                                    case " ":
+                                        selectMenuItem(document.activeElement);
+                                        closeColorMenu();
+                                        break;
+                                    case "Escape":
+                                        closeColorMenu();
+                                        break;
+                                    default:
+                                        return;
+                                }
+
+                                event.preventDefault();
+                            }
+
+                            function selectMenuItem(item) {
+                                menuItems.forEach((menuItem) => {
+                                    menuItem.setAttribute(
+                                        "aria-checked",
+                                        "false"
+                                    );
+                                });
+                                item.setAttribute("aria-checked", "true");
+                                button.textContent = item.textContent.trim();
+                                button.style.color = item.style.color;
+                                button.setAttribute(
+                                    "aria-label",
+                                    `Text Color: ${item.textContent
+                                        .trim()
+                                        .toLowerCase()}`
+                                );
+                            }
+
+                            button.addEventListener("click", toggleColorMenu);
+
+                            button.addEventListener("keydown", (event) => {
+                                if (
+                                    event.key === "ArrowDown" ||
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+                                    event.preventDefault();
+                                    openColorMenu();
+                                } else if (event.key === "Escape") {
+                                    closeColorMenu();
+                                }
+                            });
+
+                            menu.addEventListener("keydown", handleMenuKeydown);
+
+                            document.addEventListener("click", (event) => {
+                                if (!event.target.closest("div")) {
+                                    closeColorMenu();
+                                }
+                            });
+
+                            menuItems.forEach((item) => {
+                                item.addEventListener("click", () => {
+                                    selectMenuItem(item);
+                                    closeColorMenu();
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <section class="saharian-debug-wrong">
+            <h2 class="saharian-debug-h2">Wrong JavaScript Listbox</h2>
+            <p class="help saharian-debug-explanation">
+                This is a listbox implemented using custom JavaScript without
+                ARIA attributes.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container"></div>
+            </div>
+        </section>
+
+        <section class="saharian-debug-wrong">
+            <h2 class="saharian-debug-h2">Wrong ARIA menu</h2>
+            <p class="help saharian-debug-explanation">
+                This is a wrong implementation of a menu using ARIA attributes,
+                but not not providing keyboard support.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div id="context-menu-wrapper" style="position: relative">
+                        <button
+                            id="menu-trigger2"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="context-menu"
+                            tabindex="-1">
+                            Open Menu
+                        </button>
+                        <ul
+                            id="context-menu2"
+                            role="menu"
+                            aria-labelledby="menu-trigger"
+                            hidden>
+                            <li role="menuitem">Option 1</li>
+                            <li role="menuitem">Option 2</li>
+                            <li role="menuitem">Option 3</li>
+                            <div role="separator"></div>
+                            <li role="menuitem">Option 4</li>
+                        </ul>
+                    </div>
+
+                    <script>
+                        const menuTrigger2 =
+                            document.getElementById("menu-trigger2");
+                        const contextMenu2 =
+                            document.getElementById("context-menu2");
+                        let focusedIndex2 = -1;
+
+                        function openMenu2() {
+                            contextMenu2.hidden = false;
+                            menuTrigger2.setAttribute("aria-expanded", "true");
+                            contextMenu2
+                                .querySelectorAll('[role="menuitem"]')[0]
+                                .focus();
+                            focusedIndex2 = 0;
+                        }
+
+                        function closeMenu2() {
+                            if (focusedIndex2 !== -1) {
+                                contextMenu2.hidden = true;
+                                menuTrigger2.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+                                focusedIndex2 = -1;
+                                menuTrigger2.focus();
+                            }
+                        }
+
+                        menuTrigger2.addEventListener("click", () => {
+                            if (contextMenu2.hidden) {
+                                openMenu2();
+                            } else {
+                                closeMenu2();
+                            }
+                        });
+
+                        contextMenu2
+                            .querySelectorAll('[role="menuitem"]')
+                            .forEach((item) => {
+                                item.addEventListener("click", () => {
+                                    closeMenu2();
+                                });
+                            });
+
+                        document.addEventListener("click", (event) => {
+                            if (
+                                !event.target.closest("#context-menu-wrapper")
+                            ) {
+                                closeMenu2();
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <script src="../common/example.js"></script>
+    </body>
+</html>

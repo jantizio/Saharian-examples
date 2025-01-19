@@ -1,0 +1,77 @@
+#context-menu,
+#context-menu2 {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    width: 150px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#context-menu[hidden],
+#context-menu2[hidden] {
+    display: none;
+}
+
+#context-menu li,
+#context-menu2 li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#context-menu li:focus,
+#context-menu2 li:focus {
+    background-color: #f0f0f0;
+    outline: none;
+}
+
+#context-menu [role="separator"],
+#context-menu2 [role="separator"] {
+    border-top: 1px solid #ccc;
+    margin: 4px 0;
+}
+
+#radiobutton-menu-trigger {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#radiobutton-menu-trigger:focus {
+    outline: 2px solid #0078d4;
+}
+
+#colormenu {
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+#colormenu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#colormenu li:focus {
+    outline: none;
+    background-color: #f0f0f0;
+}
+
+#colormenu[aria-hidden="false"] {
+    display: block;
+}
+
+#colormenu li[aria-checked="true"]::after {
+    content: "✓";
+    float: right;
+}
