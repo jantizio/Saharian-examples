@@ -20,8 +20,8 @@
             <h2 class="saharian-debug-h2">Aria flowto</h2>
             <p class="help saharian-debug-explanation">
                 Here the first div element has the `aria-flowto` attribute set
-                to a list of ids. As you can see the readin order doesn't follow
-                the DOM order.
+                to a list of ids. As you can see the reading order doesn't
+                follow the DOM order.
             </p>
             <div class="example saharian-debug-flex">
                 <div class="container">
@@ -36,6 +36,22 @@
                     <div id="element3" class="element" aria-flowto="element4">
                         Element 3<br />(Flowto: Element 4)
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="saharian-debug-wrong">
+            <h2 class="saharian-debug-h2">Aria flowto</h2>
+            <p class="help saharian-debug-explanation">
+                The elements are not in the correct reading order, but there is
+                no `aria-flowto` attribute set.
+            </p>
+            <div class="example saharian-debug-flex">
+                <div class="container">
+                    <div id="element1" class="element">Element 1<br /></div>
+                    <div id="element4" class="element">Element 4</div>
+                    <div id="element2" class="element">Element 2</div>
+                    <div id="element3" class="element">Element 3<br /></div>
                 </div>
             </div>
         </section>
