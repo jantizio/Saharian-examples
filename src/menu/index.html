@@ -41,6 +41,7 @@
                         </button>
                         <ul
                             id="context-menu"
+                            class="ctxmenu"
                             role="menu"
                             aria-labelledby="menu-trigger"
                             hidden>
@@ -503,16 +504,6 @@
             </div>
         </section>
 
-        <section class="saharian-debug-wrong">
-            <h2 class="saharian-debug-h2">Wrong JavaScript Listbox</h2>
-            <p class="help saharian-debug-explanation">
-                This is a listbox implemented using custom JavaScript without
-                ARIA attributes.
-            </p>
-            <div class="example saharian-debug-flex">
-                <div class="container"></div>
-            </div>
-        </section>
 
         <section class="saharian-debug-wrong">
             <h2 class="saharian-debug-h2">Wrong ARIA menu</h2>
@@ -533,6 +524,7 @@
                         </button>
                         <ul
                             id="context-menu2"
+                            class="ctxmenu"
                             role="menu"
                             aria-labelledby="menu-trigger"
                             hidden>
@@ -599,6 +591,87 @@
                 </div>
             </div>
         </section>
+
+        <section class="saharian-debug-wrong">
+          <h2 class="saharian-debug-h2">Wrong Menu</h2>
+          <p class="help saharian-debug-explanation">
+              This is a menu without any ARIA attributes and keyboard support.
+          </p>
+          <div class="example saharian-debug-flex">
+              <div class="container">
+                <div id="context-menu-wrapper" style="position: relative">
+                  <button
+                      id="menu-trigger3"
+                      tabindex="-1">
+                      Open Menu
+                  </button>
+                  <ul
+                      id="context-menu3"
+                      class="ctxmenu"
+                      hidden>
+                      <li class="menuitem">Option 1</li>
+                      <li class="menuitem">Option 2</li>
+                      <li class="menuitem">Option 3</li>
+                      <div class="separator"></div>
+                      <li class="menuitem">Option 4</li>
+                  </ul>
+              </div>
+
+              <script>
+                const menuTrigger3 =
+                            document.getElementById("menu-trigger3");
+                        const contextMenu3 =
+                            document.getElementById("context-menu3");
+                        let focusedIndex3 = -1;
+
+                        function openMenu3() {
+                            contextMenu3.hidden = false;
+                            menuTrigger3.setAttribute("aria-expanded", "true");
+                            contextMenu3
+                                .querySelectorAll('.menuitem')[0]
+                                .focus();
+                            focusedIndex3 = 0;
+                        }
+
+                        function closeMenu3() {
+                            if (focusedIndex3 !== -1) {
+                                contextMenu3.hidden = true;
+                                menuTrigger3.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+                                focusedIndex3 = -1;
+                                menuTrigger3.focus();
+                            }
+                        }
+
+                        menuTrigger3.addEventListener("click", () => {
+                            if (contextMenu3.hidden) {
+                                openMenu3();
+                            } else {
+                                closeMenu3();
+                            }
+                        });
+
+                        contextMenu3
+                            .querySelectorAll('.menuitem')
+                            .forEach((item) => {
+                                item.addEventListener("click", () => {
+                                    closeMenu3();
+                                });
+                            });
+
+                        document.addEventListener("click", (event) => {
+                            if (
+                                !event.target.closest("#context-menu-wrapper")
+                            ) {
+                                closeMenu3();
+                            }
+                        });
+              </script>
+            </div>
+          </div>
+      </section>
 
         <script src="../common/example.js"></script>
     </body>
