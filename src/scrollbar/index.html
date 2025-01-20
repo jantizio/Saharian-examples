@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Scrollbar examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../common/desert-256.png" />
+  </head>
+
+  <body>
+    <h1 class="saharian-debug-h1">Scrollbar examples</h1>
+    <p>
+      Here you can find different scrollbar examples with various accessibility
+      degrees, implemented the WAI-ARIA specification.
+    </p>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA Scrollbar</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct scrollbar implementation that uses attributes from the
+        WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <span id="pi-label">Pi</span>
+          <div id="pi" class="scroll-container" tabindex="0">
+            3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
+          </div>
+          <div
+            role="scrollbar"
+            aria-labelledby="pi-label"
+            aria-controls="pi"
+            aria-orientation="horizontal"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100">
+            <div id="thumb"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Wrong ARIA Scrollbar</h2>
+      <p class="help saharian-debug-explanation">
+        This is a correct scrollbar implementation that uses attributes from the
+        WAI-ARIA specification.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <span id="pi-label2">Pi</span>
+          <div id="pi2" class="scroll-container" tabindex="0">
+            3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
+          </div>
+          <div
+            class="wrong-scrollbar"
+            aria-controls="pi2"
+            aria-orientation="horizontal"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100">
+            <div id="thumb"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="../common/example.js"></script>
+    <script src="scrollbar.js"></script>
+  </body>
+</html>

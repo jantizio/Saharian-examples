@@ -1,0 +1,25 @@
+.scroll-container {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+[role="scrollbar"],
+.wrong-scrollbar {
+  width: 300px;
+  height: 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  position: relative;
+  margin-top: 10px;
+}
+
+#thumb {
+  height: 100%;
+  width: 30px;
+  background-color: #007bff;
+  position: absolute;
+  cursor: pointer;
+}
