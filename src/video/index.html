@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Video examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../common/desert-256.png" />
+  </head>
+
+  <body>
+    <h1 class="saharian-debug-h1">Video examples</h1>
+    <p></p>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Plain HTML</h2>
+      <p class="help saharian-debug-explanation">
+        Video element using native HTML5 video player controls. Multiple sources
+        are provided to ensure compatibility with different browsers.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <video controls>
+            <source src="flower.webm" type="video/webm" />
+            <source src="flower.mp4" type="video/mp4" />
+            <p>
+              Your browser doesn't support HTML video. Here is a
+              <a href="flower.mp4" download="flower.mp4">link to the video</a>
+              instead.
+            </p>
+            <track
+              label="English"
+              kind="captions"
+              srclang="en"
+              src=""
+              default />
+            <track label="Deutsch" kind="captions" srclang="de" src="" />
+            <track label="Español" kind="captions" srclang="es" src="" />
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Plain HTML without tracks</h2>
+      <p class="help saharian-debug-explanation">
+        Video element using native HTML5 video player controls. Tracks are not
+        provided so the video is not accessible to all users.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <video controls>
+            <source src="flower.webm" type="video/webm" />
+            <source src="flower.mp4" type="video/mp4" />
+            <p>
+              Your browser doesn't support HTML video. Here is a
+              <a href="flower.mp4" download="flower.mp4">link to the video</a>
+              instead.
+            </p>
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <script src="../common/example.js"></script>
+  </body>
+</html>
