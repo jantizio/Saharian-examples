@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Toolbar examples</title>
+    <link rel="stylesheet" href="../common/example.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="../common/desert-256.png" />
+  </head>
+
+  <body>
+    <h1 class="saharian-debug-h1">Toolbar examples</h1>
+    <p>
+      Here you can find different toolbar examples with various accessibility
+      degrees, implemented both by using native HTML elements and attributes
+      from the WAI-ARIA specification.
+    </p>
+
+    <section class="saharian-debug-correct">
+      <h2 class="saharian-debug-h2">Correct ARIA Toolbar</h2>
+      <p class="help saharian-debug-explanation">
+        This is a simple toolbar implmented using aria roles.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div class="toolbar" role="toolbar" aria-label="Text formatting">
+            <button
+              aria-label="Bold (Ctrl+B)"
+              onclick="alert('Bold action triggered')">
+              B
+            </button>
+            <button
+              aria-label="Italic (Ctrl+I)"
+              onclick="alert('Italic action triggered')">
+              I
+            </button>
+            <button
+              aria-label="Underline (Ctrl+U)"
+              onclick="alert('Underline action triggered')">
+              U
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Wrong Aria Toolbar</h2>
+      <p class="help saharian-debug-explanation">
+        This is a wrong implementation of a toolbar, as it doesn't expose aria
+        attributes
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div class="toolbar" aria-label="Text formatting">
+            <button
+              aria-label="Bold (Ctrl+B)"
+              onclick="alert('Bold action triggered')">
+              B
+            </button>
+            <button
+              aria-label="Italic (Ctrl+I)"
+              onclick="alert('Italic action triggered')">
+              I
+            </button>
+            <button
+              aria-label="Underline (Ctrl+U)"
+              onclick="alert('Underline action triggered')">
+              U
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="saharian-debug-wrong">
+      <h2 class="saharian-debug-h2">Toolbar with no keyboard support</h2>
+      <p class="help saharian-debug-explanation">
+        This is a wrong implementation of a toolbar, as doesn't provide the
+        correct keyboard shortcuts.
+      </p>
+      <div class="example saharian-debug-flex">
+        <div class="container">
+          <div class="toolbar2" aria-label="Text formatting">
+            <button
+              aria-label="Bold (Ctrl+B)"
+              onclick="alert('Bold action triggered')">
+              B
+            </button>
+            <button
+              aria-label="Italic (Ctrl+I)"
+              onclick="alert('Italic action triggered')">
+              I
+            </button>
+            <button
+              aria-label="Underline (Ctrl+U)"
+              onclick="alert('Underline action triggered')">
+              U
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="../common/example.js"></script>
+    <script src="toolbar.js"></script>
+  </body>
+</html>

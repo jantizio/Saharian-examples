@@ -1,0 +1,36 @@
+.toolbar,
+.toolbar2 {
+  display: flex;
+  gap: 10px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.toolbar[role="toolbar"],
+.toolbar2[role="toolbar"] {
+  outline: 2px solid #faa966;
+  padding: 10px;
+}
+
+.toolbar button,
+.toolbar2 button {
+  background-color: #faa966;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.toolbar button:hover,
+.toolbar2 button:hover {
+  background-color: #f97f1b;
+}
+
+.toolbar button:focus,
+.toolbar2 button:focus {
+  outline: 2px dashed #f07848;
+}
