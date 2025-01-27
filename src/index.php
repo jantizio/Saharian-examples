@@ -39,16 +39,12 @@
     ul,
     ol {
       padding-left: 1.5em;
+      color: #555;
     }
 
     ul li {
-      margin: 0.5em 0;
       padding: 0.25em;
       list-style-type: disc;
-    }
-
-    ol li {
-      margin: 0.5em 0;
     }
 
     ul li a {
@@ -66,6 +62,11 @@
       font-size: 14px;
       margin-left: 0.5em;
       color: #666;
+    }
+
+    #examples-list {
+      column-count: 3;
+      column-gap: 2em;
     }
   </style>
 
@@ -95,7 +96,8 @@
 
     <h2 class="saharian-debug-h2">Accessibility examples</h2>
     <p>The good, the bad, and the ugly of web accessibility.</p>
-    <ul>
+    <p>Here you can check out some examples of accessible and inaccessible web components. Each example is a standalone page that demonstrates a specific accessibility issue. The examples are designed to be viewed with SahARIAn enabled to see how a screen reader would interpret the web page.</p>
+    <ul id="examples-list">
       <?php
       $ignored = ["useful TO-DO list"];
       $examples = glob('*/index.html');
