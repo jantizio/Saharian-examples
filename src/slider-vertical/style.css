@@ -1,10 +1,6 @@
-﻿input[type="range"],
-.slider {}
-
-/* AGGIUNTO PER RENDERE LO SLIDER VERTICALE */
+﻿/* AGGIUNTO PER RENDERE LO SLIDER VERTICALE */
 input[type="range"][aria-orientation="vertical"] {
-    writing-mode: bt-lr;
-    -webkit-appearance: slider-vertical;
+    writing-mode: tb-rl;
     width: 8px;
     height: 150px;
     padding: 0 5px;
